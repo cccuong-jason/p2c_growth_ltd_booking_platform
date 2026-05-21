@@ -1,0 +1,14 @@
+.next/
+node_modules/
+out/
+dist/
+coverage/
+*.tsbuildinfo
+.env
+.env.local
+.env.*.local
+.vercel/
+.worktrees/
+worktrees/
+.playwright-mcp/
+.superpowers/
