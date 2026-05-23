@@ -11,12 +11,31 @@ npm run dev
 
 Open `http://localhost:3000`.
 
+Make shortcuts are also available:
+
+```bash
+make install
+make dev
+```
+
 ## Verification
 
 ```bash
 npm run test
 npm run lint
 npm run build
+```
+
+Or run the full local gate:
+
+```bash
+make verify
+```
+
+Security audit shortcut:
+
+```bash
+make audit
 ```
 
 ## Environment

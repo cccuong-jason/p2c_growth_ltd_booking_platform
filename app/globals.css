@@ -4,6 +4,13 @@
 
 :root {
   color-scheme: light;
+  --ink: #06111f;
+  --ocean: #246bfe;
+  --cyan: #45ddff;
+  --mint: #35e7b3;
+  --violet: #7c5cff;
+  --paper: #fbfdff;
+  --mist: #eef7ff;
 }
 
 * {
@@ -12,17 +19,267 @@
 
 body {
   margin: 0;
-  background: #f7fbff;
-  color: #0b1220;
+  background:
+    linear-gradient(180deg, rgba(234, 246, 255, 0.95) 0%, rgba(251, 253, 255, 0.98) 42%, #ffffff 100%),
+    var(--paper);
+  color: var(--ink);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(69, 221, 255, 0.35);
+}
+
+@keyframes float-panel {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes soft-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes scan-line {
+  from {
+    transform: translateX(-45%);
+  }
+  to {
+    transform: translateX(45%);
+  }
+}
+
+@keyframes globe-rotate {
+  from {
+    background-position:
+      0 0,
+      0 0,
+      0 0;
+  }
+  to {
+    background-position:
+      220px 0,
+      -180px 0,
+      0 0;
+  }
+}
+
+@keyframes globe-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0) scale(1.015);
+  }
+}
+
+@keyframes orbit-dash {
+  to {
+    stroke-dashoffset: -240;
+  }
+}
+
+@keyframes orbit-node {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.premium-mesh {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(36, 107, 254, 0.2), transparent 30%),
+    radial-gradient(circle at 78% 8%, rgba(69, 221, 255, 0.22), transparent 26%),
+    radial-gradient(circle at 82% 78%, rgba(53, 231, 179, 0.16), transparent 24%),
+    linear-gradient(180deg, #f6fbff 0%, #ffffff 72%);
+}
+
+.tech-grid {
+  background-image:
+    linear-gradient(rgba(36, 107, 254, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(36, 107, 254, 0.08) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(to bottom, black 10%, transparent 85%);
+}
+
+.orbital-hero {
+  background:
+    radial-gradient(circle at 50% 8%, rgba(69, 221, 255, 0.2), transparent 28%),
+    radial-gradient(circle at 18% 18%, rgba(36, 107, 254, 0.24), transparent 24%),
+    linear-gradient(180deg, #020711 0%, #06111f 56%, #f6fbff 100%);
+}
+
+.orbital-stars {
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.72) 1px, transparent 1.8px),
+    radial-gradient(circle, rgba(69, 221, 255, 0.55) 1px, transparent 1.8px);
+  background-position:
+    0 0,
+    32px 48px;
+  background-size:
+    160px 160px,
+    220px 220px;
+  mask-image: linear-gradient(to bottom, black 0%, transparent 78%);
+}
+
+.orbital-globe {
+  animation: globe-drift 12s ease-in-out infinite;
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  background:
+    linear-gradient(105deg, rgba(255, 255, 255, 0.06) 0 18%, transparent 18% 100%),
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.92), rgba(150, 181, 210, 0.58) 20%, rgba(38, 69, 105, 0.32) 38%, rgba(4, 12, 23, 0.96) 64%),
+    repeating-linear-gradient(92deg, rgba(69, 221, 255, 0.12) 0 1px, transparent 1px 36px);
+  box-shadow:
+    inset 0 0 80px rgba(255, 255, 255, 0.22),
+    inset -90px -80px 160px rgba(0, 0, 0, 0.88),
+    0 0 120px rgba(69, 221, 255, 0.2);
+}
+
+.orbital-globe::before {
+  animation: globe-rotate 22s linear infinite;
+  background-image:
+    radial-gradient(ellipse at 22% 38%, rgba(255, 255, 255, 0.2) 0 8%, transparent 9%),
+    radial-gradient(ellipse at 56% 28%, rgba(255, 255, 255, 0.18) 0 10%, transparent 11%),
+    radial-gradient(ellipse at 72% 52%, rgba(69, 221, 255, 0.12) 0 8%, transparent 10%);
+  background-size:
+    38% 28%,
+    46% 34%,
+    34% 28%;
+  border-radius: inherit;
+  content: "";
+  inset: 0;
+  opacity: 0.9;
+  position: absolute;
+}
+
+.orbital-globe::after {
+  background:
+    radial-gradient(circle at 48% 24%, rgba(255, 255, 255, 0.2), transparent 22%),
+    linear-gradient(180deg, transparent 0%, rgba(2, 7, 17, 0.8) 72%, #020711 100%);
+  border-radius: inherit;
+  content: "";
+  inset: 0;
+  position: absolute;
+}
+
+.orbit-line {
+  animation: orbit-dash 10s linear infinite;
+  fill: none;
+  stroke: rgba(69, 221, 255, 0.5);
+  stroke-dasharray: 9 18;
+  stroke-width: 1.4;
+}
+
+.orbit-line-secondary {
+  animation-duration: 14s;
+  stroke: rgba(53, 231, 179, 0.35);
+  stroke-dasharray: 5 16;
+}
+
+.orbit-node {
+  animation: orbit-node 3s ease-in-out infinite;
+  border: 1px solid rgba(69, 221, 255, 0.75);
+  box-shadow: 0 0 24px rgba(69, 221, 255, 0.45);
+}
+
+.display-heading {
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #06111f 0%, #246bfe 52%, #00a9d6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.glass-panel {
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 24px 90px rgba(12, 28, 54, 0.12);
+  backdrop-filter: blur(18px);
+}
+
+.cockpit-panel {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  background:
+    linear-gradient(145deg, rgba(6, 17, 31, 0.98), rgba(10, 28, 54, 0.98)),
+    #06111f;
+  box-shadow: 0 30px 100px rgba(8, 24, 48, 0.32);
+}
+
+.cockpit-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 22% 18%, rgba(69, 221, 255, 0.18), transparent 30%),
+    radial-gradient(circle at 84% 32%, rgba(36, 107, 254, 0.24), transparent 30%);
+  pointer-events: none;
+}
+
+.cockpit-panel::after {
+  animation: scan-line 8s ease-in-out infinite alternate;
+  background: linear-gradient(90deg, transparent, rgba(69, 221, 255, 0.12), transparent);
+  content: "";
+  height: 100%;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  width: 140%;
+}
+
+.float-slow {
+  animation: float-panel 6s ease-in-out infinite;
+}
+
+.pulse-soft {
+  animation: soft-pulse 4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .float-slow,
+  .pulse-soft,
+  .orbital-globe,
+  .orbital-globe::before,
+  .orbit-line,
+  .orbit-node,
+  .cockpit-panel::after {
+    animation: none;
+  }
 }
 
 @layer components {
   .button-primary {
-    @apply inline-flex h-11 items-center gap-2 rounded-md bg-ocean px-5 text-sm font-semibold text-white shadow-soft-xl transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60;
+    @apply inline-flex h-11 items-center gap-2 rounded-md bg-ocean px-5 text-sm font-semibold text-white shadow-soft-xl transition hover:-translate-y-0.5 hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60;
   }
 
   .button-secondary {
-    @apply inline-flex h-11 items-center gap-2 rounded-md border border-slate-200 bg-white px-5 text-sm font-semibold text-ink transition hover:border-ocean hover:text-ocean disabled:cursor-not-allowed disabled:opacity-40;
+    @apply inline-flex h-11 items-center gap-2 rounded-md border border-slate-200 bg-white/85 px-5 text-sm font-semibold text-ink shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:border-ocean hover:text-ocean disabled:cursor-not-allowed disabled:opacity-40;
   }
 
   .field-label {
@@ -30,7 +287,7 @@ body {
   }
 
   .field-input {
-    @apply rounded-md border border-slate-200 bg-white px-3 py-2 text-sm font-normal text-ink outline-none ring-ocean/20 transition placeholder:text-slate-400 focus:border-ocean focus:ring-4;
+    @apply rounded-md border border-slate-200 bg-white px-3 py-2.5 text-sm font-normal text-ink outline-none ring-ocean/20 transition placeholder:text-slate-400 focus:border-ocean focus:ring-4;
   }
 
   .choice-button {
