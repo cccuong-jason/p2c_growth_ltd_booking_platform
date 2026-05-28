@@ -1,0 +1,126 @@
+# VMS orchestration v1
+#
+# Canonical, tool-agnostic orchestration definition for Planner -> Developer ->
+# Reviewer. Skills remain the authority for implementation behavior.
+
+version: 1
+
+invocation:
+  input: ticket-or-topic
+  modes:
+    - planning
+    - implementation
+  entrypoint: planner
+
+roles:
+  planner:
+    prompt: ../prompts/planner.md
+    primary-skills:
+      - skill-project-planning
+      - skill-writing-plans
+    reads:
+      - jira
+      - confluence
+      - repo-context
+    writes:
+      - scope-summary
+      - plan
+      - jira-links?
+      - tdd-links?
+
+  developer:
+    prompt: ../prompts/developer.md
+    primary-skills:
+      - skill-plan-mode-execution
+      - skill-git-worktrees
+      - skill-github-manager
+      - skill-tdd
+      - skill-verification
+      - skill-ui-design?
+    reads:
+      - scope-summary
+      - approved-plan
+      - repo-context
+    writes:
+      - branch
+      - worktree?
+      - verification
+      - pr?
+
+  reviewer:
+    prompt: ../prompts/reviewer.md
+    primary-skills:
+      - skill-code-review
+      - skill-verification
+      - skill-branch-finalize
+    reads:
+      - scope-summary
+      - diff
+      - verification
+      - acceptance-criteria
+    writes:
+      - verdict
+      - findings
+      - bounce?
+
+gates:
+  - id: scope-approved
+    after: planner
+    type: human
+    token-sources:
+      - explicit-human-approval
+    unblocks: developer
+
+  - id: merge-approved
+    after: reviewer
+    type: human
+    token-sources:
+      - explicit-human-approval
+      - merged-pr
+    unblocks: done
+
+roster:
+  - planner
+  - gate:scope-approved
+  - developer
+  - reviewer
+  - gate:merge-approved
+
+contract-checks:
+  - on: planner.release
+    require:
+      - scope-summary.present
+      - scope-summary.in-scope-listed
+      - scope-summary.out-of-scope-listed
+      - success-criteria.present
+      - risk-level.present
+      - jira-linked || jira-deferred-with-reason
+
+  - on: developer.release
+    require:
+      - branch.created
+      - branch.name-valid
+      - scope.within-approved-boundary
+      - verification.ran
+      - verification.summary.present
+      - pr.created || reviewable-diff.present
+
+  - on: reviewer.release
+    require:
+      - verdict in (approve, request-changes)
+      - findings.severity-labeled
+      - findings.tied-to-evidence
+
+defaults:
+  branch-base:
+    - develop
+    - main
+  frontend:
+    build-command: npm run build
+    lint-command: npm run lint
+    visual-qa-required: true
+  go-backend:
+    test-command: go test ./...
+    build-command: go build ./...
+    lint-command: golangci-lint run
+    race-command: go test -race ./...

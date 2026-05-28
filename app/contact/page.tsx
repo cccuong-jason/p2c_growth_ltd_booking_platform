@@ -3,8 +3,8 @@ import { PageBand, SectionHeading } from "@/components/site-shell";
 
 export default function ContactPage() {
   return (
-    <main>
-      <PageBand>
+    <main className="surface-page">
+      <PageBand className="pt-32">
         <div className="grid gap-10 md:grid-cols-[0.9fr_1.1fr]">
           <SectionHeading
             eyebrow="Contact"

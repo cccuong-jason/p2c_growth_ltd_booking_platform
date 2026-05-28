@@ -2,8 +2,8 @@ import { PageBand, SectionHeading } from "@/components/site-shell";
 
 export default function TermsPage() {
   return (
-    <main>
-      <PageBand>
+    <main className="surface-page">
+      <PageBand className="pt-32">
         <SectionHeading
           eyebrow="Terms"
           title="Terms & Conditions"

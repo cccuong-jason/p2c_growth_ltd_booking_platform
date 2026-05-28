@@ -3,7 +3,7 @@ import { hasSupabasePublicConfig } from "@/lib/env";
 
 export default function AdminLoginPage() {
   return (
-    <main className="min-h-screen bg-porcelain px-5 py-16">
+    <main className="surface-page min-h-screen px-5 pb-16 pt-32">
       <div className="mx-auto mb-8 max-w-md text-center">
         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-ocean">Internal</p>
         <h1 className="mt-3 text-3xl font-semibold text-ink">Admin sign in</h1>

@@ -28,11 +28,11 @@ async function getAdminData() {
 export default async function AdminPage() {
   if (!hasSupabasePublicConfig() || !hasSupabaseServiceConfig()) {
     return (
-      <main className="min-h-screen bg-slate-950 px-5 py-16 text-white">
-        <div className="mx-auto max-w-2xl rounded-lg border border-white/10 bg-white/5 p-6">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-300">Configuration needed</p>
-          <h1 className="mt-3 text-3xl font-semibold">Admin dashboard is ready for credentials.</h1>
-          <p className="mt-4 leading-7 text-slate-300">
+      <main className="min-h-screen bg-porcelain px-5 pb-16 pt-32">
+        <div className="mx-auto max-w-2xl rounded-2xl border border-slate-200 bg-white p-8 shadow-panel">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-ocean">Configuration needed</p>
+          <h1 className="mt-4 text-3xl font-extrabold text-ink display-heading tracking-tight">Admin dashboard is ready for credentials.</h1>
+          <p className="mt-6 leading-7 text-slate-600 font-medium">
             Add Supabase public keys, service role key, and ADMIN_EMAIL_ALLOWLIST to enable protected live data access.
           </p>
         </div>
@@ -50,10 +50,10 @@ export default async function AdminPage() {
 
   if (!isAdminEmailAllowed(email, getEnv("ADMIN_EMAIL_ALLOWLIST"))) {
     return (
-      <main className="min-h-screen bg-slate-950 px-5 py-16 text-white">
-        <div className="mx-auto max-w-2xl rounded-lg border border-white/10 bg-white/5 p-6">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-rose-300">Access denied</p>
-          <h1 className="mt-3 text-3xl font-semibold">This account is not on the admin allowlist.</h1>
+      <main className="min-h-screen bg-porcelain px-5 pb-16 pt-32">
+        <div className="mx-auto max-w-2xl rounded-2xl border border-slate-200 bg-white p-8 shadow-panel">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-rose-500">Access denied</p>
+          <h1 className="mt-4 text-3xl font-extrabold text-ink display-heading tracking-tight">This account is not on the admin allowlist.</h1>
         </div>
       </main>
     );

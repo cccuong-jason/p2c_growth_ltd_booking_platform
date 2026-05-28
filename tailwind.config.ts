@@ -18,6 +18,16 @@ const config: Config = {
       boxShadow: {
         "soft-xl": "0 24px 80px rgba(18, 100, 255, 0.14)",
         "panel": "0 18px 48px rgba(15, 23, 42, 0.08)"
+      },
+      animation: {
+        marquee: "marquee 30s linear infinite",
+        "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+      },
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-100%)" },
+        }
       }
     }
   },

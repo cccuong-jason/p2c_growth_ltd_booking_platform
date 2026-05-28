@@ -1,0 +1,4 @@
+/target
+.playwright-mcp/
+.superpowers/
+.ai/vms-orchestration/*.json

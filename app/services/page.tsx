@@ -12,8 +12,8 @@ const services = [
 
 export default function ServicesPage() {
   return (
-    <main>
-      <PageBand>
+    <main className="surface-page">
+      <PageBand className="pt-32">
         <SectionHeading
           eyebrow="Services"
           title="Systems for capture, coordination, and follow-up."

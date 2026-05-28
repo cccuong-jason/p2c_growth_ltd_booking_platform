@@ -2,8 +2,8 @@ import { PageBand, SectionHeading } from "@/components/site-shell";
 
 export default function AboutPage() {
   return (
-    <main>
-      <PageBand>
+    <main className="surface-page">
+      <PageBand className="pt-32">
         <SectionHeading
           eyebrow="About P2C Growth"
           title="Technology infrastructure for service businesses that need trust before scale."
