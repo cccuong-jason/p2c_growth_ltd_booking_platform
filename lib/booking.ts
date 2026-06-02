@@ -30,8 +30,23 @@ export const serviceCategories = [
   },
   {
     id: "medico_legal",
-    title: "Medico-legal assessments",
-    description: "Coordination for qualified physiotherapy assessments and reports."
+    title: "Medical legal referrals",
+    description: "Referral coordination for injury, insurance, and legal evidence support."
+  }
+] as const;
+
+export const medicalLegalReferralTypes = [
+  {
+    id: "personal_injury_claim",
+    label: "Personal injury claim (e.g., car accident, workplace injury)"
+  },
+  {
+    id: "insurance_claim",
+    label: "Insurance claim"
+  },
+  {
+    id: "legal_proceedings",
+    label: "Legal proceedings (supporting evidence)"
   }
 ] as const;
 
@@ -39,10 +54,16 @@ export const languages = ["en", "zh-Hant", "zh-Hans", "vi"] as const;
 
 export type ServiceCategory = (typeof serviceCategories)[number]["id"];
 export type PreferredLanguage = (typeof languages)[number];
+export type MedicalLegalReferralType = (typeof medicalLegalReferralTypes)[number]["id"];
 
 const serviceCategoryIds = serviceCategories.map((service) => service.id) as [
   ServiceCategory,
   ...ServiceCategory[]
+];
+
+const medicalLegalReferralTypeIds = medicalLegalReferralTypes.map((type) => type.id) as [
+  MedicalLegalReferralType,
+  ...MedicalLegalReferralType[]
 ];
 
 const bookingSchema = z
@@ -52,6 +73,10 @@ const bookingSchema = z
     patientEmail: z.string().trim().email("Valid email is required"),
     dob: z.string().trim().min(1, "Date of birth is required"),
     serviceCategory: z.enum(serviceCategoryIds),
+    medicalLegalReferralType: z.preprocess(
+      (value) => (typeof value === "string" && value.trim() === "" ? null : value),
+      z.enum(medicalLegalReferralTypeIds).nullable().optional()
+    ),
     bookingDate: z.string().trim().min(1, "Preferred date/time is required"),
     preferredLanguage: z.enum(languages),
     isHomeVisit: z.coerce.boolean(),
@@ -62,6 +87,14 @@ const bookingSchema = z
     acknowledgeEmergencyAdvice: z.boolean().refine((value) => value, "required")
   })
   .superRefine((data, context) => {
+    if (data.serviceCategory === "medico_legal" && !data.medicalLegalReferralType) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "required",
+        path: ["medicalLegalReferralType"]
+      });
+    }
+
     if (!data.isHomeVisit) {
       return;
     }

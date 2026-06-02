@@ -4,26 +4,26 @@ export const dictionary = {
       home: "Home",
       about: "About",
       services: "Services",
-      physiotherapy: "Physiotherapy",
+      physiotherapy: "Medical Experts Booking",
       contact: "Contact",
       admin: "Admin"
     },
     home: {
-      eyebrow: "Healthcare coordination + SaaS delivery",
+      eyebrow: "UK technology and software company",
       title: "Booking infrastructure for high-trust service teams.",
       subtitle:
-        "Modern booking systems and coordination platforms for UK physiotherapy providers serving multilingual communities.",
-      heroTitle: "The operating layer for modern healthcare.",
+        "Websites, booking workflows, automation, CRM, and customer-partner platforms for UK service companies.",
+      heroTitle: "Software systems for modern UK service companies.",
       heroSubtitle:
-        "Cinematic booking, consent, and dispatch for elite UK practitioners.",
+        "Technology delivery for clear digital operations.",
       heroLead:
         "Streamlined intake and routing for high-trust teams.",
-      primaryCta: "Start physio request",
+      primaryCta: "Explore services",
       secondaryCta: "Explore systems",
       socialProof: {
         value: "4-lane",
         label: "booking-to-dispatch workflow",
-        body: "Designed for multilingual UK physiotherapy requests, Home Visit routing, consent capture, and internal follow-up."
+        body: "Designed for software-led intake, workflow automation, customer management, and partner coordination."
       },
       brandStrip: [
         "Brand identity",
@@ -124,7 +124,7 @@ export const dictionary = {
         {
           quote: "It feels like a real product, not a dressed-up contact form.",
           name: "Operations reviewer",
-          role: "Physio dispatch workflow"
+          role: "Medical experts workflow"
         },
         {
           quote: "Consent, language, and postcode context arrive together before follow-up.",

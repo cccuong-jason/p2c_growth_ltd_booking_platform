@@ -4,10 +4,11 @@ import { ArrowRight } from "lucide-react";
 import { PageBand, SectionHeading } from "@/components/site-shell";
 
 const services = [
-  ["Physio Booking", "Patient request capture and internal dispatch for physiotherapy coordination.", "/services/physiotherapy"],
-  ["Website Development", "Premium conversion-focused sites for service businesses."],
-  ["Booking System & Workflow Email Automation", "Forms, workflows, notifications, and operational handoff."],
-  ["Customer Management System / Mini CRM", "Lightweight dashboards for teams managing high-trust customer relationships."]
+  ["Medical Experts Booking", "Medical booking, referral, and internal dispatch for expert-led appointments.", "/services/physiotherapy"],
+  ["Website Development", "Premium conversion-focused websites for UK service businesses."],
+  ["Booking System & Email Automation", "Forms, workflows, confirmations, notifications, and operational handoff."],
+  ["Customer Management System / Mini CRM", "Lightweight dashboards for teams managing high-trust customer relationships."],
+  ["Customer-Partner Platform", "A reusable coordination layer between customers, internal teams, and professional partners."]
 ];
 
 export default function ServicesPage() {
@@ -16,8 +17,8 @@ export default function ServicesPage() {
       <PageBand className="pt-32">
         <SectionHeading
           eyebrow="Services"
-          title="Systems for capture, coordination, and follow-up."
-          description="P2C Growth combines polished user experiences with practical workflow tooling so teams can manage requests without operational drift."
+          title="Technology services for websites, booking, CRM, and partner coordination."
+          description="P2C Growth LTD is a UK technology and software company building practical digital systems for service businesses."
         />
         <div className="mt-12 grid gap-4 md:grid-cols-2">
           {services.map(([title, body, href]) => (

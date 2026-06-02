@@ -29,6 +29,7 @@ export async function submitBooking(_: ActionState, formData: FormData): Promise
     patientEmail: String(formData.get("patientEmail") || ""),
     dob: String(formData.get("dob") || ""),
     serviceCategory: String(formData.get("serviceCategory") || "") as BookingInput["serviceCategory"],
+    medicalLegalReferralType: String(formData.get("medicalLegalReferralType") || "") as BookingInput["medicalLegalReferralType"],
     bookingDate: String(formData.get("bookingDate") || ""),
     preferredLanguage: String(formData.get("preferredLanguage") || "en") as BookingInput["preferredLanguage"],
     isHomeVisit: formData.get("visitType") === "home",

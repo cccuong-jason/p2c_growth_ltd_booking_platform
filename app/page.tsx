@@ -77,6 +77,39 @@ const HERO_GLOBE_CONFIG: COBEOptions = {
   ],
 };
 
+const HOME_SERVICE_BOXES = [
+  {
+    title: "Medical Experts Booking",
+    body: "A guided booking and referral workflow for patients, legal cases, insurers, and expert follow-up.",
+    href: "/services/physiotherapy",
+    icon: Activity,
+  },
+  {
+    title: "Website Development",
+    body: "Premium websites for UK service companies that need clear offers, trust, and conversion paths.",
+    href: "/services",
+    icon: Monitor,
+  },
+  {
+    title: "Booking System & Email Automation",
+    body: "Forms, status handoff, confirmation emails, and internal operations without manual chasing.",
+    href: "/services",
+    icon: Workflow,
+  },
+  {
+    title: "Customer Management / Mini CRM",
+    body: "Simple customer, enquiry, status, and partner context for teams that need visibility fast.",
+    href: "/services",
+    icon: LayoutDashboard,
+  },
+  {
+    title: "Customer-Partner Platform",
+    body: "A reusable software layer for routing customers to professional partners and tracking outcomes.",
+    href: "/services",
+    icon: UserCheck,
+  },
+];
+
 const ANALYTICS_BEAM_NODES = [
   {
     title: "Planning",
@@ -193,7 +226,7 @@ export default function HomePage() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-ocean opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-ocean"></span>
               </span>
-              {home.eyebrow}
+              UK technology and software company
             </div>
           </SpringReveal>
 
@@ -202,21 +235,21 @@ export default function HomePage() {
                 className="text-5xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1.1] justify-center display-heading"
                 duration={50}
              >
-                The operating layer for modern healthcare.
+                Software systems for modern UK service companies.
              </TypingAnimation>
           </div>
 
           <Reveal delay={0.6}>
             <p className="mt-10 max-w-2xl text-lg font-semibold leading-relaxed text-slate-700 md:text-xl">
-              Cinematic booking, consent, and dispatch for elite UK practitioners. Premium infrastructure for high-trust teams.
+              P2C Growth LTD designs and builds websites, booking workflows, email automation, CRM tools, and customer-partner platforms for businesses that need clean digital operations.
             </p>
           </Reveal>
 
           <div className="mt-12 grid w-full max-w-3xl grid-cols-3 gap-6 text-center">
             {[
-              { value: 6, label: "physio service categories" },
-              { value: 3, label: "language-ready intake paths" },
-              { value: 5, label: "dispatch statuses tracked" }
+              { value: 5, label: "software service lanes" },
+              { value: 4, label: "workflow systems delivered" },
+              { value: 1, label: "UK company focus" }
             ].map((stat, index) => (
               <BlurFade key={stat.label} delay={0.12 * index + 0.65} inView blur="10px" direction="up">
                 <div>
@@ -236,8 +269,8 @@ export default function HomePage() {
           <Reveal delay={0.8}>
             <div className="mt-14 flex flex-col sm:flex-row items-center gap-6">
               <Magnetic>
-                <Link href="/services/physiotherapy" className="inline-flex h-16 items-center justify-center gap-3 rounded-full bg-ocean px-12 text-base font-extrabold text-white shadow-lg shadow-blue-500/25 transition-all hover:scale-105 hover:bg-blue-600 active:scale-95">
-                  {home.primaryCta}
+                <Link href="/services" className="inline-flex h-16 items-center justify-center gap-3 rounded-full bg-ocean px-12 text-base font-extrabold text-white shadow-lg shadow-blue-500/25 transition-all hover:scale-105 hover:bg-blue-600 active:scale-95">
+                  Explore services
                   <ArrowRight className="h-5 w-5" />
                 </Link>
               </Magnetic>
@@ -245,6 +278,26 @@ export default function HomePage() {
                 {home.secondaryCta}
                 <ChevronRight className="h-4 w-4" />
               </Link>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.95}>
+            <div className="mt-16 w-full max-w-6xl rounded-[2rem] border border-slate-100 bg-white/88 p-4 text-left shadow-premium backdrop-blur-xl">
+              <div className="flex flex-col gap-2 px-2 py-2 text-center sm:text-left">
+                <p className="text-[11px] font-black uppercase tracking-[0.22em] text-ocean">Services</p>
+                <h2 className="text-2xl font-black tracking-tight text-ink sm:text-3xl">Choose the software service you need.</h2>
+              </div>
+              <div className="mt-4 grid gap-3 md:grid-cols-2 lg:grid-cols-5">
+                {HOME_SERVICE_BOXES.map((service) => (
+                  <Link key={service.title} href={service.href} className="group rounded-2xl border border-slate-100 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:border-ocean/30 hover:shadow-premium">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-ocean/10 text-ocean transition group-hover:bg-ocean group-hover:text-white">
+                      <service.icon className="h-5 w-5" aria-hidden />
+                    </span>
+                    <span className="mt-4 block text-sm font-black leading-5 text-ink">{service.title}</span>
+                    <span className="mt-2 block text-xs font-semibold leading-5 text-slate-600">{service.body}</span>
+                  </Link>
+                ))}
+              </div>
             </div>
           </Reveal>
         </div>

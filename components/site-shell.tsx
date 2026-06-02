@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Activity, ArrowRight, CalendarPlus, LayoutDashboard } from "lucide-react";
+import { Activity, ArrowRight, CalendarPlus, ChevronDown, Globe2, LayoutDashboard } from "lucide-react";
 
 import { getDictionary } from "@/lib/i18n/dictionary";
 
@@ -7,35 +7,78 @@ const navItems = [
   { href: "/", label: "home" },
   { href: "/about", label: "about" },
   { href: "/services", label: "services" },
-  { href: "/services/physiotherapy", label: "physiotherapy" },
   { href: "/contact", label: "contact" }
 ] as const;
+
+const serviceItems = [
+  { href: "/services/physiotherapy", label: "Medical Experts Booking", body: "Medical appointment and referral request workflow" },
+  { href: "/services", label: "Website Development", body: "High-converting websites for service businesses" },
+  { href: "/services", label: "Booking System & Email Automation", body: "Forms, notifications, and operational handoff" },
+  { href: "/services", label: "Customer Management / Mini CRM", body: "Lightweight customer and status tracking" },
+  { href: "/services", label: "Customer-Partner Platform", body: "Coordination layer between customers and experts" }
+] as const;
+
+const languages = ["EN", "ZH-T", "ZH-S", "VI"] as const;
 
 export function SiteHeader() {
   const copy = getDictionary();
 
   return (
-    <header className="fixed inset-x-0 top-6 z-50 px-4 md:px-6">
-      <div className="glass-panel mx-auto flex max-w-7xl items-center justify-between rounded-2xl px-5 py-3 border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-xl">
-        <Link href="/" className="flex items-center gap-3 rounded-md pr-2 font-extrabold text-ink tracking-tight text-lg">
+    <header className="fixed inset-x-0 top-4 z-50 px-4 md:px-6">
+      <div className="mx-auto mb-2 flex max-w-7xl items-center justify-between px-1">
+        <div className="flex items-center gap-1 rounded-full border border-slate-200 bg-white/85 p-1 text-[10px] font-black text-slate-600 shadow-sm backdrop-blur-xl" aria-label="Language switcher">
+          <Globe2 className="ml-2 h-3.5 w-3.5 text-ocean" aria-hidden />
+          {languages.map((language) => (
+            <button
+              key={language}
+              type="button"
+              className={`rounded-full px-2.5 py-1 transition hover:bg-ocean hover:text-white ${language === "EN" ? "bg-ocean text-white" : "text-slate-600"}`}
+              aria-label={`Switch language to ${language}`}
+            >
+              {language}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="glass-panel mx-auto flex max-w-7xl items-center justify-between rounded-2xl border border-white/20 px-5 py-3 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-xl">
+        <Link href="/" className="flex items-center gap-3 rounded-md pr-2 text-lg font-extrabold tracking-tight text-ink">
           <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-ocean to-cyan text-white shadow-lg shadow-blue-500/30">
             <Activity className="h-6 w-6" aria-hidden />
           </span>
           P2C Growth
         </Link>
         
-        <nav className="hidden items-center gap-1 rounded-xl bg-slate-900/5 p-1 text-[13px] font-bold text-slate-500 md:flex">
+        <nav className="hidden items-center gap-1 rounded-xl bg-slate-900/5 p-1 text-[13px] font-bold text-slate-600 md:flex">
           {navItems.map((item) => (
-            <Link key={item.href} href={item.href} className="rounded-lg px-4 py-2 transition hover:bg-white hover:text-ocean hover:shadow-sm">
-              {copy.nav[item.label]}
-            </Link>
+            item.label === "services" ? (
+              <div key={item.href} className="group relative">
+                <Link href={item.href} className="inline-flex items-center gap-1 rounded-lg px-4 py-2 transition hover:bg-white hover:text-ocean hover:shadow-sm">
+                  {copy.nav[item.label]}
+                  <ChevronDown className="h-3.5 w-3.5" aria-hidden />
+                </Link>
+                <div className="invisible absolute left-1/2 top-full z-50 mt-3 w-[480px] -translate-x-1/2 rounded-2xl border border-slate-100 bg-white p-3 opacity-0 shadow-2xl shadow-blue-500/10 transition group-hover:visible group-hover:opacity-100">
+                  <div className="grid gap-2">
+                    {serviceItems.map((service) => (
+                      <Link key={service.label} href={service.href} className="rounded-xl p-3 transition hover:bg-blue-50">
+                        <span className="block text-sm font-black text-ink">{service.label}</span>
+                        <span className="mt-1 block text-xs font-semibold leading-5 text-slate-600">{service.body}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <Link key={item.href} href={item.href} className="rounded-lg px-4 py-2 transition hover:bg-white hover:text-ocean hover:shadow-sm">
+                {copy.nav[item.label]}
+              </Link>
+            )
           ))}
         </nav>
 
         <div className="flex items-center gap-3">
-          <Link href="/services/physiotherapy" className="hidden h-11 items-center gap-2 rounded-xl bg-ocean px-5 text-sm font-bold text-white transition hover:scale-105 hover:bg-blue-600 shadow-lg shadow-blue-500/20 sm:inline-flex active:scale-95">
+          <Link href="/services/physiotherapy" className="hidden h-11 items-center gap-2 rounded-xl bg-ocean px-5 text-sm font-bold text-white shadow-lg shadow-blue-500/20 transition hover:scale-105 hover:bg-blue-600 active:scale-95 sm:inline-flex">
             <CalendarPlus className="h-4 w-4" aria-hidden />
-            Book Now
+            Book expert
           </Link>
           <Link
             href="/admin/login"
@@ -62,7 +105,7 @@ export function SiteFooter() {
             P2C Growth
           </Link>
           <p className="max-w-xs leading-relaxed font-medium">
-            Providing premium healthcare coordination and next-gen booking infrastructure for high-trust professional teams across the UK.
+            Building websites, booking systems, automation, CRM tools, and customer-partner platforms for UK service companies.
           </p>
         </div>
         <div>
@@ -82,7 +125,7 @@ export function SiteFooter() {
             href="/services/physiotherapy"
             className="inline-flex items-center gap-2 font-bold text-ocean hover:gap-3 transition-all"
           >
-            Start a physio request <ArrowRight className="h-4 w-4" aria-hidden />
+            Start a medical expert request <ArrowRight className="h-4 w-4" aria-hidden />
           </Link>
         </div>
       </div>

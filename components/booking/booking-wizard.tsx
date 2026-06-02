@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 
 import { submitBooking, type ActionState } from "@/lib/actions";
-import { serviceCategories, type ServiceCategory } from "@/lib/booking";
+import { medicalLegalReferralTypes, serviceCategories, type ServiceCategory } from "@/lib/booking";
 
 const initialState: ActionState = { ok: false, message: "" };
 
@@ -46,10 +46,12 @@ function SubmitButton() {
 export function BookingWizard() {
   const [step, setStep] = useState(0);
   const [service, setService] = useState<ServiceCategory>(serviceCategories[0].id);
+  const [medicalLegalReferralType, setMedicalLegalReferralType] = useState("");
   const [visitType, setVisitType] = useState<"clinic" | "home">("clinic");
   const [state, action] = useFormState(submitBooking, initialState);
 
   const steps = useMemo(() => ["Service", "Details", "Consent"], []);
+  const canContinue = step !== 0 || service !== "medico_legal" || Boolean(medicalLegalReferralType);
 
   return (
     <div className="glass-panel overflow-hidden rounded-xl">
@@ -57,7 +59,7 @@ export function BookingWizard() {
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-200">Guided intake</p>
-            <h2 className="mt-2 text-2xl font-bold">Physio request cockpit</h2>
+            <h2 className="mt-2 text-2xl font-bold">Medical Experts Booking</h2>
           </div>
           <span className="w-fit rounded-md border border-cyan-200/30 bg-cyan-200/10 px-3 py-1 text-xs font-semibold text-cyan-100">
             Consent-first flow
@@ -85,14 +87,15 @@ export function BookingWizard() {
 
       <form action={action} className="space-y-6">
         <input type="hidden" name="serviceCategory" value={service} />
+        <input type="hidden" name="medicalLegalReferralType" value={medicalLegalReferralType} />
         <input type="hidden" name="visitType" value={visitType} />
 
         {step === 0 ? (
           <div className="space-y-5">
             <div className="max-w-2xl">
-              <h2 className="text-3xl font-bold text-ink">Choose treatment area</h2>
+              <h2 className="text-3xl font-bold text-ink">Choose medical support area</h2>
               <p className="mt-2 text-sm text-slate-600">
-                Select the closest category. P2C will coordinate the request with a qualified professional partner.
+                Select the closest category. P2C will coordinate the request with a qualified medical expert or professional partner.
               </p>
             </div>
             <div className="grid gap-3 md:grid-cols-2">
@@ -103,7 +106,10 @@ export function BookingWizard() {
                   <button
                     key={item.id}
                     type="button"
-                    onClick={() => setService(item.id)}
+                    onClick={() => {
+                      setService(item.id);
+                      if (item.id !== "medico_legal") setMedicalLegalReferralType("");
+                    }}
                     className={`group rounded-lg border p-4 text-left transition hover:-translate-y-1 ${
                       service === item.id
                         ? "border-ocean bg-blue-50 shadow-soft-xl"
@@ -121,6 +127,25 @@ export function BookingWizard() {
                 );
               })}
             </div>
+            {service === "medico_legal" ? (
+              <label className="field-label rounded-xl border border-blue-100 bg-blue-50/70 p-4">
+                Medical legal referral reason
+                <select
+                  className="field-input mt-2"
+                  required
+                  value={medicalLegalReferralType}
+                  onChange={(event) => setMedicalLegalReferralType(event.target.value)}
+                >
+                  <option value="" disabled>Select referral reason</option>
+                  {medicalLegalReferralTypes.map((type) => (
+                    <option key={type.id} value={type.id}>{type.label}</option>
+                  ))}
+                </select>
+                <span className="mt-2 block text-xs font-semibold leading-5 text-slate-600">
+                  This helps route the request to the right expert report or evidence support workflow.
+                </span>
+              </label>
+            ) : null}
           </div>
         ) : null}
 
@@ -129,7 +154,7 @@ export function BookingWizard() {
             <div className="max-w-2xl">
               <h2 className="text-3xl font-bold text-ink">Patient and visit details</h2>
               <p className="mt-2 text-sm leading-6 text-slate-600">
-                These details help P2C route the request cleanly before a partner follow-up.
+                These details help P2C route the request cleanly before expert or partner follow-up.
               </p>
             </div>
             <div className="grid gap-4 md:grid-cols-2">
@@ -173,8 +198,8 @@ export function BookingWizard() {
                   <MapPin className="h-5 w-5" aria-hidden />
                 </span>
                 <span>
-                  <span className="block">In-clinic</span>
-                  <span className="mt-1 block text-xs font-medium text-slate-500">No address routing needed</span>
+                  <span className="block">Clinic / remote coordination</span>
+                  <span className="mt-1 block text-xs font-medium text-slate-500">No home address routing needed</span>
                 </span>
               </button>
               <button
@@ -224,11 +249,11 @@ export function BookingWizard() {
             <div className="max-w-2xl">
               <h2 className="text-3xl font-bold text-ink">Required acknowledgements</h2>
               <p className="mt-2 text-sm leading-6 text-slate-600">
-                Submission stays blocked until all legal confirmations are accepted.
+                Submission stays blocked until all medical coordination confirmations are accepted.
               </p>
             </div>
             {[
-              ["acknowledgeCoordinatorOnly", "I acknowledge P2C Growth is a booking and coordination platform, not a medical clinic."],
+              ["acknowledgeCoordinatorOnly", "I acknowledge P2C Growth is a booking and coordination platform, not a medical clinic, law firm, or insurer."],
               ["consentContact", "I consent to be contacted by phone, email, or WhatsApp about this request."],
               ["acknowledgeEmergencyAdvice", "I acknowledge that emergencies require 999 or NHS urgent care."]
             ].map(([name, label]) => (
@@ -260,7 +285,12 @@ export function BookingWizard() {
             Back
           </button>
           {step < 2 ? (
-            <button type="button" onClick={() => setStep((current) => current + 1)} className="button-primary justify-center">
+            <button
+              type="button"
+              onClick={() => setStep((current) => current + 1)}
+              className="button-primary justify-center disabled:cursor-not-allowed disabled:opacity-50"
+              disabled={!canContinue}
+            >
               Continue <ArrowRight className="h-4 w-4" aria-hidden />
             </button>
           ) : (
