@@ -18,12 +18,12 @@ export function createSupabaseAdminClient() {
   });
 }
 
-export function createSupabaseServerClient() {
+export async function createSupabaseServerClient() {
   if (!hasSupabasePublicConfig()) {
     return null;
   }
 
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
 
   return createServerClient(
     getEnv("NEXT_PUBLIC_SUPABASE_URL")!,

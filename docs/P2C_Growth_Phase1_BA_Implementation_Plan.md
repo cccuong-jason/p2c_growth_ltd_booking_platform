@@ -129,24 +129,25 @@ Docs and DX:
 - [ ] Ensure no implementation starts until the relevant UI redesign direction is approved.
 - [ ] Acceptance: every quote item has a row in the BA coverage matrix.
 
-### Task 2: Premium Visual System And Homepage Globe Correction
+### Task 2: Premium Visual System & Magic UI Integration
 
 **Files:**
 
 - Modify: `app/page.tsx`
 - Modify: `app/globals.css`
-- Modify: `lib/i18n/dictionary.ts`
+- Modify: `tailwind.config.ts`
 
-- [ ] Replace the current abstract globe with a Setrex-inspired Earth horizon: dark starfield, large grayscale planet arc, visible surface texture, and smooth fade into the page body.
-- [ ] Add richer product mockups: booking intake, legal consent, home-visit postcode logic, auto-email event, admin queue, Mini CRM contact card.
-- [ ] Add testimonial/social-proof cards and stronger trust storytelling.
-- [ ] Add trust/spec chips: HCPC/CSP-ready display, multilingual EN/ZH/VI, SSL/data-safety, UAT/go-live.
-- [ ] Ensure typography feels premium: large centered hero, strong contrast, compact supporting copy, no oversized text inside small cards.
-- [ ] Ensure animations are subtle and disabled by `prefers-reduced-motion`.
+- [ ] **[SCRUM-52]** Run `npx shadcn@latest init` to properly configure `components.json` and Tailwind utilities for Magic UI.
+- [ ] **[SCRUM-53]** Add `@magicui/globe`. Re-introduce the interactive globe as a spinning background layer behind the hero content, ensuring `pointer-events-none`.
+- [ ] **[SCRUM-54]** Add `@magicui/marquee`. Implement an infinite scrolling 3D Marquee for client testimonials and social proof cards. Enable `pauseOnHover`.
+- [ ] **[SCRUM-55]** Add `@magicui/typing-animation`. Apply this text animation to the main hero headline to create an engaging, dynamic entrance.
+- [ ] **[SCRUM-56]** Add `@magicui/number-ticker`. Integrate the number ticker for platform statistics (e.g., active users, successful bookings) within the trust section.
+- [ ] Ensure typography feels premium: large centered hero, strong contrast, compact supporting copy.
+- [ ] Ensure animations respect `prefers-reduced-motion`.
 - [ ] Run: `npm run lint`
 - [ ] Run: `npm run build`
 - [ ] Browser check desktop and mobile hero screenshots.
-- [ ] Update Jira `SCRUM-48` comment with files changed and verification.
+- [ ] Update Jira `SCRUM-48` and related subtask comments with files changed and verification.
 
 ### Task 3: Client Website And Service Category Alignment
 

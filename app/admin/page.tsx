@@ -40,7 +40,7 @@ export default async function AdminPage() {
     );
   }
 
-  const serverClient = createSupabaseServerClient();
+  const serverClient = await createSupabaseServerClient();
   const { data } = serverClient ? await serverClient.auth.getUser() : { data: { user: null } };
   const email = data.user?.email;
 

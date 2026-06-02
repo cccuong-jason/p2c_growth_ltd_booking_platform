@@ -1,32 +1,26 @@
 "use client";
 
 import Link from "next/link";
+import type { COBEOptions } from "cobe";
 import {
   ArrowRight,
   CheckCircle2,
   ChevronRight,
   ShieldCheck,
-  Zap,
   Activity,
   UserCheck,
-  Globe2,
   Workflow,
-  Shield,
-  FileCheck2,
   LayoutDashboard,
   MailCheck,
   MessageSquareQuote,
-  Clock,
-  MapPin,
   Languages,
-  MousePointer2,
   Smartphone,
-  CreditCard,
-  TrendingUp,
-  PieChart,
-  Lock,
   Search,
-  Plus
+  Plus,
+  Command,
+  Monitor,
+  Filter,
+  Rocket
 } from "lucide-react";
 
 import { 
@@ -34,121 +28,60 @@ import {
   SpringReveal, 
   Magnetic, 
   ParallaxStage, 
-  MotionDiv, 
-  TextJump, 
-  VerticalMarquee, 
-  ScrollScale 
+  MotionDiv
 } from "@/components/home/motion-primitives";
-import RippleGrid from "@/components/home/ripple-grid";
+import { Globe } from "@/components/ui/globe";
+import { Marquee } from "@/components/ui/marquee";
+import { TypingAnimation } from "@/components/ui/typing-animation";
+import { NumberTicker } from "@/components/magicui/number-ticker";
+import { AnimatedList } from "@/components/magicui/animated-list";
+import { OrbitingCircles } from "@/components/magicui/orbiting-circles";
+import { ProgressiveBlur } from "@/components/magicui/progressive-blur";
+import { Ripple } from "@/components/ui/ripple";
+import { BlurFade } from "@/components/ui/blur-fade";
+import { BorderBeam } from "@/components/ui/border-beam";
+import { AnimatedCircularProgressBar } from "@/components/ui/animated-circular-progress-bar";
+import { Iphone } from "@/registry/magicui/iphone";
 import { getDictionary } from "@/lib/i18n/dictionary";
 
 // --- SUB-COMPONENTS FOR MOCKUPS ---
 
-const DetailedFizenCard = ({ className = "" }: { className?: string }) => (
-  <div className={`relative w-80 h-48 rounded-[2rem] bg-gradient-to-br from-blue-600 to-blue-800 p-6 shadow-2xl overflow-hidden flex flex-col justify-between group transition-transform duration-500 hover:scale-[1.02] ${className}`}>
-    <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-white/20 transition-colors" />
-    <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-400/20 rounded-full blur-[80px] -translate-x-1/4 translate-y-1/4" />
-    
-    <div className="relative z-10 flex justify-between items-start">
-      <div className="flex flex-col gap-1">
-        <div className="flex items-center gap-2">
-           <Activity className="h-5 w-5 text-white/90" />
-           <span className="text-white font-black italic tracking-tighter text-lg">P2C Growth</span>
-        </div>
-        <div className="h-8 w-11 rounded-lg bg-gradient-to-br from-yellow-300 to-yellow-500 border border-white/20 shadow-inner mt-2" />
-      </div>
-      <div className="flex gap-1 opacity-50">
-        <div className="h-6 w-6 rounded-full bg-white" />
-        <div className="h-6 w-6 rounded-full bg-white -ml-3" />
-      </div>
-    </div>
-
-    <div className="relative z-10 space-y-4">
-      <div className="flex justify-between items-end">
-        <div>
-          <p className="text-[10px] font-bold text-white/50 uppercase tracking-widest mb-1">Available Balance</p>
-          <p className="text-2xl font-bold text-white tracking-tight">£14,842.00</p>
-        </div>
-        <div className="text-right">
-          <p className="text-[8px] font-bold text-white/50 uppercase tracking-[0.2em]">Exp Date</p>
-          <p className="text-xs font-bold text-white tracking-widest">05/29</p>
-        </div>
-      </div>
-      <div className="flex justify-between items-center pt-2 border-t border-white/10">
-        <p className="text-[11px] font-mono text-white/70 tracking-[0.25em]">•••• •••• •••• 5318</p>
-        <div className="h-4 w-4 rounded-full border border-white/20 flex items-center justify-center">
-          <Lock className="h-2 w-2 text-white/50" />
-        </div>
-      </div>
-    </div>
-  </div>
-);
-
-const DetailedAreaChart = ({ className = "" }: { className?: string }) => (
-  <div className={`bg-white rounded-[2.5rem] border border-slate-100 p-8 shadow-premium ${className}`}>
-    <div className="flex justify-between items-center mb-10">
-      <div>
-        <h4 className="text-lg font-bold text-ink tracking-tight">Financial Growth</h4>
-        <p className="text-xs font-bold text-slate-400 mt-1 uppercase tracking-widest">Performance Matrix</p>
-      </div>
-      <div className="flex items-center gap-2 bg-slate-50 border border-slate-100 rounded-full px-3 py-1.5">
-        <TrendingUp className="h-3.5 w-3.5 text-mint" />
-        <span className="text-xs font-bold text-mint">+24.8%</span>
-      </div>
-    </div>
-
-    <div className="relative h-48 w-full mt-4">
-       <svg className="w-full h-full overflow-visible" viewBox="0 0 400 150" preserveAspectRatio="none">
-          <defs>
-             <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#1264ff" stopOpacity="0.2" />
-                <stop offset="100%" stopColor="#1264ff" stopOpacity="0" />
-             </linearGradient>
-          </defs>
-          <path 
-            d="M0,130 C40,120 60,140 100,90 C140,40 180,60 220,30 C260,0 300,50 340,40 C380,30 400,10 400,10 L400,150 L0,150 Z" 
-            fill="url(#chartGradient)"
-          />
-          <path 
-            d="M0,130 C40,120 60,140 100,90 C140,40 180,60 220,30 C260,0 300,50 340,40 C380,30 400,10 400,10" 
-            fill="none" 
-            stroke="#1264ff" 
-            strokeWidth="3" 
-            strokeLinecap="round"
-          />
-          <circle cx="220" cy="30" r="6" fill="#1264ff" className="animate-pulse" />
-          <circle cx="220" cy="30" r="10" stroke="#1264ff" strokeWidth="2" fill="none" opacity="0.3" />
-       </svg>
-       
-       <div className="absolute top-0 left-[220px] -translate-x-1/2 -translate-y-full mb-4 z-20">
-          <div className="bg-slate-900 text-white text-[10px] font-bold px-3 py-1.5 rounded-lg shadow-xl whitespace-nowrap flex items-center gap-2">
-             <span>MARCH PEAK:</span>
-             <span className="text-cyan">£82,400</span>
-          </div>
-          <div className="w-px h-12 bg-slate-200 mx-auto" />
-       </div>
-    </div>
-
-    <div className="flex justify-between mt-8">
-       {['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN'].map(m => (
-         <span key={m} className="text-[10px] font-bold text-slate-300 tracking-widest">{m}</span>
-       ))}
-    </div>
-  </div>
-);
+const HERO_GLOBE_CONFIG: COBEOptions = {
+  width: 1000,
+  height: 1000,
+  onRender: () => {},
+  devicePixelRatio: 2,
+  phi: 6.28,
+  theta: 0.5,
+  dark: 0.15,
+  diffuse: 3,
+  mapSamples: 26000,
+  mapBrightness: 3.5,
+  mapBaseBrightness: 0,
+  scale: 1.2,
+  offset: [0, 0],
+  baseColor: [0.92, 0.96, 1],
+  markerColor: [16 / 255, 185 / 255, 129 / 255],
+  glowColor: [1, 1, 1],
+  markers: [
+    { location: [51.5072, -0.1276], size: 0.07 },
+    { location: [53.4808, -2.2426], size: 0.055 },
+    { location: [52.4862, -1.8904], size: 0.048 },
+    { location: [21.0285, 105.8542], size: 0.06 },
+    { location: [10.8231, 106.6297], size: 0.06 },
+    { location: [39.9042, 116.4074], size: 0.055 },
+    { location: [31.2304, 121.4737], size: 0.055 },
+    { location: [22.3193, 114.1694], size: 0.05 },
+  ],
+};
 
 const DetailedPhoneFrame = ({ className = "" }: { className?: string }) => (
-  <div className={`relative w-[300px] h-[600px] bg-slate-950 rounded-[3rem] p-3 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] border-[8px] border-slate-900 ${className}`}>
-    <div className="absolute top-0 left-1/2 -translate-x-1/2 h-7 w-32 bg-slate-950 rounded-b-2xl z-30 flex items-center justify-center gap-1.5 px-4">
-       <div className="h-1.5 w-10 bg-slate-800 rounded-full" />
-       <div className="h-1.5 w-1.5 rounded-full bg-slate-800" />
-    </div>
-    
-    <div className="w-full h-full bg-porcelain rounded-[2.2rem] overflow-hidden flex flex-col pt-10 px-6 pb-6 relative z-10">
-       <div className="flex justify-between items-center mb-8">
+  <Iphone className={`w-[310px] ${className}`} screenClassName="bg-porcelain">
+    <div className="flex h-full flex-col px-5 pb-5 pt-10">
+       <div className="mb-7 flex items-center justify-between">
           <div>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Good morning,</p>
-            <p className="text-xl font-bold text-ink">Jason Lee</p>
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Internal queue</p>
+            <p className="text-xl font-bold text-ink">Physio Dispatch</p>
           </div>
           <div className="h-10 w-10 rounded-full bg-white border border-slate-100 shadow-sm flex items-center justify-center">
              <UserCheck className="h-5 w-5 text-ocean" />
@@ -166,8 +99,8 @@ const DetailedPhoneFrame = ({ className = "" }: { className?: string }) => (
                    <Activity className="h-6 w-6 text-ocean" />
                 </div>
                 <div className="space-y-1">
-                   <p className="text-sm font-bold text-ink">Physio Intake</p>
-                   <p className="text-xs text-slate-500">Elderly Mobility Assessment</p>
+                   <p className="text-sm font-bold text-ink">Home Visit Intake</p>
+                   <p className="text-xs text-slate-500">SW1A postcode captured</p>
                 </div>
              </div>
           </div>
@@ -191,11 +124,11 @@ const DetailedPhoneFrame = ({ className = "" }: { className?: string }) => (
        </div>
 
        <div className="mt-auto h-20 rounded-2xl bg-ocean flex flex-col items-center justify-center gap-1 shadow-lg shadow-blue-500/20">
-          <p className="text-white text-xs font-bold">New Notification</p>
-          <p className="text-blue-100 text-[10px]">Your report is ready to view</p>
+          <p className="text-white text-xs font-bold">Confirmation Email</p>
+          <p className="text-blue-100 text-[10px]">Queued after saved request</p>
        </div>
     </div>
-  </div>
+  </Iphone>
 );
 
 export default function HomePage() {
@@ -204,23 +137,17 @@ export default function HomePage() {
   return (
     <main className="relative bg-white overflow-hidden selection:bg-blue-100 selection:text-blue-900 font-sans">
       
-      {/* --- RIPPLE GRID HERO SECTION --- */}
+      {/* --- HERO SECTION WITH GLOBE --- */}
       <section className="relative min-h-[95vh] flex flex-col items-center justify-center pt-32 pb-20 md:pt-48 md:pb-40 bg-porcelain overflow-hidden">
         
-        {/* React Bits Ripple Grid */}
-        <div className="absolute inset-0 opacity-40">
-           <RippleGrid 
-              gridColor="#1264ff" 
-              gridSize={0.06} 
-              gridThickness={0.012} 
-              rippleIntensity={0.04} 
-              mouseInteractionRadius={0.6}
-              glowIntensity={0.05}
-           />
+        {/* Direct COBE globe */}
+        <div className="pointer-events-none absolute left-1/2 top-[47%] z-0 w-[760px] max-w-[132vw] -translate-x-1/2 -translate-y-1/2 opacity-85 md:w-[980px]">
+          <Globe config={HERO_GLOBE_CONFIG} className="mx-auto" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(247,251,255,0.68)_0%,rgba(247,251,255,0.42)_28%,rgba(247,251,255,0)_54%),radial-gradient(circle_at_50%_74%,rgba(247,251,255,0)_20%,rgba(247,251,255,0.88)_68%)]" />
         </div>
 
         {/* Hero Content */}
-        <div className="flex flex-col items-center text-center relative z-10 px-4 sm:px-6 max-w-7xl mx-auto">
+        <div className="flex flex-col items-center text-center relative z-20 px-4 sm:px-6 max-w-7xl mx-auto mb-32">
           <SpringReveal>
             <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/50 backdrop-blur-xl px-4 py-1.5 text-[11px] font-bold text-slate-500 mb-8 uppercase tracking-[0.2em] shadow-premium">
               <span className="relative flex h-2 w-2">
@@ -231,10 +158,13 @@ export default function HomePage() {
             </div>
           </SpringReveal>
 
-          <div className="max-w-5xl mx-auto">
-             <TextJump className="text-5xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1] justify-center display-heading">
+          <div className="max-w-5xl mx-auto min-h-[140px] flex items-center justify-center">
+             <TypingAnimation 
+                className="text-5xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1.1] justify-center display-heading"
+                duration={50}
+             >
                 The operating layer for modern healthcare.
-             </TextJump>
+             </TypingAnimation>
           </div>
 
           <Reveal delay={0.6}>
@@ -242,6 +172,27 @@ export default function HomePage() {
               Cinematic booking, consent, and dispatch for elite UK practitioners. Premium infrastructure for high-trust teams.
             </p>
           </Reveal>
+
+          <div className="mt-12 grid w-full max-w-3xl grid-cols-3 gap-6 text-center">
+            {[
+              { value: 6, label: "physio service categories" },
+              { value: 3, label: "language-ready intake paths" },
+              { value: 5, label: "dispatch statuses tracked" }
+            ].map((stat, index) => (
+              <BlurFade key={stat.label} delay={0.12 * index + 0.65} inView blur="10px" direction="up">
+                <div>
+                  <NumberTicker
+                    value={stat.value}
+                    delay={0.16 * index}
+                    className="text-4xl font-black tracking-tight text-ink sm:text-5xl"
+                  />
+                  <p className="mx-auto mt-3 max-w-36 text-[10px] font-bold uppercase leading-relaxed tracking-[0.16em] text-slate-400 sm:text-xs">
+                    {stat.label}
+                  </p>
+                </div>
+              </BlurFade>
+            ))}
+          </div>
 
           <Reveal delay={0.8}>
             <div className="mt-14 flex flex-col sm:flex-row items-center gap-6">
@@ -251,108 +202,17 @@ export default function HomePage() {
                   <ArrowRight className="h-5 w-5" />
                 </Link>
               </Magnetic>
-              <Link href="/services" className="inline-flex h-16 items-center justify-center gap-3 rounded-full border border-slate-200 bg-white px-10 text-base font-extrabold text-slate-600 transition-all hover:bg-slate-50 hover:text-ink active:scale-95 shadow-sm">
+              <Link href="/services" className="inline-flex h-16 items-center justify-center gap-3 rounded-full border border-slate-200 bg-white/80 backdrop-blur-md px-10 text-base font-extrabold text-slate-600 transition-all hover:bg-white hover:text-ink active:scale-95 shadow-sm">
                 {home.secondaryCta}
                 <ChevronRight className="h-4 w-4" />
               </Link>
             </div>
           </Reveal>
         </div>
-
-        {/* HERO MOCKUPS (Detailed & Impressive) */}
-        <div className="relative mt-32 w-full max-w-7xl mx-auto px-4 min-h-[500px]">
-          <ParallaxStage>
-            {({ ySlow, yFast }) => {
-              return (
-                <div className="relative w-full flex items-center justify-center">
-                  
-                  {/* Background Dashboard Frame */}
-                  <MotionDiv 
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1 }}
-                    className="w-full max-w-5xl aspect-[16/10] rounded-[3rem] bg-white border border-slate-100 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col p-2"
-                  >
-                    <div className="flex-1 rounded-[2.6rem] bg-porcelain/30 overflow-hidden flex flex-col border border-slate-50">
-                       <div className="h-12 border-b border-slate-100 bg-white/50 flex items-center px-8 gap-4">
-                          <div className="flex gap-2">
-                             <div className="h-3 w-3 rounded-full bg-slate-100" />
-                             <div className="h-3 w-3 rounded-full bg-slate-100" />
-                             <div className="h-3 w-3 rounded-full bg-slate-100" />
-                          </div>
-                          <div className="mx-auto h-7 w-64 bg-slate-50 rounded-full border border-slate-100 flex items-center px-4">
-                             <div className="h-1.5 w-full bg-slate-100 rounded-full" />
-                          </div>
-                       </div>
-                       <div className="p-10 flex-1 grid grid-cols-12 gap-10">
-                          <div className="col-span-3 space-y-8">
-                             <div className="h-12 w-full bg-white rounded-2xl shadow-sm border border-slate-50" />
-                             <div className="space-y-4">
-                                {[1, 2, 3, 4].map(i => (
-                                  <div key={i} className="h-3 w-full bg-slate-100/50 rounded-full" />
-                                ))}
-                             </div>
-                          </div>
-                          <div className="col-span-9 space-y-10">
-                             <div className="grid grid-cols-3 gap-6">
-                                {[1, 2, 3].map(i => (
-                                  <div key={i} className="h-32 bg-white rounded-3xl border border-slate-50 shadow-sm" />
-                                ))}
-                             </div>
-                             <div className="h-64 bg-white rounded-[2.5rem] border border-slate-50 shadow-sm" />
-                          </div>
-                       </div>
-                    </div>
-                  </MotionDiv>
-
-                  {/* Floating Elements (Detailed) */}
-                  <MotionDiv 
-                    style={{ y: yFast, x: -100 }}
-                    className="absolute top-0 left-0 z-20"
-                  >
-                    <DetailedFizenCard className="-rotate-12" />
-                  </MotionDiv>
-
-                  <MotionDiv 
-                    style={{ y: ySlow, x: 100 }}
-                    className="absolute -bottom-20 right-0 z-20"
-                  >
-                    <DetailedAreaChart className="rotate-6 w-[400px]" />
-                  </MotionDiv>
-
-                  <MotionDiv
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.5, duration: 0.8 }}
-                    className="absolute -top-10 -right-20 z-30"
-                  >
-                     <DetailedPhoneFrame className="scale-75" />
-                  </MotionDiv>
-
-                </div>
-              );
-            }}
-          </ParallaxStage>
-        </div>
+        <ProgressiveBlur className="bottom-0 z-30 h-28" />
       </section>
 
-      {/* --- MARQUEE --- */}
-      <section className="py-16 border-y border-slate-100 bg-white flex overflow-hidden">
-        <div className="flex w-full overflow-hidden mask-horizontal-fade">
-          <div className="flex w-max min-w-full animate-marquee items-center gap-20 px-10">
-            {[1, 2, 3].map((set) => (
-              <div key={set} className="flex items-center gap-20 lg:gap-32">
-                <span className="flex items-center gap-4 text-[11px] font-black text-slate-400 uppercase tracking-[0.25em] whitespace-nowrap"><ShieldCheck className="h-6 w-6 text-ocean"/> HCPC Registered</span>
-                <span className="flex items-center gap-4 text-[11px] font-black text-slate-400 uppercase tracking-[0.25em] whitespace-nowrap"><Languages className="h-6 w-6 text-ocean"/> Multi-lingual</span>
-                <span className="flex items-center gap-4 text-[11px] font-black text-slate-400 uppercase tracking-[0.25em] whitespace-nowrap"><Workflow className="h-6 w-6 text-ocean"/> Workflow Logic</span>
-                <span className="flex items-center gap-4 text-[11px] font-black text-slate-400 uppercase tracking-[0.25em] whitespace-nowrap"><Zap className="h-6 w-6 text-ocean"/> Instant Dispatch</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* --- STANDOUT FEATURES (Detailed Cards) --- */}
+      {/* --- STANDOUT FEATURES (Bento Grid) --- */}
       <section className="py-24 md:py-32 px-4 sm:px-6 max-w-7xl mx-auto">
         <div className="text-center mb-20 md:mb-32">
           <Reveal>
@@ -366,131 +226,350 @@ export default function HomePage() {
           </Reveal>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-           
-           {/* Detailed Card Section */}
-           <Reveal className="bg-porcelain rounded-[3rem] p-12 relative overflow-hidden flex flex-col items-center justify-center min-h-[600px] border border-slate-100 group">
-              <div className="absolute inset-0 tech-grid opacity-30" />
-              <div className="relative z-10 space-y-12 w-full max-w-md">
-                 <div className="flex items-center justify-center">
-                    <DetailedFizenCard className="rotate-3 group-hover:rotate-0 transition-transform duration-700" />
-                 </div>
-                 <div className="text-center">
-                    <h3 className="text-2xl font-bold text-ink tracking-tight">Financial Infrastructure</h3>
-                    <p className="mt-4 text-slate-500 leading-relaxed font-medium">
-                       Manage every transaction and coordination with enterprise-grade clinical precision.
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-12">
+          <Reveal className="md:col-span-2 lg:col-span-7">
+            <article className="group relative h-full min-h-[500px] overflow-hidden rounded-[2rem] border border-slate-100 bg-white p-6 sm:p-8 shadow-premium transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_10%,rgba(18,100,255,0.12),transparent_34%),linear-gradient(135deg,rgba(248,250,252,1),rgba(255,255,255,0.65))]" />
+              <div className="relative z-10 grid h-full gap-8 xl:grid-cols-[0.88fr_1.12fr]">
+                <div className="flex flex-col justify-between">
+                  <div>
+                    <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-ocean text-white shadow-lg shadow-blue-500/25">
+                      <Activity className="h-6 w-6" />
+                    </div>
+                    <p className="text-[11px] font-black uppercase tracking-[0.22em] text-ocean">Patient request engine</p>
+                    <h3 className="mt-4 text-3xl font-extrabold tracking-tight text-ink">Guided intake that captures the useful details first.</h3>
+                    <p className="mt-5 text-sm font-medium leading-7 text-slate-500">
+                      Service category, DOB, preferred language, visit type, timing, and contact consent are collected before the team starts follow-up.
                     </p>
-                 </div>
-              </div>
-           </Reveal>
+                  </div>
+                  <Link href="/services/physiotherapy" className="mt-8 inline-flex w-fit items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-bold text-white transition hover:bg-ocean">
+                    Start request <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
 
-           {/* Savings Goals Section */}
-           <Reveal delay={0.2} className="bg-white rounded-[3rem] p-12 border border-slate-100 shadow-premium flex flex-col justify-center min-h-[600px] relative overflow-hidden group">
-              <div className="absolute -top-24 -right-24 w-64 h-64 bg-ocean/5 rounded-full blur-3xl" />
-              <div className="relative z-10 space-y-10">
-                 <div>
-                    <h3 className="text-3xl font-bold text-ink tracking-tight">Smart Savings Goals</h3>
-                    <p className="mt-4 text-slate-500 font-medium">Set specific targets and track progress with automated dispatch logic.</p>
-                 </div>
-                 
-                 <div className="space-y-4">
+                <div className="relative min-h-[360px] overflow-hidden rounded-[1.5rem] border border-slate-100 bg-slate-50 p-4 sm:p-5">
+                  <div className="absolute inset-0 tech-grid opacity-70" />
+                  <div className="relative z-10 overflow-hidden rounded-[1.25rem] border border-slate-100 bg-white shadow-soft-xl">
+                    <div className="flex items-center justify-between border-b border-slate-100 bg-white px-4 py-3">
+                      <div className="flex items-center gap-2">
+                        <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
+                        <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
+                        <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+                      </div>
+                      <span className="rounded-full bg-ocean/10 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-ocean">
+                        Intake live
+                      </span>
+                    </div>
+
+                    <div className="p-4">
+                      <div className="mb-4 flex items-center justify-between rounded-2xl bg-slate-50 p-4">
+                        <div>
+                          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Request</p>
+                          <p className="mt-1 text-sm font-black text-ink">Home Visit Intake</p>
+                        </div>
+                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-ocean text-white shadow-lg shadow-blue-500/20">
+                          <Activity className="h-6 w-6" />
+                        </div>
+                      </div>
+
+                      <AnimatedList>
+                        {[
+                          ["Service", "Elderly mobility assessment", "Captured"],
+                          ["Visit type", "Home · SW1A postcode required", "Required"],
+                          ["Language", "Vietnamese preference", "Ready"],
+                          ["Consent", "3 legal acknowledgements", "Complete"],
+                        ].map(([label, value, status], index) => (
+                          <div
+                            key={label}
+                            className="grid grid-cols-[2.5rem_1fr_auto] items-center gap-3 rounded-2xl border border-slate-100 bg-white px-3 py-3 shadow-sm"
+                          >
+                            <span className={`flex h-10 w-10 items-center justify-center rounded-xl text-sm font-black ${
+                              index === 0 ? "bg-ocean text-white" : "bg-slate-50 text-ocean"
+                            }`}>
+                              0{index + 1}
+                            </span>
+                            <div className="min-w-0">
+                              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">{label}</p>
+                              <p className="mt-1 truncate text-sm font-black text-ink">{value}</p>
+                            </div>
+                            <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-[9px] font-black uppercase tracking-widest text-emerald-600">
+                              {status}
+                            </span>
+                          </div>
+                        ))}
+                      </AnimatedList>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </Reveal>
+
+          <Reveal delay={0.1} className="md:col-span-2 lg:col-span-5">
+            <article className="group relative h-full min-h-[500px] overflow-hidden rounded-[2rem] border border-slate-100 bg-white p-6 text-ink shadow-premium transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl sm:p-8">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_10%,rgba(18,100,255,0.10),transparent_34%),linear-gradient(180deg,#ffffff,#f8fbff)]" />
+              <div className="absolute inset-0 tech-grid opacity-60" />
+              <div className="relative z-20 flex h-full flex-col">
+                <div>
+                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-ocean text-white shadow-lg shadow-blue-500/20">
+                    <Workflow className="h-6 w-6" />
+                  </div>
+                  <p className="text-[11px] font-black uppercase tracking-[0.22em] text-ocean">Dispatch cockpit</p>
+                  <h3 className="mt-4 text-3xl font-extrabold tracking-tight">Status queue without scattered follow-up.</h3>
+                </div>
+
+                <div className="relative mt-8 h-56 overflow-hidden rounded-[1.5rem] border border-slate-100 bg-slate-50/80 shadow-inner">
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(18,100,255,0.10),transparent_48%)]" />
+                  <div className="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full border border-ocean/20" />
+                  <div className="absolute left-1/2 top-1/2 h-52 w-52 -translate-x-1/2 -translate-y-1/2 rounded-full border border-ocean/15" />
+                  <div className="absolute left-1/2 top-1/2 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-3xl bg-white text-ocean shadow-2xl shadow-blue-500/15">
+                    <LayoutDashboard className="h-8 w-8" />
+                  </div>
+                  <OrbitingCircles radius={72} duration={17}>
                     {[
-                      { icon: Activity, label: "Buying Car", target: "£13,500", progress: "+£1,500", color: "text-ocean", bg: "bg-ocean/10" },
-                      { icon: Clock, label: "House Savings", target: "£237,000", progress: "+£14,000", color: "text-mint", bg: "bg-mint/10" }
-                    ].map((item, i) => (
-                      <div key={i} className="bg-white border border-slate-100 p-6 rounded-3xl shadow-panel flex items-center justify-between group-hover:translate-x-2 transition-transform duration-500">
-                         <div className="flex items-center gap-5">
-                            <div className={`h-14 w-14 rounded-2xl ${item.bg} ${item.color} flex items-center justify-center`}>
-                               <item.icon className="h-7 w-7" />
-                            </div>
-                            <div>
-                               <p className="text-lg font-bold text-ink">{item.label}</p>
-                               <p className="text-xs font-bold text-slate-400 mt-0.5">10.02.2024</p>
-                            </div>
-                         </div>
-                         <div className="text-right">
-                            <p className="text-xl font-bold text-ink">{item.target}</p>
-                            <p className={`text-xs font-bold ${item.color} mt-1`}>{item.progress}</p>
-                         </div>
+                      <span key="pending" className="rounded-full bg-amber-300 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-slate-900 shadow-lg">Pending</span>,
+                      <span key="assigned" className="rounded-full bg-emerald-300 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-slate-900 shadow-lg">Assigned</span>,
+                      <span key="email" className="rounded-full bg-ocean px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white shadow-lg">Email</span>,
+                    ]}
+                  </OrbitingCircles>
+                  <OrbitingCircles radius={104} duration={24} reverse>
+                    {[
+                      <span key="source" className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-ocean shadow-sm ring-1 ring-slate-100"><MailCheck className="h-4 w-4" /></span>,
+                      <span key="person" className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-emerald-500 shadow-sm ring-1 ring-slate-100"><UserCheck className="h-4 w-4" /></span>,
+                      <span key="shield" className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-slate-500 shadow-sm ring-1 ring-slate-100"><ShieldCheck className="h-4 w-4" /></span>,
+                    ]}
+                  </OrbitingCircles>
+                </div>
+
+                <div className="mt-5 space-y-3">
+                  <AnimatedList>
+                    {["Pending", "Partner assigned", "Confirmed", "Completed"].map((status, index) => (
+                      <div key={status} className="flex items-center justify-between rounded-2xl border border-slate-100 bg-white px-4 py-3 shadow-sm transition group-hover:translate-x-1">
+                        <span className="text-sm font-bold">{status}</span>
+                        <span className="text-xs font-black text-ocean">0{index + 1}</span>
                       </div>
                     ))}
-                 </div>
+                  </AnimatedList>
+                </div>
               </div>
-           </Reveal>
-        </div>
-      </section>
+            </article>
+          </Reveal>
 
-      {/* --- ANALYTICS (Phone & Chart) --- */}
-      <section className="py-24 md:py-32 bg-porcelain relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-           <div className="grid lg:grid-cols-[1fr_1.2fr] gap-20 items-center">
-              <div>
-                 <Reveal>
-                    <h2 className="text-4xl md:text-6xl font-extrabold text-ink tracking-tight leading-[1.1] display-heading">
-                       Financial <br />Analytics
-                    </h2>
-                    <p className="mt-8 text-slate-500 text-lg leading-relaxed font-medium max-w-sm">
-                       Generate detailed reports and visualizations to analyze every operational touchpoint.
-                    </p>
-                    <div className="mt-12 flex gap-4">
-                       <Link href="/services" className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-ink text-white px-8 text-sm font-bold shadow-xl shadow-slate-900/20 hover:scale-105 transition-all">
-                          View Demo
-                       </Link>
-                    </div>
-                 </Reveal>
-              </div>
-
-              <div className="relative">
-                 <ParallaxStage>
-                    {({ ySlow, yFast }) => (
-                      <div className="relative flex items-center justify-center h-[700px]">
-                         <MotionDiv 
-                           style={{ y: ySlow }}
-                           className="z-10"
-                         >
-                            <DetailedPhoneFrame />
-                         </MotionDiv>
-                         <MotionDiv 
-                           style={{ y: yFast }}
-                           className="absolute -bottom-10 -left-20 z-20"
-                         >
-                            <div className="glass-panel-dark rounded-[2.5rem] p-8 w-[400px] border border-white/10 shadow-2xl overflow-hidden">
-                               <div className="flex justify-between items-center mb-6">
-                                  <p className="text-white font-bold tracking-tight">Report Expense</p>
-                                  <div className="h-6 w-6 rounded-full bg-white/10 flex items-center justify-center">
-                                     <Activity className="h-3 w-3 text-white" />
-                                  </div>
-                               </div>
-                               <div className="h-40 w-full relative">
-                                  <svg className="w-full h-full" viewBox="0 0 400 150">
-                                     <path 
-                                       d="M0,150 L0,100 C40,80 80,120 120,60 C160,20 200,40 240,10 C280,0 320,50 400,30 L400,150 Z" 
-                                       fill="rgba(18, 100, 255, 0.4)" 
-                                     />
-                                     <path 
-                                       d="M0,100 C40,80 80,120 120,60 C160,20 200,40 240,10 C280,0 320,50 400,30" 
-                                       fill="none" 
-                                       stroke="#1264ff" 
-                                       strokeWidth="4" 
-                                     />
-                                  </svg>
-                               </div>
-                               <div className="flex justify-between mt-6">
-                                  {['APR 05', 'APR 06', 'APR 07'].map(d => (
-                                    <span key={d} className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{d}</span>
-                                  ))}
-                               </div>
-                            </div>
-                         </MotionDiv>
+          <Reveal delay={0.15} className="lg:col-span-4">
+            <article className="group relative h-full min-h-[360px] overflow-hidden rounded-[2rem] border border-slate-100 bg-white p-6 sm:p-8 shadow-premium transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl">
+              <div className="grid h-full gap-8 sm:grid-cols-[1fr_0.9fr] sm:items-center lg:grid-cols-1 lg:items-start">
+                <div className="relative z-10">
+                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
+                    <Languages className="h-6 w-6" />
+                  </div>
+                  <p className="text-[11px] font-black uppercase tracking-[0.22em] text-emerald-600">Language readiness</p>
+                  <h3 className="mt-4 text-2xl font-extrabold tracking-tight text-ink">Built for UK families who need clear communication.</h3>
+                  <p className="mt-4 text-sm font-medium leading-6 text-slate-500">English-first now, structured for Chinese and Vietnamese expansion.</p>
+                </div>
+                <div className="relative z-10 lg:mt-auto">
+                  <AnimatedList>
+                    {[
+                      ["EN", "Default English intake"],
+                      ["ZH", "Chinese-ready labels"],
+                      ["VI", "Vietnamese preference"]
+                    ].map(([label, body], index) => (
+                      <div
+                        key={label}
+                        className={`flex items-center gap-3 rounded-2xl border border-slate-100 p-3 shadow-sm ${
+                          index === 2 ? "bg-ocean text-white" : "bg-slate-50 text-ink"
+                        }`}
+                      >
+                        <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-sm font-black ${index === 2 ? "bg-white/15" : "bg-white"}`}>{label}</span>
+                        <span className={`text-xs font-bold ${index === 2 ? "text-blue-50" : "text-slate-500"}`}>{body}</span>
                       </div>
-                    )}
-                 </ParallaxStage>
+                    ))}
+                  </AnimatedList>
+                </div>
               </div>
-           </div>
+            </article>
+          </Reveal>
+
+          <Reveal delay={0.2} className="lg:col-span-4">
+            <article className="group relative h-full min-h-[360px] overflow-hidden rounded-[2rem] border border-slate-100 bg-porcelain p-6 sm:p-8 shadow-premium transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl">
+              <div className="absolute inset-0 opacity-40" style={{ backgroundImage: "repeating-linear-gradient(-45deg, #cbd5e1 0, #cbd5e1 1px, transparent 1px, transparent 14px)" }} />
+              <div className="relative z-10">
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-ocean/10 text-ocean">
+                  <ShieldCheck className="h-6 w-6" />
+                </div>
+                <p className="text-[11px] font-black uppercase tracking-[0.22em] text-ocean">Trust boundaries</p>
+                <h3 className="mt-4 text-2xl font-extrabold tracking-tight text-ink">P2C coordinates. Qualified professionals deliver care.</h3>
+                <p className="mt-4 text-sm font-medium leading-6 text-slate-500">The UX keeps clinical liability, emergency advice, and HCPC/CSP trust language visible.</p>
+                <AnimatedList className="mt-8">
+                  {[
+                    ["Liability", "Coordinator language stays explicit"],
+                    ["Emergency", "Hard-stop acknowledgement retained"],
+                    ["Credentials", "HCPC/CSP assets stay customer supplied"],
+                  ].map(([title, body], index) => (
+                    <div key={title} className="flex items-center gap-3 rounded-2xl border border-emerald-100 bg-white/80 p-3 shadow-sm backdrop-blur">
+                      <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${index === 1 ? "bg-ocean/10 text-ocean" : "bg-emerald-50 text-emerald-600"}`}>
+                        <ShieldCheck className="h-5 w-5" />
+                      </span>
+                      <div>
+                        <p className="text-xs font-black uppercase tracking-widest text-slate-500">{title}</p>
+                        <p className="mt-1 text-xs font-medium leading-5 text-slate-500">{body}</p>
+                      </div>
+                    </div>
+                  ))}
+                </AnimatedList>
+              </div>
+            </article>
+          </Reveal>
+
+          <Reveal delay={0.25} className="lg:col-span-4">
+            <article className="group relative h-full min-h-[360px] overflow-hidden rounded-[2rem] border border-slate-100 bg-white p-6 sm:p-8 shadow-premium transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl">
+              <div className="relative z-10">
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan/10 text-ocean">
+                  <LayoutDashboard className="h-6 w-6" />
+                </div>
+                <p className="text-[11px] font-black uppercase tracking-[0.22em] text-ocean">Mini CRM</p>
+                <h3 className="mt-4 text-2xl font-extrabold tracking-tight text-ink">Contact context lands with the booking.</h3>
+                <p className="mt-4 text-sm font-medium leading-6 text-slate-500">Patient details, enquiry source, language, and status stay visible for internal follow-up.</p>
+                <div className="mt-7 overflow-hidden rounded-2xl border border-slate-100 bg-slate-50 p-3 shadow-sm">
+                  <AnimatedList>
+                    {[
+                      ["Home Visit Intake", "SW1A · Vietnamese · Pending", "HV", "bg-ocean text-white"],
+                      ["Language preference", "Chinese labels ready for follow-up", "ZH", "bg-emerald-50 text-emerald-600"],
+                      ["Consent record", "Emergency acknowledgement complete", "OK", "bg-blue-50 text-ocean"],
+                      ["Confirmation email", "Queued after saved request", "@", "bg-slate-100 text-slate-500"]
+                    ].map(([title, meta, badge, badgeClass]) => (
+                      <div key={title} className="flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 shadow-sm">
+                        <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-xs font-black ${badgeClass}`}>
+                          {badge}
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-xs font-black text-ink">{title}</p>
+                          <p className="mt-1 truncate text-[10px] font-bold text-slate-400">{meta}</p>
+                        </div>
+                        <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
+                      </div>
+                    ))}
+                  </AnimatedList>
+                </div>
+              </div>
+            </article>
+          </Reveal>
         </div>
       </section>
 
-      {/* --- THE FUTURE OF FINANCE (Detailed Section) --- */}
+      {/* --- ANALYTICS (Reference Phone Orbit) --- */}
+      <section className="relative overflow-hidden bg-porcelain px-4 py-24 text-ink sm:px-6 md:py-32">
+        <div className="absolute inset-0 tech-grid opacity-70" />
+        <div className="absolute left-1/2 top-1/2 h-[720px] w-[720px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-ocean/10 blur-[120px]" />
+
+        <div className="relative z-10 mx-auto max-w-7xl">
+          <Reveal>
+            <div className="text-center">
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-ocean/5 border border-ocean/10 px-4 py-1.5">
+                <LayoutDashboard className="h-4 w-4 text-ocean" />
+                <span className="text-[11px] font-bold text-ocean uppercase tracking-[0.2em]">Operational Analytics</span>
+              </div>
+              <h2 className="text-4xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">
+                Operational signals, <br /><span className="text-ocean">centered around dispatch.</span>
+              </h2>
+            </div>
+          </Reveal>
+
+          <div className="relative mx-auto mt-16 min-h-[720px] max-w-6xl">
+            <div className="pointer-events-none absolute left-1/2 top-[52%] h-[760px] w-[760px] -translate-x-1/2 -translate-y-1/2 text-ocean/45">
+              <Ripple mainCircleSize={280} mainCircleOpacity={0.34} numCircles={9} />
+            </div>
+
+            <div className="absolute left-1/2 top-8 z-20 w-[330px] -translate-x-1/2 sm:w-[380px]">
+              <ParallaxStage>
+                {({ ySlow }) => (
+                  <MotionDiv style={{ y: ySlow }}>
+                    <Iphone className="w-full" screenClassName="bg-porcelain">
+                      <div className="flex h-full flex-col bg-porcelain px-6 pb-8 pt-11 text-ink">
+                        <div className="mb-5 flex items-center justify-between text-xs font-semibold text-slate-500">
+                          <span>9:41</span>
+                          <span className="rounded-full bg-ocean/10 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-ocean">Live</span>
+                        </div>
+                        <div className="rounded-[1.6rem] border border-slate-100 bg-white p-5 shadow-premium">
+                          <div className="mb-5 flex items-center justify-between">
+                            <p className="text-sm font-black">Dispatch</p>
+                            <span className="rounded-full bg-emerald-50 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-emerald-600">Synced</span>
+                          </div>
+                          {[
+                            ["Request", "Home Visit", "SW1A"],
+                            ["Queue", "Partner", "Assigned"],
+                          ].map(([label, title, meta]) => (
+                            <div key={label} className="mb-4 rounded-2xl border border-slate-100 bg-slate-50 p-4">
+                              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">{label}</p>
+                              <div className="mt-2 flex items-center justify-between">
+                                <span className="text-base font-black">{title}</span>
+                                <span className="text-xs font-bold text-ocean">{meta}</span>
+                              </div>
+                            </div>
+                          ))}
+                          <div className="mt-5 grid grid-cols-2 gap-3">
+                            <div className="rounded-2xl bg-ocean/10 p-4">
+                              <p className="text-2xl font-black text-ocean">63%</p>
+                              <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-500">Home visits</p>
+                            </div>
+                            <div className="rounded-2xl bg-emerald-50 p-4">
+                              <p className="text-2xl font-black text-emerald-600">100%</p>
+                              <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-500">Consent</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="mt-auto rounded-2xl bg-ocean px-5 py-4 text-center text-sm font-bold text-white shadow-lg shadow-blue-500/20">
+                          Review workflow
+                        </div>
+                      </div>
+                    </Iphone>
+                  </MotionDiv>
+                )}
+              </ParallaxStage>
+            </div>
+
+            <div className="pointer-events-none absolute left-1/2 top-[45%] z-30 hidden w-44 -translate-x-[-88px] -translate-y-1/2 rounded-[1.5rem] border border-white/80 bg-white/90 p-4 shadow-2xl shadow-blue-500/15 backdrop-blur md:block">
+              <div className="flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-ocean text-white shadow-lg shadow-blue-500/20">
+                  <Workflow className="h-6 w-6" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Hub</p>
+                  <p className="text-sm font-black text-ink">Dispatch Sync</p>
+                </div>
+              </div>
+              <div className="mt-4 grid grid-cols-3 gap-2">
+                {["Intake", "Rules", "Queue"].map((step) => (
+                  <span key={step} className="rounded-full bg-ocean/10 px-2 py-1 text-center text-[8px] font-black uppercase tracking-widest text-ocean">
+                    {step}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="pointer-events-none absolute left-1/2 top-[48%] z-10 hidden h-28 w-28 -translate-x-[235px] -translate-y-1/2 rounded-full bg-ocean/20 blur-xl md:block" />
+
+            <div className="grid gap-6 pt-[620px] md:block md:pt-0">
+              {[
+                { title: "Planning", body: "Map every request by service, source, language and visit type.", icon: Command, className: "md:absolute md:left-10 md:top-[210px] md:w-72", side: "left" },
+                { title: "Prototype", body: "Validate operational flows before production handoff.", icon: Monitor, className: "md:absolute md:left-8 md:top-[470px] md:w-72", side: "left" },
+                { title: "Refinement", body: "Track consent, postcode rules and internal queue quality.", icon: Filter, className: "md:absolute md:right-6 md:top-[210px] md:w-80", side: "right" },
+                { title: "Scale and support", body: "Use the same operating model as services and partners expand.", icon: Rocket, className: "md:absolute md:right-6 md:top-[480px] md:w-80", side: "right" },
+              ].map((item) => (
+                <div key={item.title} className={`flex items-center gap-4 rounded-2xl border border-slate-100 bg-white/80 p-5 shadow-sm backdrop-blur md:border-0 md:bg-transparent md:p-0 md:shadow-none ${item.side === "left" ? "md:flex-row-reverse md:text-right" : "md:flex-row"} ${item.className}`}>
+                  <div className="order-2 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-ocean/10 text-ocean md:order-none">
+                    <item.icon className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-ink">{item.title}</h3>
+                    <p className="mt-2 text-sm leading-6 text-slate-500">{item.body}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- VISION (Detailed Section) --- */}
       <section className="py-24 md:py-48 px-4 sm:px-6 max-w-7xl mx-auto">
         <div className="text-center mb-20 md:mb-32">
            <Reveal>
@@ -499,75 +578,84 @@ export default function HomePage() {
                  <span className="text-[11px] font-bold text-ocean uppercase tracking-[0.2em]">The Vision</span>
               </div>
               <h2 className="text-4xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">
-                 Experience The <br /><span className="text-ocean">Future of Finance.</span>
+                 Experience The <br /><span className="text-ocean">Future of Care.</span>
               </h2>
            </Reveal>
         </div>
 
-        <div className="bg-porcelain/50 border border-slate-100 rounded-[4rem] p-12 md:p-20 grid lg:grid-cols-[1.2fr_1fr] gap-20 items-center overflow-hidden relative">
+        <div className="bg-porcelain/50 border border-slate-100 rounded-[4rem] p-12 md:p-20 grid lg:grid-cols-[1.2fr_1fr] gap-20 items-center overflow-hidden relative group">
+           <BorderBeam colorFrom="#1264ff" colorTo="#10b981" duration={8} borderWidth={2} />
            <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
            
            <Reveal className="relative z-10">
-              <div className="bg-white rounded-[2.5rem] p-10 border border-slate-100 shadow-premium flex flex-col items-center">
-                 <div className="flex justify-between items-center w-full mb-10">
-                    <p className="text-lg font-bold text-ink">Activity</p>
-                    <div className="h-8 w-24 bg-slate-50 rounded-lg border border-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-400">Month</div>
+              <div className="bg-white rounded-[2.5rem] p-10 border border-slate-100 shadow-premium flex flex-col items-center relative overflow-hidden transition-transform duration-500 hover:scale-[1.02]">
+                 <div className="absolute top-0 right-0 w-64 h-64 bg-ocean/5 rounded-full blur-[80px] pointer-events-none" />
+                 <div className="flex justify-between items-center w-full mb-10 relative z-10">
+                    <p className="text-lg font-bold text-ink">Care loop</p>
+                    <div className="h-8 w-28 bg-slate-50 rounded-lg border border-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-400">Phase 1 MVP</div>
                  </div>
-                 <div className="relative h-64 w-64 flex items-center justify-center">
-                    <svg className="h-full w-full rotate-[-90deg]" viewBox="0 0 100 100">
-                       <circle cx="50" cy="50" r="40" fill="none" stroke="#f1f5f9" strokeWidth="12" />
-                       <circle cx="50" cy="50" r="40" fill="none" stroke="#1264ff" strokeWidth="12" strokeDasharray="188 251" strokeLinecap="round" />
-                       <circle cx="50" cy="50" r="40" fill="none" stroke="#a855f7" strokeWidth="12" strokeDasharray="60 251" strokeDashoffset="-188" strokeLinecap="round" />
-                    </svg>
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                       <p className="text-4xl font-black text-ink">75%</p>
-                       <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Goal Reached</p>
+                 <div className="relative z-10 flex h-64 w-64 items-center justify-center">
+                    <AnimatedCircularProgressBar
+                      value={75}
+                      max={100}
+                      min={0}
+                      gaugePrimaryColor="#1264ff"
+                      gaugeSecondaryColor="#dbeafe"
+                      className="size-64 text-4xl font-black text-ink"
+                    />
+                    <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center pt-14">
+                       <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Core handoffs</p>
                     </div>
                  </div>
-                 <div className="grid grid-cols-2 gap-10 mt-10 w-full">
+                 <div className="grid grid-cols-2 gap-10 mt-10 w-full relative z-10">
                     <div className="flex items-center gap-3">
-                       <div className="h-3 w-3 rounded-full bg-ocean" />
+                       <div className="h-3 w-3 rounded-full bg-ocean animate-pulse" />
                        <div>
-                          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Physio</p>
-                          <p className="text-base font-bold text-ink">55%</p>
+                          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Public</p>
+                          <p className="text-base font-bold text-ink">Request</p>
                        </div>
                     </div>
                     <div className="flex items-center gap-3">
-                       <div className="h-3 w-3 rounded-full bg-purple-500" />
+                       <div className="h-3 w-3 rounded-full bg-emerald-500 animate-pulse" style={{ animationDelay: '1s' }} />
                        <div>
-                          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Enquiries</p>
-                          <p className="text-base font-bold text-ink">20%</p>
+                          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Internal</p>
+                          <p className="text-base font-bold text-ink">Dispatch</p>
                        </div>
                     </div>
                  </div>
-                 <button className="mt-12 w-full h-14 rounded-2xl bg-slate-50 border border-slate-100 text-sm font-bold text-ink hover:bg-white transition-all">
-                    View all activity
-                 </button>
+                 <div className="mt-12 grid w-full grid-cols-2 gap-3 relative z-10">
+                    {["Request", "Validate", "Route", "Confirm"].map((step) => (
+                      <div key={step} className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3 text-center text-xs font-black uppercase tracking-widest text-slate-500">
+                        {step}
+                      </div>
+                    ))}
+                 </div>
               </div>
            </Reveal>
 
            <div className="space-y-12 relative z-10">
               <Reveal delay={0.2}>
-                 <p className="text-sm font-bold text-ocean uppercase tracking-widest mb-4 flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-ocean" /> Time and Stress Reduction
-                 </p>
-                 <h3 className="text-4xl font-bold text-ink tracking-tight">Save your time and reduce <br />financial anxiety</h3>
+                 <div className="text-sm font-bold text-ocean uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <div className="h-1.5 w-1.5 rounded-full bg-ocean animate-ping" /> Scalable coordination infrastructure
+                 </div>
+                 <h3 className="text-4xl font-bold text-ink tracking-tight">Start with physiotherapy, then reuse the operating model.</h3>
                  <p className="mt-6 text-slate-500 text-lg leading-relaxed font-medium">
-                    Automate tasks like budgeting, tracking, and saving, freeing up your time for more important things.
+                    The requirement is not just a booking form. It is a reusable customer-to-partner layer: public intake, rule-based validation, secure internal queue, status tracking, and follow-up visibility.
                  </p>
                  <div className="mt-10 space-y-4">
-                    <div className="flex items-center gap-4">
-                       <div className="h-6 w-6 rounded-full bg-ocean/10 text-ocean flex items-center justify-center">
-                          <CheckCircle2 className="h-4 w-4" />
+                    {[
+                      "Centralize enquiries that would otherwise arrive through calls, email, and messaging.",
+                      "Protect Home Visit operations with postcode and address requirements before dispatch.",
+                      "Keep P2C positioned as the coordinator while HCPC/CSP professionals handle clinical delivery.",
+                      "Prepare the platform for future CRM and partner-routing workflows without adding Phase 1 vendor portals."
+                    ].map((item) => (
+                    <div key={item} className="flex items-center gap-4 bg-white/50 backdrop-blur-sm p-3 rounded-2xl border border-slate-100 shadow-sm">
+                       <div className="h-8 w-8 rounded-full bg-ocean/10 text-ocean flex items-center justify-center shrink-0">
+                          <CheckCircle2 className="h-5 w-5" />
                        </div>
-                       <p className="text-sm font-bold text-ink">Stay on top of your budget.</p>
+                       <p className="text-sm font-bold text-ink">{item}</p>
                     </div>
-                    <div className="flex items-center gap-4">
-                       <div className="h-6 w-6 rounded-full bg-ocean/10 text-ocean flex items-center justify-center">
-                          <CheckCircle2 className="h-4 w-4" />
-                       </div>
-                       <p className="text-sm font-bold text-ink">Automate your finances for less stress.</p>
-                    </div>
+                    ))}
                  </div>
               </Reveal>
            </div>
@@ -575,63 +663,155 @@ export default function HomePage() {
       </section>
 
       {/* --- TESTIMONIALS --- */}
-      <section className="py-24 md:py-32 px-4 sm:px-6 max-w-7xl mx-auto">
-        <div className="text-center mb-20">
+      <section className="py-24 md:py-32 overflow-hidden bg-white relative">
+        <div className="text-center mb-20 px-4 sm:px-6 max-w-7xl mx-auto relative z-20">
            <Reveal>
-              <h2 className="text-4xl md:text-[4.5rem] font-extrabold text-ink tracking-tight display-heading">Our Users <br /><span className="text-ocean">Talk About Us.</span></h2>
+              <div className="inline-flex items-center gap-2 rounded-full bg-slate-50 border border-slate-100 px-4 py-1.5 mb-6">
+                 <MessageSquareQuote className="h-4 w-4 text-slate-400" />
+                 <span className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em]">Wall of Love</span>
+              </div>
+              <h2 className="text-4xl md:text-[4.5rem] font-extrabold text-ink tracking-tight display-heading">Trusted by <br /><span className="text-ocean">Elite Clinics.</span></h2>
            </Reveal>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-           {home.testimonials.map((t, i) => (
-             <Reveal key={i} delay={0.1 * i}>
-                <div className="bg-white rounded-[2.5rem] p-10 border border-slate-100 shadow-premium flex flex-col h-full hover:-translate-y-2 transition-transform duration-500">
-                   <div className="flex gap-1 mb-8">
+        <div className="relative flex flex-col items-center justify-center overflow-hidden py-10 w-full max-w-[100vw]">
+          
+          <Marquee pauseOnHover className="[--duration:40s]">
+             {home.testimonials.slice(0, Math.ceil(home.testimonials.length / 2)).map((t, i) => (
+                <div key={i} className="mx-4 flex w-[400px] flex-col justify-between bg-porcelain rounded-[2rem] p-8 border border-slate-100 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-premium relative overflow-hidden group">
+                   <div className="absolute top-0 right-0 w-32 h-32 bg-ocean/5 rounded-full blur-3xl group-hover:bg-ocean/10 transition-colors" />
+                   <div className="relative z-10 flex gap-1 mb-6">
                       {[1, 2, 3, 4, 5].map(s => <span key={s} className="text-ocean text-lg">★</span>)}
                    </div>
-                   <p className="text-ink text-lg leading-relaxed font-semibold italic flex-1">
+                   <p className="relative z-10 text-ink text-base leading-relaxed font-semibold italic flex-1">
                       &quot;{t.quote}&quot;
                    </p>
-                   <div className="mt-10 pt-8 border-t border-slate-100 flex items-center gap-4">
-                      <div className="h-14 w-14 rounded-full bg-slate-100 overflow-hidden flex items-center justify-center">
-                         <UserCheck className="h-7 w-7 text-slate-400" />
+                   <div className="relative z-10 mt-8 pt-6 border-t border-slate-200/50 flex items-center gap-4">
+                      <div className="h-12 w-12 rounded-full bg-white shadow-sm flex items-center justify-center shrink-0">
+                         <UserCheck className="h-5 w-5 text-ocean" />
                       </div>
                       <div>
-                        <p className="text-sm font-black text-ink">{t.name}</p>
-                        <p className="text-[10px] font-bold text-ocean uppercase tracking-widest mt-1">{t.role}</p>
+                        <p className="text-sm font-bold text-ink">{t.name}</p>
+                        <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-0.5">{t.role}</p>
                       </div>
                    </div>
                 </div>
-             </Reveal>
-           ))}
+             ))}
+          </Marquee>
+
+          <Marquee reverse pauseOnHover className="[--duration:40s] mt-8">
+             {home.testimonials.slice(Math.ceil(home.testimonials.length / 2)).map((t, i) => (
+                <div key={i + 100} className="mx-4 flex w-[400px] flex-col justify-between bg-porcelain rounded-[2rem] p-8 border border-slate-100 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-premium relative overflow-hidden group">
+                   <div className="absolute bottom-0 left-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-3xl group-hover:bg-emerald-500/10 transition-colors" />
+                   <div className="relative z-10 flex gap-1 mb-6">
+                      {[1, 2, 3, 4, 5].map(s => <span key={s} className="text-ocean text-lg">★</span>)}
+                   </div>
+                   <p className="relative z-10 text-ink text-base leading-relaxed font-semibold italic flex-1">
+                      &quot;{t.quote}&quot;
+                   </p>
+                   <div className="relative z-10 mt-8 pt-6 border-t border-slate-200/50 flex items-center gap-4">
+                      <div className="h-12 w-12 rounded-full bg-white shadow-sm flex items-center justify-center shrink-0">
+                         <UserCheck className="h-5 w-5 text-emerald-500" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-ink">{t.name}</p>
+                        <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-0.5">{t.role}</p>
+                      </div>
+                   </div>
+                </div>
+             ))}
+          </Marquee>
+
+          {/* Strong Fade Gradients to hide the edges perfectly */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-[15%] bg-gradient-to-r from-white via-white/80 to-transparent z-10"></div>
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-[15%] bg-gradient-to-l from-white via-white/80 to-transparent z-10"></div>
         </div>
       </section>
 
       {/* --- FINAL CTA --- */}
       <section className="px-4 sm:px-6 pb-24 md:pb-32 max-w-7xl mx-auto">
-        <ScrollScale>
-          <div className="bg-ocean rounded-[4rem] p-12 md:p-24 text-center relative overflow-hidden group shadow-2xl shadow-blue-500/30">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/20 to-transparent opacity-60" />
-            <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
-            
-            <div className="relative z-10">
-              <h2 className="text-4xl md:text-7xl font-extrabold text-white tracking-tight leading-[1] display-heading">
-                Ready to launch <br />your operations?
-              </h2>
-              <p className="mt-10 text-lg md:text-xl text-blue-100 max-w-2xl mx-auto font-medium">
-                Join the platform designed for high-trust teams who refuse to compromise on quality or speed.
-              </p>
-              <div className="mt-14 flex flex-col sm:flex-row justify-center gap-6">
-                <Magnetic>
-                  <Link href="/services/physiotherapy" className="inline-flex h-16 items-center justify-center gap-3 rounded-full bg-white px-12 text-base font-extrabold text-ocean shadow-xl transition-all hover:scale-105 active:scale-95">
-                    Get Started Now
-                    <ArrowRight className="h-5 w-5" />
-                  </Link>
-                </Magnetic>
+        <ParallaxStage>
+          {({ scale, ySlow, yFast, rotate, opacity }) => (
+            <MotionDiv style={{ scale }} className="origin-center">
+              <div className="relative overflow-hidden rounded-[4rem] bg-ocean p-8 text-center shadow-2xl shadow-blue-500/30 md:p-12 lg:p-14">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_18%,rgba(255,255,255,0.26),transparent_28%),radial-gradient(circle_at_80%_30%,rgba(0,194,255,0.28),transparent_32%)]" />
+                <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
+
+                <div className="relative z-10 grid gap-8 lg:grid-cols-[0.86fr_1fr_0.86fr] lg:items-center">
+                  <MotionDiv style={{ y: yFast, rotate, opacity }} className="order-2 lg:order-1">
+                    <div className="rounded-[2rem] border border-white/20 bg-white/15 p-4 text-left text-white shadow-2xl backdrop-blur-xl">
+                      <div className="mb-5 flex items-center justify-between">
+                        <div>
+                          <p className="text-[10px] font-black uppercase tracking-[0.24em] text-blue-100">Public intake</p>
+                          <p className="mt-1 text-xl font-black">Request saved</p>
+                        </div>
+                        <span className="rounded-full bg-white px-3 py-1 text-[10px] font-black uppercase tracking-widest text-ocean">Live</span>
+                      </div>
+                      <div className="space-y-3">
+                        {[
+                          ["Service", "Elderly mobility"],
+                          ["Visit", "Home · SW1A"],
+                          ["Language", "Vietnamese"],
+                        ].map(([label, value]) => (
+                          <div key={label} className="rounded-2xl border border-white/15 bg-white/15 p-4">
+                            <p className="text-[10px] font-black uppercase tracking-widest text-blue-100">{label}</p>
+                            <p className="mt-1 text-sm font-black">{value}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </MotionDiv>
+
+                  <div className="order-1 lg:order-2">
+                    <p className="mb-5 text-[11px] font-black uppercase tracking-[0.24em] text-blue-100">Local review milestone</p>
+                    <h2 className="text-4xl md:text-7xl font-extrabold text-white tracking-tight leading-[1] display-heading">
+                      Ready to launch <br />your operations?
+                    </h2>
+                    <p className="mt-8 text-lg md:text-xl text-blue-100 max-w-xl font-medium">
+                      Start with the request engine, then connect Supabase, Resend, and admin credentials when the production handoff is ready.
+                    </p>
+                    <div className="mt-10 flex flex-col gap-4 sm:flex-row lg:justify-start">
+                      <Magnetic>
+                        <Link href="/services/physiotherapy" className="inline-flex h-16 items-center justify-center gap-3 rounded-full bg-white px-12 text-base font-extrabold text-ocean shadow-xl transition-all hover:scale-105 active:scale-95">
+                          Get Started Now
+                          <ArrowRight className="h-5 w-5" />
+                        </Link>
+                      </Magnetic>
+                    </div>
+                  </div>
+
+                  <MotionDiv style={{ y: ySlow, scale, opacity }} className="order-3">
+                    <div className="rounded-[2rem] border border-white/20 bg-white p-4 text-left shadow-2xl">
+                      <div className="mb-5 flex items-center justify-between">
+                        <div>
+                          <p className="text-[10px] font-black uppercase tracking-[0.24em] text-slate-400">Admin dispatch</p>
+                          <p className="mt-1 text-xl font-black text-ink">Queue cockpit</p>
+                        </div>
+                        <span className="rounded-full bg-emerald-50 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-emerald-600">Assigned</span>
+                      </div>
+                      <div className="overflow-hidden rounded-2xl border border-slate-100">
+                        {[
+                          ["Pending", "02"],
+                          ["Partner assigned", "01"],
+                          ["Confirmed", "03"],
+                          ["Completed", "04"],
+                        ].map(([status, count]) => (
+                          <div key={status} className="flex items-center justify-between border-b border-slate-100 bg-slate-50/70 px-4 py-3 last:border-b-0">
+                            <div>
+                              <p className="text-sm font-black text-ink">{status}</p>
+                              <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-400">Physio workflow</p>
+                            </div>
+                            <span className="text-lg font-black text-ocean">{count}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </MotionDiv>
+                </div>
               </div>
-            </div>
-          </div>
-        </ScrollScale>
+            </MotionDiv>
+          )}
+        </ParallaxStage>
       </section>
 
       {/* --- FAQ SECTION --- */}
