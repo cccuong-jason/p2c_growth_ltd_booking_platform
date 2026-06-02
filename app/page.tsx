@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import type { COBEOptions } from "cobe";
 import {
@@ -35,9 +36,8 @@ import { Marquee } from "@/components/ui/marquee";
 import { TypingAnimation } from "@/components/ui/typing-animation";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 import { AnimatedList } from "@/components/magicui/animated-list";
-import { OrbitingCircles } from "@/components/magicui/orbiting-circles";
+import { AnimatedBeam } from "@/components/magicui/animated-beam";
 import { ProgressiveBlur } from "@/components/magicui/progressive-blur";
-import { Ripple } from "@/components/ui/ripple";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { AnimatedCircularProgressBar } from "@/components/ui/animated-circular-progress-bar";
@@ -74,6 +74,41 @@ const HERO_GLOBE_CONFIG: COBEOptions = {
     { location: [22.3193, 114.1694], size: 0.05 },
   ],
 };
+
+const ANALYTICS_BEAM_NODES = [
+  {
+    title: "Planning",
+    body: "Map request source, service category, language, visit type, and postcode before dispatch work begins.",
+    icon: Command,
+    nodeClassName: "left-4 top-24 md:left-10 md:top-[210px]",
+    side: "left",
+    path: "M150 118 C210 88 244 84 314 132",
+  },
+  {
+    title: "Prototype",
+    body: "Preview the operational journey with intake, validation, queue, and confirmation states in one flow.",
+    icon: Monitor,
+    nodeClassName: "left-4 top-[450px] md:left-8 md:top-[470px]",
+    side: "left",
+    path: "M154 294 C220 316 248 274 318 242",
+  },
+  {
+    title: "Refinement",
+    body: "Review consent coverage, home visit rules, status quality, and follow-up gaps before handoff.",
+    icon: Filter,
+    nodeClassName: "right-4 top-24 md:right-6 md:top-[210px]",
+    side: "right",
+    path: "M290 118 C230 88 196 84 126 132",
+  },
+  {
+    title: "Scale and support",
+    body: "Reuse the same dispatch model as new services, languages, and partner operations come online.",
+    icon: Rocket,
+    nodeClassName: "right-4 top-[450px] md:right-6 md:top-[480px]",
+    side: "right",
+    path: "M286 300 C220 320 190 278 122 242",
+  },
+];
 
 const DetailedPhoneFrame = ({ className = "" }: { className?: string }) => (
   <Iphone className={`w-[310px] ${className}`} screenClassName="bg-porcelain">
@@ -133,6 +168,8 @@ const DetailedPhoneFrame = ({ className = "" }: { className?: string }) => (
 
 export default function HomePage() {
   const { home } = getDictionary();
+  const [activeAnalyticsNode, setActiveAnalyticsNode] = useState(ANALYTICS_BEAM_NODES[0].title);
+  const activeAnalytics = ANALYTICS_BEAM_NODES.find((node) => node.title === activeAnalyticsNode) ?? ANALYTICS_BEAM_NODES[0];
 
   return (
     <main className="relative bg-white overflow-hidden selection:bg-blue-100 selection:text-blue-900 font-sans">
@@ -320,25 +357,28 @@ export default function HomePage() {
 
                 <div className="relative mt-8 h-56 overflow-hidden rounded-[1.5rem] border border-slate-100 bg-slate-50/80 shadow-inner">
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(18,100,255,0.10),transparent_48%)]" />
-                  <div className="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full border border-ocean/20" />
-                  <div className="absolute left-1/2 top-1/2 h-52 w-52 -translate-x-1/2 -translate-y-1/2 rounded-full border border-ocean/15" />
+                  <AnimatedBeam
+                    className="opacity-90"
+                    path="M44 76 C132 36 168 116 220 112 C280 108 296 48 396 80"
+                    duration={3.6}
+                    strokeWidth={4}
+                  />
+                  <AnimatedBeam
+                    className="opacity-80"
+                    path="M48 170 C124 122 172 196 226 174 C282 150 320 178 398 136"
+                    duration={4.6}
+                    reverse
+                    strokeWidth={4}
+                  />
                   <div className="absolute left-1/2 top-1/2 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-3xl bg-white text-ocean shadow-2xl shadow-blue-500/15">
                     <LayoutDashboard className="h-8 w-8" />
                   </div>
-                  <OrbitingCircles radius={72} duration={17}>
-                    {[
-                      <span key="pending" className="rounded-full bg-amber-300 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-slate-900 shadow-lg">Pending</span>,
-                      <span key="assigned" className="rounded-full bg-emerald-300 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-slate-900 shadow-lg">Assigned</span>,
-                      <span key="email" className="rounded-full bg-ocean px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white shadow-lg">Email</span>,
-                    ]}
-                  </OrbitingCircles>
-                  <OrbitingCircles radius={104} duration={24} reverse>
-                    {[
-                      <span key="source" className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-ocean shadow-sm ring-1 ring-slate-100"><MailCheck className="h-4 w-4" /></span>,
-                      <span key="person" className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-emerald-500 shadow-sm ring-1 ring-slate-100"><UserCheck className="h-4 w-4" /></span>,
-                      <span key="shield" className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-slate-500 shadow-sm ring-1 ring-slate-100"><ShieldCheck className="h-4 w-4" /></span>,
-                    ]}
-                  </OrbitingCircles>
+                  <span className="absolute left-7 top-12 rounded-full bg-amber-300 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-slate-900 shadow-lg">Pending</span>
+                  <span className="absolute right-8 top-14 rounded-full bg-emerald-300 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-slate-900 shadow-lg">Assigned</span>
+                  <span className="absolute bottom-11 right-10 rounded-full bg-ocean px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white shadow-lg">Email</span>
+                  <span className="absolute bottom-10 left-8 flex h-9 w-9 items-center justify-center rounded-full bg-white text-ocean shadow-sm ring-1 ring-slate-100"><MailCheck className="h-4 w-4" /></span>
+                  <span className="absolute bottom-6 left-1/2 flex h-9 w-9 -translate-x-1/2 items-center justify-center rounded-full bg-white text-emerald-500 shadow-sm ring-1 ring-slate-100"><UserCheck className="h-4 w-4" /></span>
+                  <span className="absolute right-12 top-[88px] flex h-9 w-9 items-center justify-center rounded-full bg-white text-slate-500 shadow-sm ring-1 ring-slate-100"><ShieldCheck className="h-4 w-4" /></span>
                 </div>
 
                 <div className="mt-5 space-y-3">
@@ -474,9 +514,12 @@ export default function HomePage() {
             </div>
           </Reveal>
 
-          <div className="relative mx-auto mt-16 min-h-[720px] max-w-6xl">
-            <div className="pointer-events-none absolute left-1/2 top-[52%] h-[760px] w-[760px] -translate-x-1/2 -translate-y-1/2 text-ocean/45">
-              <Ripple mainCircleSize={280} mainCircleOpacity={0.34} numCircles={9} />
+          <div className="relative mx-auto mt-16 min-h-[760px] max-w-6xl">
+            <div className="pointer-events-none absolute left-1/2 top-[52%] hidden h-[620px] w-[720px] -translate-x-1/2 -translate-y-1/2 md:block">
+              <AnimatedBeam path="M150 118 C210 88 244 84 314 132" duration={3.8} />
+              <AnimatedBeam path="M154 294 C220 316 248 274 318 242" duration={4.4} reverse />
+              <AnimatedBeam path="M290 118 C230 88 196 84 126 132" duration={4.1} />
+              <AnimatedBeam path="M286 300 C220 320 190 278 122 242" duration={4.7} reverse />
             </div>
 
             <div className="absolute left-1/2 top-8 z-20 w-[330px] -translate-x-1/2 sm:w-[380px]">
@@ -527,42 +570,38 @@ export default function HomePage() {
               </ParallaxStage>
             </div>
 
-            <div className="pointer-events-none absolute left-1/2 top-[45%] z-30 hidden w-44 -translate-x-[-88px] -translate-y-1/2 rounded-[1.5rem] border border-white/80 bg-white/90 p-4 shadow-2xl shadow-blue-500/15 backdrop-blur md:block">
+            <div className="pointer-events-none absolute left-1/2 top-[42%] z-30 hidden w-52 -translate-x-[-92px] -translate-y-1/2 rounded-[1.5rem] border border-white/80 bg-white/95 p-4 shadow-2xl shadow-blue-500/15 backdrop-blur md:block">
               <div className="flex items-center gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-ocean text-white shadow-lg shadow-blue-500/20">
                   <Workflow className="h-6 w-6" />
                 </div>
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Hub</p>
-                  <p className="text-sm font-black text-ink">Dispatch Sync</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Beam hub</p>
+                  <p className="text-sm font-black text-ink">{activeAnalytics.title}</p>
                 </div>
               </div>
-              <div className="mt-4 grid grid-cols-3 gap-2">
-                {["Intake", "Rules", "Queue"].map((step) => (
-                  <span key={step} className="rounded-full bg-ocean/10 px-2 py-1 text-center text-[8px] font-black uppercase tracking-widest text-ocean">
-                    {step}
-                  </span>
-                ))}
-              </div>
+              <p className="mt-4 text-xs font-medium leading-5 text-slate-500">
+                {activeAnalytics.body}
+              </p>
             </div>
-            <div className="pointer-events-none absolute left-1/2 top-[48%] z-10 hidden h-28 w-28 -translate-x-[235px] -translate-y-1/2 rounded-full bg-ocean/20 blur-xl md:block" />
 
             <div className="grid gap-6 pt-[620px] md:block md:pt-0">
-              {[
-                { title: "Planning", body: "Map every request by service, source, language and visit type.", icon: Command, className: "md:absolute md:left-10 md:top-[210px] md:w-72", side: "left" },
-                { title: "Prototype", body: "Validate operational flows before production handoff.", icon: Monitor, className: "md:absolute md:left-8 md:top-[470px] md:w-72", side: "left" },
-                { title: "Refinement", body: "Track consent, postcode rules and internal queue quality.", icon: Filter, className: "md:absolute md:right-6 md:top-[210px] md:w-80", side: "right" },
-                { title: "Scale and support", body: "Use the same operating model as services and partners expand.", icon: Rocket, className: "md:absolute md:right-6 md:top-[480px] md:w-80", side: "right" },
-              ].map((item) => (
-                <div key={item.title} className={`flex items-center gap-4 rounded-2xl border border-slate-100 bg-white/80 p-5 shadow-sm backdrop-blur md:border-0 md:bg-transparent md:p-0 md:shadow-none ${item.side === "left" ? "md:flex-row-reverse md:text-right" : "md:flex-row"} ${item.className}`}>
-                  <div className="order-2 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-ocean/10 text-ocean md:order-none">
+              {ANALYTICS_BEAM_NODES.map((item) => (
+                <button
+                  key={item.title}
+                  type="button"
+                  onClick={() => setActiveAnalyticsNode(item.title)}
+                  aria-pressed={activeAnalyticsNode === item.title}
+                  className={`group flex items-center gap-4 rounded-2xl border p-5 text-left shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-premium focus:outline-none focus-visible:ring-2 focus-visible:ring-ocean/40 md:absolute md:w-80 ${item.side === "left" ? "md:flex-row-reverse md:text-right" : "md:flex-row"} ${item.nodeClassName} ${activeAnalyticsNode === item.title ? "border-ocean/25 bg-white shadow-premium" : "border-slate-100 bg-white/80"}`}
+                >
+                  <span className={`order-2 flex h-12 w-12 shrink-0 items-center justify-center rounded-full transition md:order-none ${activeAnalyticsNode === item.title ? "bg-ocean text-white" : "bg-ocean/10 text-ocean group-hover:bg-ocean group-hover:text-white"}`}>
                     <item.icon className="h-6 w-6" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-ink">{item.title}</h3>
-                    <p className="mt-2 text-sm leading-6 text-slate-500">{item.body}</p>
-                  </div>
-                </div>
+                  </span>
+                  <span className="block">
+                    <span className="block text-xl font-bold text-ink">{item.title}</span>
+                    <span className="mt-2 block text-sm leading-6 text-slate-500">{item.body}</span>
+                  </span>
+                </button>
               ))}
             </div>
           </div>
