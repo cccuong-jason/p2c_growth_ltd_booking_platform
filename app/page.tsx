@@ -180,9 +180,9 @@ export default function HomePage() {
       <section className="relative min-h-[95vh] flex flex-col items-center justify-center pt-32 pb-20 md:pt-48 md:pb-40 bg-porcelain overflow-hidden">
         
         {/* Direct COBE globe */}
-        <div className="pointer-events-none absolute left-1/2 top-[47%] z-0 w-[760px] max-w-[132vw] -translate-x-1/2 -translate-y-1/2 opacity-85 md:w-[980px]">
+        <div className="pointer-events-none absolute left-1/2 top-[47%] z-0 w-[760px] max-w-[132vw] -translate-x-1/2 -translate-y-1/2 opacity-55 md:w-[980px]">
           <Globe config={HERO_GLOBE_CONFIG} className="mx-auto" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(247,251,255,0.68)_0%,rgba(247,251,255,0.42)_28%,rgba(247,251,255,0)_54%),radial-gradient(circle_at_50%_74%,rgba(247,251,255,0)_20%,rgba(247,251,255,0.88)_68%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_33%,rgba(247,251,255,0.92)_0%,rgba(247,251,255,0.72)_30%,rgba(247,251,255,0.22)_56%),radial-gradient(circle_at_50%_74%,rgba(247,251,255,0.18)_20%,rgba(247,251,255,0.94)_68%)]" />
         </div>
 
         {/* Hero Content */}
@@ -199,7 +199,7 @@ export default function HomePage() {
 
           <div className="max-w-5xl mx-auto min-h-[140px] flex items-center justify-center">
              <TypingAnimation 
-                className="text-5xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1.1] justify-center display-heading drop-shadow-[0_10px_28px_rgba(255,255,255,0.92)]"
+                className="text-5xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1.1] justify-center display-heading"
                 duration={50}
              >
                 The operating layer for modern healthcare.
@@ -207,7 +207,7 @@ export default function HomePage() {
           </div>
 
           <Reveal delay={0.6}>
-            <p className="mt-10 max-w-2xl rounded-3xl border border-white/70 bg-white/65 px-5 py-3 text-lg font-semibold leading-relaxed text-slate-700 shadow-sm backdrop-blur md:text-xl">
+            <p className="mt-10 max-w-2xl text-lg font-semibold leading-relaxed text-slate-700 md:text-xl">
               Cinematic booking, consent, and dispatch for elite UK practitioners. Premium infrastructure for high-trust teams.
             </p>
           </Reveal>
@@ -219,7 +219,7 @@ export default function HomePage() {
               { value: 5, label: "dispatch statuses tracked" }
             ].map((stat, index) => (
               <BlurFade key={stat.label} delay={0.12 * index + 0.65} inView blur="10px" direction="up">
-                <div className="rounded-2xl border border-white/70 bg-white/70 p-4 shadow-sm backdrop-blur">
+                <div>
                   <NumberTicker
                     value={stat.value}
                     delay={0.16 * index}
@@ -537,7 +537,7 @@ export default function HomePage() {
                 <LayoutDashboard className="h-4 w-4 text-ocean" />
                 <span className="text-[11px] font-bold text-ocean uppercase tracking-[0.2em]">Operational Analytics</span>
               </div>
-              <h2 className="text-4xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1] display-heading drop-shadow-[0_10px_28px_rgba(255,255,255,0.86)]">
+              <h2 className="text-4xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">
                 Operational signals, <br /><span className="text-ocean">centered around dispatch.</span>
               </h2>
             </div>
