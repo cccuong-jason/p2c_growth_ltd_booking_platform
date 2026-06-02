@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import createGlobe, { type COBEOptions } from "cobe"
-import { motion, useMotionValue, useSpring } from "framer-motion"
+import { useMotionValue, useSpring } from "framer-motion"
 
 import { cn } from "@/lib/utils"
 
@@ -38,17 +38,6 @@ const GLOBE_CONFIG: COBEOptions = {
     { location: [-33.8688, 151.2093], size: 0.018 }, // Sydney (context)
   ],
 }
-
-const GLOBE_INSIGHTS = [
-  { label: "UK intake hub", meta: "London + Manchester", className: "left-[18%] top-[28%]" },
-  { label: "Home visit routing", meta: "Postcode rules", className: "right-[12%] top-[38%]" },
-  { label: "Language readiness", meta: "CN + VN paths", className: "right-[18%] bottom-[25%]" },
-]
-
-const GLOBE_ARCS = [
-  { label: "Consent route", className: "left-[31%] top-[19%]" },
-  { label: "Dispatch loop", className: "right-[26%] bottom-[18%]" },
-]
 
 export function Globe({
   className,
@@ -129,72 +118,23 @@ export function Globe({
       )}
     >
       {isSupported ? (
-        <>
-          <canvas
-            className={cn(
-              "size-full opacity-0 transition-opacity duration-500 contain-[layout_paint_size]"
-            )}
-            ref={canvasRef}
-            aria-label="Interactive global dispatch coverage map"
-            onPointerDown={(e) => {
-              pointerInteracting.current = e.clientX
-              updatePointerInteraction(e.clientX)
-            }}
-            onPointerUp={() => updatePointerInteraction(null)}
-            onPointerOut={() => updatePointerInteraction(null)}
-            onMouseMove={(e) => updateMovement(e.clientX)}
-            onTouchMove={(e) =>
-              e.touches[0] && updateMovement(e.touches[0].clientX)
-            }
-          />
-          <div className="pointer-events-none absolute inset-0 hidden md:block">
-            <svg className="absolute inset-0 size-full" viewBox="0 0 100 100" aria-hidden="true">
-              <motion.path
-                d="M24 40 C38 18 58 20 74 40"
-                fill="none"
-                stroke="rgba(18,100,255,0.34)"
-                strokeWidth="0.5"
-                strokeDasharray="4 4"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 1 }}
-                transition={{ duration: 1.8, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
-              />
-              <motion.path
-                d="M30 62 C48 86 68 78 80 56"
-                fill="none"
-                stroke="rgba(16,185,129,0.38)"
-                strokeWidth="0.5"
-                strokeDasharray="5 5"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 1 }}
-                transition={{ duration: 2.2, delay: 0.25, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
-              />
-            </svg>
-            {GLOBE_INSIGHTS.map((item, index) => (
-              <motion.div
-                key={item.label}
-                className={cn("absolute rounded-2xl border border-white/80 bg-white/85 px-3 py-2 text-left shadow-premium backdrop-blur", item.className)}
-                initial={{ opacity: 0, y: 10, scale: 0.94 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.55, delay: 0.3 + index * 0.16 }}
-              >
-                <p className="text-[9px] font-black uppercase tracking-widest text-ocean">{item.label}</p>
-                <p className="mt-1 text-[10px] font-bold text-slate-500">{item.meta}</p>
-              </motion.div>
-            ))}
-            {GLOBE_ARCS.map((item, index) => (
-              <motion.span
-                key={item.label}
-                className={cn("absolute rounded-full bg-ocean/10 px-3 py-1 text-[9px] font-black uppercase tracking-widest text-ocean", item.className)}
-                initial={{ opacity: 0, filter: "blur(8px)" }}
-                animate={{ opacity: [0.45, 1, 0.45], filter: "blur(0px)" }}
-                transition={{ duration: 2.4, delay: index * 0.4, repeat: Infinity, ease: "easeInOut" }}
-              >
-                {item.label}
-              </motion.span>
-            ))}
-          </div>
-        </>
+        <canvas
+          className={cn(
+            "size-full opacity-0 transition-opacity duration-500 contain-[layout_paint_size]"
+          )}
+          ref={canvasRef}
+          aria-label="Interactive global dispatch coverage map"
+          onPointerDown={(e) => {
+            pointerInteracting.current = e.clientX
+            updatePointerInteraction(e.clientX)
+          }}
+          onPointerUp={() => updatePointerInteraction(null)}
+          onPointerOut={() => updatePointerInteraction(null)}
+          onMouseMove={(e) => updateMovement(e.clientX)}
+          onTouchMove={(e) =>
+            e.touches[0] && updateMovement(e.touches[0].clientX)
+          }
+        />
       ) : (
         <div className="flex size-full items-center justify-center rounded-full border border-ocean/10 bg-white/70 p-10 text-center shadow-premium">
           <div>

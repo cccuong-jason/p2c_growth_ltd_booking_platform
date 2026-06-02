@@ -13,6 +13,7 @@ import {
   Workflow,
   LayoutDashboard,
   MailCheck,
+  ClipboardList,
   MessageSquareQuote,
   Languages,
   Smartphone,
@@ -38,6 +39,7 @@ import { NumberTicker } from "@/components/magicui/number-ticker";
 import { AnimatedList } from "@/components/magicui/animated-list";
 import { AnimatedBeam } from "@/components/magicui/animated-beam";
 import { ProgressiveBlur } from "@/components/magicui/progressive-blur";
+import { Ripple } from "@/components/ui/ripple";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { AnimatedCircularProgressBar } from "@/components/ui/animated-circular-progress-bar";
@@ -64,14 +66,14 @@ const HERO_GLOBE_CONFIG: COBEOptions = {
   markerColor: [16 / 255, 185 / 255, 129 / 255],
   glowColor: [1, 1, 1],
   markers: [
-    { location: [51.5072, -0.1276], size: 0.07 },
-    { location: [53.4808, -2.2426], size: 0.055 },
-    { location: [52.4862, -1.8904], size: 0.048 },
-    { location: [21.0285, 105.8542], size: 0.06 },
-    { location: [10.8231, 106.6297], size: 0.06 },
-    { location: [39.9042, 116.4074], size: 0.055 },
-    { location: [31.2304, 121.4737], size: 0.055 },
-    { location: [22.3193, 114.1694], size: 0.05 },
+    { location: [51.5072, -0.1276], size: 0.13 },
+    { location: [53.4808, -2.2426], size: 0.09 },
+    { location: [52.4862, -1.8904], size: 0.085 },
+    { location: [21.0285, 105.8542], size: 0.095 },
+    { location: [10.8231, 106.6297], size: 0.105 },
+    { location: [39.9042, 116.4074], size: 0.092 },
+    { location: [31.2304, 121.4737], size: 0.092 },
+    { location: [22.3193, 114.1694], size: 0.082 },
   ],
 };
 
@@ -355,30 +357,57 @@ export default function HomePage() {
                   <h3 className="mt-4 text-3xl font-extrabold tracking-tight">Status queue without scattered follow-up.</h3>
                 </div>
 
-                <div className="relative mt-8 h-56 overflow-hidden rounded-[1.5rem] border border-slate-100 bg-slate-50/80 shadow-inner">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(18,100,255,0.10),transparent_48%)]" />
+                <div className="relative mt-8 h-64 overflow-hidden rounded-[1.5rem] border border-slate-100 bg-slate-50/80 shadow-inner">
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(18,100,255,0.12),transparent_48%)]" />
+                  <div className="absolute inset-5 rounded-[1.25rem] border border-ocean/10 bg-white/30" />
                   <AnimatedBeam
                     className="opacity-90"
-                    path="M44 76 C132 36 168 116 220 112 C280 108 296 48 396 80"
+                    path="M82 86 C132 92 164 142 204 178"
                     duration={3.6}
                     strokeWidth={4}
                   />
                   <AnimatedBeam
+                    className="opacity-90"
+                    path="M358 86 C308 92 276 142 236 178"
+                    duration={4}
+                    strokeWidth={4}
+                  />
+                  <AnimatedBeam
                     className="opacity-80"
-                    path="M48 170 C124 122 172 196 226 174 C282 150 320 178 398 136"
-                    duration={4.6}
+                    path="M82 294 C132 284 164 238 204 202"
+                    duration={4.4}
                     reverse
                     strokeWidth={4}
                   />
-                  <div className="absolute left-1/2 top-1/2 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-3xl bg-white text-ocean shadow-2xl shadow-blue-500/15">
+                  <AnimatedBeam
+                    className="opacity-80"
+                    path="M358 294 C308 284 276 238 236 202"
+                    duration={4.8}
+                    reverse
+                    strokeWidth={4}
+                  />
+                  <div className="absolute left-1/2 top-1/2 z-20 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-3xl bg-white text-ocean shadow-2xl shadow-blue-500/15 ring-1 ring-ocean/10">
                     <LayoutDashboard className="h-8 w-8" />
                   </div>
-                  <span className="absolute left-7 top-12 rounded-full bg-amber-300 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-slate-900 shadow-lg">Pending</span>
-                  <span className="absolute right-8 top-14 rounded-full bg-emerald-300 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-slate-900 shadow-lg">Assigned</span>
-                  <span className="absolute bottom-11 right-10 rounded-full bg-ocean px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white shadow-lg">Email</span>
-                  <span className="absolute bottom-10 left-8 flex h-9 w-9 items-center justify-center rounded-full bg-white text-ocean shadow-sm ring-1 ring-slate-100"><MailCheck className="h-4 w-4" /></span>
-                  <span className="absolute bottom-6 left-1/2 flex h-9 w-9 -translate-x-1/2 items-center justify-center rounded-full bg-white text-emerald-500 shadow-sm ring-1 ring-slate-100"><UserCheck className="h-4 w-4" /></span>
-                  <span className="absolute right-12 top-[88px] flex h-9 w-9 items-center justify-center rounded-full bg-white text-slate-500 shadow-sm ring-1 ring-slate-100"><ShieldCheck className="h-4 w-4" /></span>
+                  {[
+                    { label: "Intake", meta: "Pending", icon: ClipboardList, className: "left-7 top-8", tone: "bg-amber-100 text-amber-700" },
+                    { label: "Consent", meta: "Verified", icon: ShieldCheck, className: "right-7 top-8", tone: "bg-emerald-100 text-emerald-700" },
+                    { label: "Partner", meta: "Assigned", icon: UserCheck, className: "left-7 bottom-8", tone: "bg-ocean/10 text-ocean" },
+                    { label: "Email", meta: "Queued", icon: MailCheck, className: "right-7 bottom-8", tone: "bg-blue-100 text-ocean" },
+                  ].map((node) => (
+                    <div
+                      key={node.label}
+                      className={`absolute z-30 flex items-center gap-2 rounded-2xl border border-white/80 bg-white/95 px-3 py-2 shadow-lg shadow-blue-500/10 ${node.className}`}
+                    >
+                      <span className={`flex h-9 w-9 items-center justify-center rounded-xl ${node.tone}`}>
+                        <node.icon className="h-4 w-4" />
+                      </span>
+                      <span>
+                        <span className="block text-[10px] font-black uppercase tracking-widest text-slate-400">{node.label}</span>
+                        <span className="block text-xs font-black text-ink">{node.meta}</span>
+                      </span>
+                    </div>
+                  ))}
                 </div>
 
                 <div className="mt-5 space-y-3">
@@ -515,6 +544,9 @@ export default function HomePage() {
           </Reveal>
 
           <div className="relative mx-auto mt-16 min-h-[760px] max-w-6xl">
+            <div className="pointer-events-none absolute left-1/2 top-[52%] hidden h-[760px] w-[760px] -translate-x-1/2 -translate-y-1/2 text-ocean/40 md:block">
+              <Ripple mainCircleSize={260} mainCircleOpacity={0.24} numCircles={9} />
+            </div>
             <div className="pointer-events-none absolute left-1/2 top-[52%] hidden h-[620px] w-[720px] -translate-x-1/2 -translate-y-1/2 md:block">
               <AnimatedBeam path="M150 118 C210 88 244 84 314 132" duration={3.8} />
               <AnimatedBeam path="M154 294 C220 316 248 274 318 242" duration={4.4} reverse />
