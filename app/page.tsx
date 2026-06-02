@@ -188,7 +188,7 @@ export default function HomePage() {
         {/* Hero Content */}
         <div className="flex flex-col items-center text-center relative z-20 px-4 sm:px-6 max-w-7xl mx-auto mb-32">
           <SpringReveal>
-            <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/50 backdrop-blur-xl px-4 py-1.5 text-[11px] font-bold text-slate-500 mb-8 uppercase tracking-[0.2em] shadow-premium">
+            <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 backdrop-blur-xl px-4 py-1.5 text-[11px] font-bold text-slate-700 mb-8 uppercase tracking-[0.2em] shadow-premium">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-ocean opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-ocean"></span>
@@ -199,7 +199,7 @@ export default function HomePage() {
 
           <div className="max-w-5xl mx-auto min-h-[140px] flex items-center justify-center">
              <TypingAnimation 
-                className="text-5xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1.1] justify-center display-heading"
+                className="text-5xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1.1] justify-center display-heading drop-shadow-[0_10px_28px_rgba(255,255,255,0.92)]"
                 duration={50}
              >
                 The operating layer for modern healthcare.
@@ -207,7 +207,7 @@ export default function HomePage() {
           </div>
 
           <Reveal delay={0.6}>
-            <p className="mt-10 text-lg md:text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed font-medium">
+            <p className="mt-10 max-w-2xl rounded-3xl border border-white/70 bg-white/65 px-5 py-3 text-lg font-semibold leading-relaxed text-slate-700 shadow-sm backdrop-blur md:text-xl">
               Cinematic booking, consent, and dispatch for elite UK practitioners. Premium infrastructure for high-trust teams.
             </p>
           </Reveal>
@@ -219,13 +219,13 @@ export default function HomePage() {
               { value: 5, label: "dispatch statuses tracked" }
             ].map((stat, index) => (
               <BlurFade key={stat.label} delay={0.12 * index + 0.65} inView blur="10px" direction="up">
-                <div>
+                <div className="rounded-2xl border border-white/70 bg-white/70 p-4 shadow-sm backdrop-blur">
                   <NumberTicker
                     value={stat.value}
                     delay={0.16 * index}
                     className="text-4xl font-black tracking-tight text-ink sm:text-5xl"
                   />
-                  <p className="mx-auto mt-3 max-w-36 text-[10px] font-bold uppercase leading-relaxed tracking-[0.16em] text-slate-400 sm:text-xs">
+                  <p className="mx-auto mt-3 max-w-36 text-[10px] font-black uppercase leading-relaxed tracking-[0.16em] text-slate-700 sm:text-xs">
                     {stat.label}
                   </p>
                 </div>
@@ -354,7 +354,7 @@ export default function HomePage() {
                     <Workflow className="h-6 w-6" />
                   </div>
                   <p className="text-[11px] font-black uppercase tracking-[0.22em] text-ocean">Dispatch cockpit</p>
-                  <h3 className="mt-4 text-3xl font-extrabold tracking-tight">Status queue without scattered follow-up.</h3>
+                  <h3 className="mt-4 text-3xl font-extrabold tracking-tight text-ink">Status queue without scattered follow-up.</h3>
                 </div>
 
                 <div className="relative mt-8 h-64 overflow-hidden rounded-[1.5rem] border border-slate-100 bg-slate-50/80 shadow-inner">
@@ -403,7 +403,7 @@ export default function HomePage() {
                         <node.icon className="h-4 w-4" />
                       </span>
                       <span>
-                        <span className="block text-[10px] font-black uppercase tracking-widest text-slate-400">{node.label}</span>
+                        <span className="block text-[10px] font-black uppercase tracking-widest text-slate-600">{node.label}</span>
                         <span className="block text-xs font-black text-ink">{node.meta}</span>
                       </span>
                     </div>
@@ -537,7 +537,7 @@ export default function HomePage() {
                 <LayoutDashboard className="h-4 w-4 text-ocean" />
                 <span className="text-[11px] font-bold text-ocean uppercase tracking-[0.2em]">Operational Analytics</span>
               </div>
-              <h2 className="text-4xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">
+              <h2 className="text-4xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1] display-heading drop-shadow-[0_10px_28px_rgba(255,255,255,0.86)]">
                 Operational signals, <br /><span className="text-ocean">centered around dispatch.</span>
               </h2>
             </div>
@@ -560,7 +560,7 @@ export default function HomePage() {
                   <MotionDiv style={{ y: ySlow }}>
                     <Iphone className="w-full" screenClassName="bg-porcelain">
                       <div className="flex h-full flex-col bg-porcelain px-6 pb-8 pt-11 text-ink">
-                        <div className="mb-5 flex items-center justify-between text-xs font-semibold text-slate-500">
+                        <div className="mb-5 flex items-center justify-between text-xs font-bold text-slate-700">
                           <span>9:41</span>
                           <span className="rounded-full bg-ocean/10 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-ocean">Live</span>
                         </div>
@@ -574,7 +574,7 @@ export default function HomePage() {
                             ["Queue", "Partner", "Assigned"],
                           ].map(([label, title, meta]) => (
                             <div key={label} className="mb-4 rounded-2xl border border-slate-100 bg-slate-50 p-4">
-                              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">{label}</p>
+                              <p className="text-[10px] font-black uppercase tracking-widest text-slate-600">{label}</p>
                               <div className="mt-2 flex items-center justify-between">
                                 <span className="text-base font-black">{title}</span>
                                 <span className="text-xs font-bold text-ocean">{meta}</span>
@@ -584,11 +584,11 @@ export default function HomePage() {
                           <div className="mt-5 grid grid-cols-2 gap-3">
                             <div className="rounded-2xl bg-ocean/10 p-4">
                               <p className="text-2xl font-black text-ocean">63%</p>
-                              <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-500">Home visits</p>
+                              <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-slate-700">Home visits</p>
                             </div>
                             <div className="rounded-2xl bg-emerald-50 p-4">
                               <p className="text-2xl font-black text-emerald-600">100%</p>
-                              <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-500">Consent</p>
+                              <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-slate-700">Consent</p>
                             </div>
                           </div>
                         </div>
@@ -608,11 +608,11 @@ export default function HomePage() {
                   <Workflow className="h-6 w-6" />
                 </div>
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Beam hub</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-600">Beam hub</p>
                   <p className="text-sm font-black text-ink">{activeAnalytics.title}</p>
                 </div>
               </div>
-              <p className="mt-4 text-xs font-medium leading-5 text-slate-500">
+              <p className="mt-4 text-xs font-semibold leading-5 text-slate-700">
                 {activeAnalytics.body}
               </p>
             </div>
@@ -624,14 +624,14 @@ export default function HomePage() {
                   type="button"
                   onClick={() => setActiveAnalyticsNode(item.title)}
                   aria-pressed={activeAnalyticsNode === item.title}
-                  className={`group flex items-center gap-4 rounded-2xl border p-5 text-left shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-premium focus:outline-none focus-visible:ring-2 focus-visible:ring-ocean/40 md:absolute md:w-80 ${item.side === "left" ? "md:flex-row-reverse md:text-right" : "md:flex-row"} ${item.nodeClassName} ${activeAnalyticsNode === item.title ? "border-ocean/25 bg-white shadow-premium" : "border-slate-100 bg-white/80"}`}
+                  className={`group flex items-center gap-4 rounded-2xl border p-5 text-left shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-premium focus:outline-none focus-visible:ring-2 focus-visible:ring-ocean/40 md:absolute md:w-80 ${item.side === "left" ? "md:flex-row-reverse md:text-right" : "md:flex-row"} ${item.nodeClassName} ${activeAnalyticsNode === item.title ? "border-ocean/25 bg-white shadow-premium" : "border-slate-100 bg-white/95 shadow-md"}`}
                 >
                   <span className={`order-2 flex h-12 w-12 shrink-0 items-center justify-center rounded-full transition md:order-none ${activeAnalyticsNode === item.title ? "bg-ocean text-white" : "bg-ocean/10 text-ocean group-hover:bg-ocean group-hover:text-white"}`}>
                     <item.icon className="h-6 w-6" />
                   </span>
                   <span className="block">
                     <span className="block text-xl font-bold text-ink">{item.title}</span>
-                    <span className="mt-2 block text-sm leading-6 text-slate-500">{item.body}</span>
+                    <span className="mt-2 block text-sm font-semibold leading-6 text-slate-700">{item.body}</span>
                   </span>
                 </button>
               ))}
