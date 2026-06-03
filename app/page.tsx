@@ -1,28 +1,31 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { COBEOptions } from "cobe";
 import {
   ArrowRight,
   CheckCircle2,
   ChevronRight,
-  ShieldCheck,
   Activity,
   UserCheck,
   Workflow,
   LayoutDashboard,
   MailCheck,
-  ClipboardList,
   MessageSquareQuote,
-  Languages,
-  Smartphone,
-  Search,
   Plus,
   Command,
   Monitor,
   Filter,
-  Rocket
+  Rocket,
+  ShieldCheck,
+  CalendarCheck,
+  Bell,
+  QrCode,
+  Puzzle,
+  Send,
+  Database,
+  FileText
 } from "lucide-react";
 
 import { 
@@ -33,14 +36,10 @@ import {
   MotionDiv
 } from "@/components/home/motion-primitives";
 import { Globe } from "@/components/ui/globe";
-import { Marquee } from "@/components/ui/marquee";
 import { TypingAnimation } from "@/components/ui/typing-animation";
-import { NumberTicker } from "@/components/magicui/number-ticker";
-import { AnimatedList } from "@/components/magicui/animated-list";
 import { AnimatedBeam } from "@/components/magicui/animated-beam";
 import { ProgressiveBlur } from "@/components/magicui/progressive-blur";
 import { Ripple } from "@/components/ui/ripple";
-import { BlurFade } from "@/components/ui/blur-fade";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { AnimatedCircularProgressBar } from "@/components/ui/animated-circular-progress-bar";
 import { Iphone } from "@/registry/magicui/iphone";
@@ -127,32 +126,32 @@ const HOME_SERVICE_BOXES = [
 
 const ANALYTICS_BEAM_NODES = [
   {
-    title: "Planning",
-    body: "Map request source, service category, language, visit type, and postcode before dispatch work begins.",
+    title: "Discover workflow",
+    body: "Map enquiry sources, service types, team responsibilities, customer touchpoints, and the current manual follow-up load.",
     icon: Command,
     nodeClassName: "left-4 top-24 md:left-10 md:top-[210px]",
     side: "left",
     path: "M150 118 C210 88 244 84 314 132",
   },
   {
-    title: "Prototype",
-    body: "Preview the operational journey with intake, validation, queue, and confirmation states in one flow.",
+    title: "Design interface",
+    body: "Turn the workflow into clear screens for customers, internal teams, and partners before build effort is committed.",
     icon: Monitor,
     nodeClassName: "left-4 top-[450px] md:left-8 md:top-[470px]",
     side: "left",
     path: "M154 294 C220 316 248 274 318 242",
   },
   {
-    title: "Refinement",
-    body: "Review consent coverage, home visit rules, status quality, and follow-up gaps before handoff.",
+    title: "Build system",
+    body: "Implement the website, forms, status views, email triggers, and lightweight CRM records around the approved flow.",
     icon: Filter,
     nodeClassName: "right-4 top-24 md:right-6 md:top-[210px]",
     side: "right",
     path: "M290 118 C230 88 196 84 126 132",
   },
   {
-    title: "Scale and support",
-    body: "Reuse the same dispatch model as new services, languages, and partner operations come online.",
+    title: "Launch and iterate",
+    body: "Release the first version, review real usage, and improve the system as the business adds services or partners.",
     icon: Rocket,
     nodeClassName: "right-4 top-[450px] md:right-6 md:top-[480px]",
     side: "right",
@@ -160,75 +159,111 @@ const ANALYTICS_BEAM_NODES = [
   },
 ];
 
-const DetailedPhoneFrame = ({ className = "" }: { className?: string }) => (
-  <Iphone className={`w-[310px] ${className}`} screenClassName="bg-porcelain">
-    <div className="flex h-full flex-col px-5 pb-5 pt-10">
-       <div className="mb-7 flex items-center justify-between">
-          <div>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Internal queue</p>
-            <p className="text-xl font-bold text-ink">Physio Dispatch</p>
-          </div>
-          <div className="h-10 w-10 rounded-full bg-white border border-slate-100 shadow-sm flex items-center justify-center">
-             <UserCheck className="h-5 w-5 text-ocean" />
-          </div>
-       </div>
+const BUILD_FEATURES = [
+  {
+    label: "Website",
+    title: "Website development",
+    body: "Service pages and enquiry capture shaped around how customers decide.",
+    reportTitle: "Website enquiries are clearer.",
+    reportBody: "Visitors choose the right service path, submit structured details, and land in one owner-ready queue.",
+    focus: "Front door",
+    status: "Captured",
+    progress: "76%",
+    icon: Monitor,
+    accentClassName: "bg-ocean text-white",
+    softClassName: "bg-ocean/10 text-ocean",
+  },
+  {
+    label: "Booking",
+    title: "Booking workflow",
+    body: "Rules, owner assignment, customer confirmation, and status tracking.",
+    reportTitle: "Booking requests are moving.",
+    reportBody: "New requests are routed to the right internal owner with clear next steps and customer updates.",
+    focus: "Scheduling",
+    status: "Queued",
+    progress: "68%",
+    icon: CalendarCheck,
+    accentClassName: "bg-emerald-500 text-white",
+    softClassName: "bg-emerald-50 text-emerald-700",
+  },
+  {
+    label: "Email",
+    title: "Email automation",
+    body: "Useful customer and internal updates without manual chasing.",
+    reportTitle: "Follow-up is automated.",
+    reportBody: "Customers receive confirmation while the team gets the right internal context at each workflow step.",
+    focus: "Updates",
+    status: "Sent",
+    progress: "82%",
+    icon: Send,
+    accentClassName: "bg-amber-400 text-ink",
+    softClassName: "bg-amber-50 text-amber-700",
+  },
+  {
+    label: "CRM",
+    title: "Mini CRM",
+    body: "Simple customer records, ownership, status, and partner context.",
+    reportTitle: "Customer records stay visible.",
+    reportBody: "Every enquiry keeps its owner, status, and handoff history in a lightweight operating view.",
+    focus: "Records",
+    status: "Synced",
+    progress: "71%",
+    icon: Database,
+    accentClassName: "bg-slate-900 text-white",
+    softClassName: "bg-slate-100 text-slate-700",
+  },
+] as const;
 
-       <div className="space-y-6">
-          <div className="p-5 rounded-2xl bg-white border border-slate-100 shadow-sm">
-             <div className="flex justify-between items-center mb-4">
-                <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest">ACTIVE SERVICE</span>
-                <div className="h-5 w-12 rounded-full bg-ocean/10 text-ocean text-[9px] font-bold flex items-center justify-center">LIVE</div>
-             </div>
-             <div className="flex gap-4">
-                <div className="h-12 w-12 rounded-xl bg-slate-50 flex items-center justify-center shrink-0">
-                   <Activity className="h-6 w-6 text-ocean" />
-                </div>
-                <div className="space-y-1">
-                   <p className="text-sm font-bold text-ink">Home Visit Intake</p>
-                   <p className="text-xs text-slate-500">SW1A postcode captured</p>
-                </div>
-             </div>
-          </div>
-
-          <div className="space-y-3">
-             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">QUICK ACTIONS</p>
-             <div className="grid grid-cols-2 gap-3">
-                {[
-                  { icon: Plus, label: "Book" },
-                  { icon: Search, label: "Find" },
-                  { icon: MailCheck, label: "Inbox" },
-                  { icon: Smartphone, label: "Support" }
-                ].map((item, i) => (
-                  <div key={i} className="h-24 rounded-2xl bg-white border border-slate-100 flex flex-col items-center justify-center gap-2 group hover:border-ocean transition-colors">
-                     <item.icon className="h-6 w-6 text-slate-300 group-hover:text-ocean transition-colors" />
-                     <span className="text-xs font-bold text-slate-500">{item.label}</span>
-                  </div>
-                ))}
-             </div>
-          </div>
-       </div>
-
-       <div className="mt-auto h-20 rounded-2xl bg-ocean flex flex-col items-center justify-center gap-1 shadow-lg shadow-blue-500/20">
-          <p className="text-white text-xs font-bold">Confirmation Email</p>
-          <p className="text-blue-100 text-[10px]">Queued after saved request</p>
-       </div>
-    </div>
-  </Iphone>
-);
+const FAQ_ITEMS = [
+  {
+    question: "What does P2C Growth build?",
+    answer: "Websites, booking workflows, email automation, lightweight CRM tools, and customer-partner platforms for UK service businesses.",
+  },
+  {
+    question: "Can you improve an existing workflow?",
+    answer: "Yes. We can map the current enquiry, booking, follow-up, and handoff process, then rebuild the parts that create the most manual work.",
+  },
+  {
+    question: "Is Medical Experts Booking the whole business?",
+    answer: "No. It is one service offering. The homepage represents P2C Growth LTD as a broader technology and software company.",
+  },
+] as const;
 
 export default function HomePage() {
   const { home } = getDictionary();
   const [activeServiceIndex, setActiveServiceIndex] = useState(0);
   const [activeAnalyticsNode, setActiveAnalyticsNode] = useState(ANALYTICS_BEAM_NODES[0].title);
+  const [hasSelectedAnalyticsNode, setHasSelectedAnalyticsNode] = useState(false);
+  const [activeBuildFeatureIndex, setActiveBuildFeatureIndex] = useState(0);
+  const [openFaqIndex, setOpenFaqIndex] = useState(0);
   const activeAnalytics = ANALYTICS_BEAM_NODES.find((node) => node.title === activeAnalyticsNode) ?? ANALYTICS_BEAM_NODES[0];
+  const activeAnalyticsIndex = ANALYTICS_BEAM_NODES.findIndex((node) => node.title === activeAnalytics.title);
+  const ActiveAnalyticsIcon = activeAnalytics.icon;
+  const activeBuildFeature = BUILD_FEATURES[activeBuildFeatureIndex];
+  const ActiveBuildIcon = activeBuildFeature.icon;
+
+  useEffect(() => {
+    if (hasSelectedAnalyticsNode) {
+      return;
+    }
+
+    const rotation = window.setInterval(() => {
+      setActiveAnalyticsNode((currentTitle) => {
+        const currentIndex = ANALYTICS_BEAM_NODES.findIndex((node) => node.title === currentTitle);
+        const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % ANALYTICS_BEAM_NODES.length;
+
+        return ANALYTICS_BEAM_NODES[nextIndex].title;
+      });
+    }, 3600);
+
+    return () => window.clearInterval(rotation);
+  }, [hasSelectedAnalyticsNode]);
 
   return (
     <main className="relative bg-white overflow-hidden selection:bg-blue-100 selection:text-blue-900 font-sans">
       
       {/* --- HERO SECTION WITH GLOBE --- */}
       <section className="relative min-h-[95vh] flex flex-col items-center justify-center pt-32 pb-20 md:pt-48 md:pb-40 bg-porcelain overflow-hidden">
-        
-        {/* Direct COBE globe */}
         <div className="pointer-events-none absolute left-1/2 top-[47%] z-0 w-[760px] max-w-[132vw] -translate-x-1/2 -translate-y-1/2 opacity-55 md:w-[980px]">
           <Globe config={HERO_GLOBE_CONFIG} className="mx-auto" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_33%,rgba(247,251,255,0.92)_0%,rgba(247,251,255,0.72)_30%,rgba(247,251,255,0.22)_56%),radial-gradient(circle_at_50%_74%,rgba(247,251,255,0.18)_20%,rgba(247,251,255,0.94)_68%)]" />
@@ -261,29 +296,8 @@ export default function HomePage() {
             </p>
           </Reveal>
 
-          <div className="mt-12 grid w-full max-w-3xl grid-cols-3 gap-6 text-center">
-            {[
-              { value: 5, label: "software service lanes" },
-              { value: 4, label: "workflow systems delivered" },
-              { value: 1, label: "UK company focus" }
-            ].map((stat, index) => (
-              <BlurFade key={stat.label} delay={0.12 * index + 0.65} inView blur="10px" direction="up">
-                <div>
-                  <NumberTicker
-                    value={stat.value}
-                    delay={0.16 * index}
-                    className="text-4xl font-black tracking-tight text-ink sm:text-5xl"
-                  />
-                  <p className="mx-auto mt-3 max-w-36 text-[10px] font-black uppercase leading-relaxed tracking-[0.16em] text-slate-700 sm:text-xs">
-                    {stat.label}
-                  </p>
-                </div>
-              </BlurFade>
-            ))}
-          </div>
-
           <Reveal delay={0.8}>
-            <div className="mt-14 flex flex-col sm:flex-row items-center gap-6">
+            <div className="mt-12 flex flex-col sm:flex-row items-center gap-6">
               <Magnetic>
                 <Link href="/services" className="inline-flex h-16 items-center justify-center gap-3 rounded-full bg-ocean px-12 text-base font-extrabold text-white shadow-lg shadow-blue-500/25 transition-all hover:scale-105 hover:bg-blue-600 active:scale-95">
                   Explore services
@@ -305,16 +319,19 @@ export default function HomePage() {
       <section className="bg-white px-4 py-24 sm:px-6 md:py-32">
         <div className="mx-auto max-w-7xl">
           <Reveal>
-            <div className="max-w-4xl">
-              <p className="text-sm font-semibold text-slate-700">Our services</p>
-              <h2 className="mt-5 text-4xl font-extrabold leading-[1.05] tracking-tight text-ink display-heading md:text-6xl">
-                We simplify everything so your team performs better
+            <div className="mx-auto max-w-6xl text-center">
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-ocean/10 bg-ocean/5 px-4 py-1.5">
+                <LayoutDashboard className="h-4 w-4 text-ocean" />
+                <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-ocean">Our services</span>
+              </div>
+              <h2 className="text-5xl font-extrabold leading-[1] tracking-tight text-ink display-heading sm:text-6xl md:text-[5.4rem] lg:text-[5.9rem]">
+                We simplify everything <br /><span className="text-ocean">so your team performs better.</span>
               </h2>
             </div>
           </Reveal>
 
           <Reveal delay={0.12}>
-            <div className="mt-10 flex gap-5 overflow-x-auto pb-3 no-scrollbar md:h-[400px] md:overflow-hidden">
+            <div className="mt-16 flex gap-5 overflow-x-auto pb-3 no-scrollbar md:h-[400px] md:overflow-hidden">
               {HOME_SERVICE_BOXES.map((service, index) => {
                 const isActive = activeServiceIndex === index;
 
@@ -388,281 +405,204 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* --- STANDOUT FEATURES (Bento Grid) --- */}
+      {/* --- WHAT WE BUILD (Bento Grid) --- */}
       <section className="py-24 md:py-32 px-4 sm:px-6 max-w-7xl mx-auto">
         <div className="text-center mb-20 md:mb-32">
           <Reveal>
              <div className="inline-flex items-center gap-2 rounded-full bg-ocean/5 border border-ocean/10 px-4 py-1.5 mb-6">
-                <Activity className="h-4 w-4 text-ocean" />
-                <span className="text-[11px] font-bold text-ocean uppercase tracking-[0.2em]">Key Features</span>
+                <LayoutDashboard className="h-4 w-4 text-ocean" />
+                <span className="text-[11px] font-bold text-ocean uppercase tracking-[0.2em]">What We Build</span>
              </div>
              <h2 className="text-4xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">
-                Explore Our <br /><span className="text-ocean">Standout Features.</span>
+                Practical systems <br /><span className="text-ocean">for service teams.</span>
              </h2>
           </Reveal>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-12">
-          <Reveal className="md:col-span-2 lg:col-span-7">
-            <article className="group relative h-full min-h-[500px] overflow-hidden rounded-[2rem] border border-slate-100 bg-white p-6 sm:p-8 shadow-premium transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_10%,rgba(18,100,255,0.12),transparent_34%),linear-gradient(135deg,rgba(248,250,252,1),rgba(255,255,255,0.65))]" />
-              <div className="relative z-10 grid h-full gap-8 xl:grid-cols-[0.88fr_1.12fr]">
-                <div className="flex flex-col justify-between">
-                  <div>
-                    <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-ocean text-white shadow-lg shadow-blue-500/25">
-                      <Activity className="h-6 w-6" />
-                    </div>
-                    <p className="text-[11px] font-black uppercase tracking-[0.22em] text-ocean">Patient request engine</p>
-                    <h3 className="mt-4 text-3xl font-extrabold tracking-tight text-ink">Guided intake that captures the useful details first.</h3>
-                    <p className="mt-5 text-sm font-medium leading-7 text-slate-500">
-                      Service category, DOB, preferred language, visit type, timing, and contact consent are collected before the team starts follow-up.
-                    </p>
-                  </div>
-                  <Link href="/services/physiotherapy" className="mt-8 inline-flex w-fit items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-bold text-white transition hover:bg-ocean">
-                    Start request <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </div>
-
-                <div className="relative min-h-[360px] overflow-hidden rounded-[1.5rem] border border-slate-100 bg-slate-50 p-4 sm:p-5">
-                  <div className="absolute inset-0 tech-grid opacity-70" />
-                  <div className="relative z-10 overflow-hidden rounded-[1.25rem] border border-slate-100 bg-white shadow-soft-xl">
-                    <div className="flex items-center justify-between border-b border-slate-100 bg-white px-4 py-3">
-                      <div className="flex items-center gap-2">
-                        <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
-                        <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
-                        <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
-                      </div>
-                      <span className="rounded-full bg-ocean/10 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-ocean">
-                        Intake live
-                      </span>
-                    </div>
-
-                    <div className="p-4">
-                      <div className="mb-4 flex items-center justify-between rounded-2xl bg-slate-50 p-4">
-                        <div>
-                          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Request</p>
-                          <p className="mt-1 text-sm font-black text-ink">Home Visit Intake</p>
-                        </div>
-                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-ocean text-white shadow-lg shadow-blue-500/20">
-                          <Activity className="h-6 w-6" />
-                        </div>
-                      </div>
-
-                      <AnimatedList>
-                        {[
-                          ["Service", "Elderly mobility assessment", "Captured"],
-                          ["Visit type", "Home · SW1A postcode required", "Required"],
-                          ["Language", "Vietnamese preference", "Ready"],
-                          ["Consent", "3 legal acknowledgements", "Complete"],
-                        ].map(([label, value, status], index) => (
-                          <div
-                            key={label}
-                            className="grid grid-cols-[2.5rem_1fr_auto] items-center gap-3 rounded-2xl border border-slate-100 bg-white px-3 py-3 shadow-sm"
-                          >
-                            <span className={`flex h-10 w-10 items-center justify-center rounded-xl text-sm font-black ${
-                              index === 0 ? "bg-ocean text-white" : "bg-slate-50 text-ocean"
-                            }`}>
-                              0{index + 1}
-                            </span>
-                            <div className="min-w-0">
-                              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">{label}</p>
-                              <p className="mt-1 truncate text-sm font-black text-ink">{value}</p>
-                            </div>
-                            <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-[9px] font-black uppercase tracking-widest text-emerald-600">
-                              {status}
-                            </span>
-                          </div>
-                        ))}
-                      </AnimatedList>
-                    </div>
-                  </div>
-                </div>
+        <div className="grid grid-cols-1 gap-5 lg:grid-flow-dense lg:grid-cols-12">
+          <Reveal className="lg:col-span-5">
+            <article className="group relative flex min-h-[470px] flex-col overflow-hidden rounded-[2rem] bg-ocean p-8 text-white shadow-2xl shadow-blue-500/20 transition-all duration-500 lg:min-h-[490px]">
+              <div className="absolute inset-0 tech-grid opacity-30" />
+              <div className="absolute inset-x-8 bottom-14 top-40 rounded-[50%] border border-white/10 [transform:perspective(700px)_rotateX(62deg)]" />
+              <div className="absolute inset-x-14 bottom-20 top-44 rounded-[50%] border border-white/10 [transform:perspective(700px)_rotateX(62deg)]" />
+              <div className="relative z-10 mx-auto mb-7 flex h-16 w-16 items-center justify-center rounded-full bg-white text-ocean shadow-xl">
+                <ShieldCheck className="h-8 w-8" />
               </div>
+              <div className="relative z-10 mx-auto max-w-sm text-center">
+                <p className="text-[11px] font-black uppercase tracking-[0.24em] text-blue-100">Website development</p>
+                <h3 className="mt-4 text-3xl font-extrabold leading-tight tracking-tight">A sharper digital front door for your business.</h3>
+                <p className="mt-5 text-sm font-semibold leading-7 text-blue-50">
+                  Service pages, enquiry capture, and clear next steps built around the way your customers actually decide.
+                </p>
+              </div>
+              <Link href="/services" className="relative z-10 mx-auto mt-auto inline-flex h-12 items-center justify-center rounded-xl bg-white px-6 text-sm font-black text-ink shadow-lg transition hover:bg-blue-50 hover:text-ocean">
+                View website builds
+              </Link>
             </article>
           </Reveal>
 
-          <Reveal delay={0.1} className="md:col-span-2 lg:col-span-5">
-            <article className="group relative h-full min-h-[500px] overflow-hidden rounded-[2rem] border border-slate-100 bg-white p-6 text-ink shadow-premium transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl sm:p-8">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_10%,rgba(18,100,255,0.10),transparent_34%),linear-gradient(180deg,#ffffff,#f8fbff)]" />
+          <Reveal delay={0.08} className="lg:col-span-7">
+            <article className="relative grid min-h-[470px] overflow-hidden rounded-[2rem] border border-slate-100 bg-porcelain p-8 shadow-premium transition-all duration-500 hover:shadow-2xl md:grid-cols-[0.86fr_1.14fr] md:items-center md:gap-7 lg:min-h-[490px]">
               <div className="absolute inset-0 tech-grid opacity-60" />
-              <div className="relative z-20 flex h-full flex-col">
-                <div>
-                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-ocean text-white shadow-lg shadow-blue-500/20">
-                    <Workflow className="h-6 w-6" />
-                  </div>
-                  <p className="text-[11px] font-black uppercase tracking-[0.22em] text-ocean">Dispatch cockpit</p>
-                  <h3 className="mt-4 text-3xl font-extrabold tracking-tight text-ink">Status queue without scattered follow-up.</h3>
-                </div>
-
-                <div className="relative mt-8 h-64 overflow-hidden rounded-[1.5rem] border border-slate-100 bg-slate-50/80 shadow-inner">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(18,100,255,0.12),transparent_48%)]" />
-                  <div className="absolute inset-5 rounded-[1.25rem] border border-ocean/10 bg-white/30" />
-                  <AnimatedBeam
-                    className="opacity-90"
-                    path="M82 86 C132 92 164 142 204 178"
-                    duration={3.6}
-                    strokeWidth={4}
-                  />
-                  <AnimatedBeam
-                    className="opacity-90"
-                    path="M358 86 C308 92 276 142 236 178"
-                    duration={4}
-                    strokeWidth={4}
-                  />
-                  <AnimatedBeam
-                    className="opacity-80"
-                    path="M82 294 C132 284 164 238 204 202"
-                    duration={4.4}
-                    reverse
-                    strokeWidth={4}
-                  />
-                  <AnimatedBeam
-                    className="opacity-80"
-                    path="M358 294 C308 284 276 238 236 202"
-                    duration={4.8}
-                    reverse
-                    strokeWidth={4}
-                  />
-                  <div className="absolute left-1/2 top-1/2 z-20 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-3xl bg-white text-ocean shadow-2xl shadow-blue-500/15 ring-1 ring-ocean/10">
-                    <LayoutDashboard className="h-8 w-8" />
-                  </div>
-                  {[
-                    { label: "Intake", meta: "Pending", icon: ClipboardList, className: "left-7 top-8", tone: "bg-amber-100 text-amber-700" },
-                    { label: "Consent", meta: "Verified", icon: ShieldCheck, className: "right-7 top-8", tone: "bg-emerald-100 text-emerald-700" },
-                    { label: "Partner", meta: "Assigned", icon: UserCheck, className: "left-7 bottom-8", tone: "bg-ocean/10 text-ocean" },
-                    { label: "Email", meta: "Queued", icon: MailCheck, className: "right-7 bottom-8", tone: "bg-blue-100 text-ocean" },
-                  ].map((node) => (
-                    <div
-                      key={node.label}
-                      className={`absolute z-30 flex items-center gap-2 rounded-2xl border border-white/80 bg-white/95 px-3 py-2 shadow-lg shadow-blue-500/10 ${node.className}`}
-                    >
-                      <span className={`flex h-9 w-9 items-center justify-center rounded-xl ${node.tone}`}>
-                        <node.icon className="h-4 w-4" />
-                      </span>
-                      <span>
-                        <span className="block text-[10px] font-black uppercase tracking-widest text-slate-600">{node.label}</span>
-                        <span className="block text-xs font-black text-ink">{node.meta}</span>
-                      </span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-5 space-y-3">
-                  <AnimatedList>
-                    {["Pending", "Partner assigned", "Confirmed", "Completed"].map((status, index) => (
-                      <div key={status} className="flex items-center justify-between rounded-2xl border border-slate-100 bg-white px-4 py-3 shadow-sm transition group-hover:translate-x-1">
-                        <span className="text-sm font-bold">{status}</span>
-                        <span className="text-xs font-black text-ocean">0{index + 1}</span>
-                      </div>
-                    ))}
-                  </AnimatedList>
-                </div>
-              </div>
-            </article>
-          </Reveal>
-
-          <Reveal delay={0.15} className="lg:col-span-4">
-            <article className="group relative h-full min-h-[360px] overflow-hidden rounded-[2rem] border border-slate-100 bg-white p-6 sm:p-8 shadow-premium transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl">
-              <div className="grid h-full gap-8 sm:grid-cols-[1fr_0.9fr] sm:items-center lg:grid-cols-1 lg:items-start">
-                <div className="relative z-10">
-                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
-                    <Languages className="h-6 w-6" />
-                  </div>
-                  <p className="text-[11px] font-black uppercase tracking-[0.22em] text-emerald-600">Language readiness</p>
-                  <h3 className="mt-4 text-2xl font-extrabold tracking-tight text-ink">Built for UK families who need clear communication.</h3>
-                  <p className="mt-4 text-sm font-medium leading-6 text-slate-500">English-first now, structured for Chinese and Vietnamese expansion.</p>
-                </div>
-                <div className="relative z-10 lg:mt-auto">
-                  <AnimatedList>
-                    {[
-                      ["EN", "Default English intake"],
-                      ["ZH", "Chinese-ready labels"],
-                      ["VI", "Vietnamese preference"]
-                    ].map(([label, body], index) => (
-                      <div
-                        key={label}
-                        className={`flex items-center gap-3 rounded-2xl border border-slate-100 p-3 shadow-sm ${
-                          index === 2 ? "bg-ocean text-white" : "bg-slate-50 text-ink"
-                        }`}
-                      >
-                        <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-sm font-black ${index === 2 ? "bg-white/15" : "bg-white"}`}>{label}</span>
-                        <span className={`text-xs font-bold ${index === 2 ? "text-blue-50" : "text-slate-500"}`}>{body}</span>
-                      </div>
-                    ))}
-                  </AnimatedList>
-                </div>
-              </div>
-            </article>
-          </Reveal>
-
-          <Reveal delay={0.2} className="lg:col-span-4">
-            <article className="group relative h-full min-h-[360px] overflow-hidden rounded-[2rem] border border-slate-100 bg-porcelain p-6 sm:p-8 shadow-premium transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl">
-              <div className="absolute inset-0 opacity-40" style={{ backgroundImage: "repeating-linear-gradient(-45deg, #cbd5e1 0, #cbd5e1 1px, transparent 1px, transparent 14px)" }} />
               <div className="relative z-10">
-                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-ocean/10 text-ocean">
-                  <ShieldCheck className="h-6 w-6" />
+                <p className="text-[11px] font-black uppercase tracking-[0.24em] text-ocean">Workflow intelligence</p>
+                <h3 className="mt-4 text-3xl font-extrabold leading-tight tracking-tight text-ink">{activeBuildFeature.title}</h3>
+                <p className="mt-5 text-sm font-semibold leading-7 text-slate-600">
+                  {activeBuildFeature.body}
+                </p>
+              </div>
+
+              <div className="relative z-10 mt-8 overflow-hidden rounded-[1.5rem] border border-slate-100 bg-white p-5 shadow-2xl shadow-blue-500/10 md:mt-0">
+                <div className="mb-5 flex items-center gap-2">
+                  <span className="rounded-md bg-slate-50 px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-slate-500">Weekly report</span>
+                  <span className="rounded-md bg-ocean/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-ocean">Live</span>
                 </div>
-                <p className="text-[11px] font-black uppercase tracking-[0.22em] text-ocean">Trust boundaries</p>
-                <h3 className="mt-4 text-2xl font-extrabold tracking-tight text-ink">P2C coordinates. Qualified professionals deliver care.</h3>
-                <p className="mt-4 text-sm font-medium leading-6 text-slate-500">The UX keeps clinical liability, emergency advice, and HCPC/CSP trust language visible.</p>
-                <AnimatedList className="mt-8">
-                  {[
-                    ["Liability", "Coordinator language stays explicit"],
-                    ["Emergency", "Hard-stop acknowledgement retained"],
-                    ["Credentials", "HCPC/CSP assets stay customer supplied"],
-                  ].map(([title, body], index) => (
-                    <div key={title} className="flex items-center gap-3 rounded-2xl border border-emerald-100 bg-white/80 p-3 shadow-sm backdrop-blur">
-                      <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${index === 1 ? "bg-ocean/10 text-ocean" : "bg-emerald-50 text-emerald-600"}`}>
-                        <ShieldCheck className="h-5 w-5" />
+                <div className="flex items-start gap-3">
+                  <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl ${activeBuildFeature.accentClassName}`}>
+                    <ActiveBuildIcon className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <h4 className="text-xl font-black tracking-tight text-ink">{activeBuildFeature.reportTitle}</h4>
+                    <p className="mt-2 text-xs font-semibold leading-5 text-slate-500">{activeBuildFeature.reportBody}</p>
+                  </div>
+                </div>
+                <div className="mt-6 grid grid-cols-2 gap-3">
+                  <div className="rounded-2xl bg-slate-50 p-4">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Active lane</p>
+                    <div className="mt-4 flex items-center gap-3">
+                      <span className={`flex h-10 w-10 items-center justify-center rounded-full ${activeBuildFeature.accentClassName}`}>
+                        <ActiveBuildIcon className="h-5 w-5" />
                       </span>
                       <div>
-                        <p className="text-xs font-black uppercase tracking-widest text-slate-500">{title}</p>
-                        <p className="mt-1 text-xs font-medium leading-5 text-slate-500">{body}</p>
+                        <p className="text-sm font-black text-ink">{activeBuildFeature.label}</p>
+                        <p className="mt-0.5 text-[10px] font-black uppercase tracking-widest text-slate-400">{activeBuildFeature.status}</p>
                       </div>
                     </div>
-                  ))}
-                </AnimatedList>
+                  </div>
+                  <div className="rounded-2xl bg-slate-50 p-4">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">{activeBuildFeature.focus}</p>
+                    <div className="mt-5 h-4 overflow-hidden rounded-full bg-white ring-1 ring-slate-200">
+                      <div className="h-full rounded-full bg-ocean transition-all duration-500" style={{ width: activeBuildFeature.progress }} />
+                    </div>
+                    <p className="mt-3 text-xs font-black text-ocean">{activeBuildFeature.progress} ready</p>
+                  </div>
+                </div>
+                <Link href="/services" className="mt-5 flex h-12 items-center justify-center rounded-xl bg-ink text-sm font-black text-white transition hover:bg-ocean">
+                  View systems
+                </Link>
               </div>
             </article>
           </Reveal>
 
-          <Reveal delay={0.25} className="lg:col-span-4">
-            <article className="group relative h-full min-h-[360px] overflow-hidden rounded-[2rem] border border-slate-100 bg-white p-6 sm:p-8 shadow-premium transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl">
-              <div className="relative z-10">
-                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan/10 text-ocean">
-                  <LayoutDashboard className="h-6 w-6" />
+          <Reveal delay={0.12} className="lg:col-span-5">
+            <article className="relative flex min-h-[220px] flex-col justify-between overflow-hidden rounded-[1.5rem] border border-slate-100 bg-porcelain p-6 shadow-premium lg:min-h-[390px]">
+              <div className="flex items-start justify-between gap-5">
+                <div>
+                  <h3 className="text-xl font-extrabold leading-tight text-ink">Built around five service lanes</h3>
+                  <p className="mt-2 text-sm font-semibold text-slate-500">Websites, bookings, automation, CRM, and partner workflows.</p>
                 </div>
-                <p className="text-[11px] font-black uppercase tracking-[0.22em] text-ocean">Mini CRM</p>
-                <h3 className="mt-4 text-2xl font-extrabold tracking-tight text-ink">Contact context lands with the booking.</h3>
-                <p className="mt-4 text-sm font-medium leading-6 text-slate-500">Patient details, enquiry source, language, and status stay visible for internal follow-up.</p>
-                <div className="mt-7 overflow-hidden rounded-2xl border border-slate-100 bg-slate-50 p-3 shadow-sm">
-                  <AnimatedList>
-                    {[
-                      ["Home Visit Intake", "SW1A · Vietnamese · Pending", "HV", "bg-ocean text-white"],
-                      ["Language preference", "Chinese labels ready for follow-up", "ZH", "bg-emerald-50 text-emerald-600"],
-                      ["Consent record", "Emergency acknowledgement complete", "OK", "bg-blue-50 text-ocean"],
-                      ["Confirmation email", "Queued after saved request", "@", "bg-slate-100 text-slate-500"]
-                    ].map(([title, meta, badge, badgeClass]) => (
-                      <div key={title} className="flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-3 shadow-sm">
-                        <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-xs font-black ${badgeClass}`}>
-                          {badge}
-                        </span>
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate text-xs font-black text-ink">{title}</p>
-                          <p className="mt-1 truncate text-[10px] font-bold text-slate-400">{meta}</p>
-                        </div>
-                        <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
-                      </div>
-                    ))}
-                  </AnimatedList>
+                <div className="flex -space-x-3">
+                {BUILD_FEATURES.map((feature, index) => {
+                  const Icon = feature.icon;
+
+                  return (
+                    <span key={index} className={`flex h-12 w-12 items-center justify-center rounded-full border-4 border-porcelain ${
+                      index === 0 ? "bg-ocean text-white" : index === 1 ? "bg-emerald-100 text-emerald-700" : index === 2 ? "bg-amber-100 text-amber-700" : "bg-slate-900 text-white"
+                    }`}>
+                      <Icon className="h-5 w-5" />
+                    </span>
+                  );
+                })}
                 </div>
               </div>
+              <div className="mt-8 grid grid-cols-2 gap-3">
+                {BUILD_FEATURES.map((feature, index) => (
+                  <button
+                    key={feature.label}
+                    type="button"
+                    aria-pressed={activeBuildFeatureIndex === index}
+                    onClick={() => setActiveBuildFeatureIndex(index)}
+                    className={`rounded-2xl border px-4 py-3 text-left text-xs font-black uppercase tracking-widest transition focus:outline-none focus-visible:ring-2 focus-visible:ring-ocean/40 ${
+                      activeBuildFeatureIndex === index ? "border-ocean bg-ocean text-white shadow-lg shadow-blue-500/20" : "border-slate-100 bg-white/80 text-slate-600 hover:border-ocean/25 hover:text-ocean"
+                  }`}>
+                    {feature.label}
+                  </button>
+                ))}
+              </div>
+            </article>
+          </Reveal>
+
+          <Reveal delay={0.16} className="lg:col-span-4">
+            <article className="relative flex min-h-[370px] flex-col items-center justify-center overflow-hidden rounded-[2rem] border border-slate-100 bg-porcelain p-8 text-center shadow-premium transition-all duration-500 hover:shadow-2xl">
+              <div className="absolute inset-0 text-slate-300/40 [font-family:monospace] text-sm leading-8">
+                {Array.from({ length: 11 }).map((_, row) => (
+                  <div key={row} className="whitespace-nowrap">
+                    {"01 capture route update CRM booking email partner ".slice(row, row + 42)}
+                  </div>
+                ))}
+              </div>
+              <div className="relative z-10 mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-ocean text-white shadow-2xl shadow-blue-500/25">
+                <Workflow className="h-9 w-9" />
+              </div>
+              <h3 className="relative z-10 text-3xl font-extrabold tracking-tight text-ink">Booking workflow hub</h3>
+              <p className="relative z-10 mt-4 max-w-xs text-sm font-semibold leading-7 text-slate-600">
+                Intake, rules, owner assignment, customer confirmation, and internal status in one operating path.
+              </p>
+              <Link href="/services" className="relative z-10 mt-7 inline-flex h-12 items-center justify-center rounded-xl bg-ink px-6 text-sm font-black text-white transition hover:bg-ocean">
+                Get started
+              </Link>
+            </article>
+          </Reveal>
+
+          <Reveal delay={0.2} className="lg:col-span-3">
+            <article className="relative min-h-[252px] overflow-hidden rounded-[2rem] border border-slate-100 bg-porcelain p-7 text-center shadow-premium transition-all duration-500 hover:shadow-2xl lg:min-h-[390px]">
+              <div className="mx-auto mb-5 grid h-28 w-28 grid-cols-5 gap-1 rounded-2xl bg-white p-3 shadow-lg">
+                {Array.from({ length: 25 }).map((_, index) => (
+                  <span key={index} className={`rounded-[2px] ${index % 3 === 0 || index % 7 === 0 ? "bg-ink" : "bg-transparent"}`} />
+                ))}
+              </div>
+              <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-ocean text-white">
+                <QrCode className="h-6 w-6" />
+              </div>
+              <h3 className="text-xl font-extrabold text-ink">Share with partners</h3>
+              <p className="mt-3 text-sm font-semibold leading-6 text-slate-500">Create clear handoff links for partner teams and internal reviewers.</p>
+            </article>
+          </Reveal>
+
+          <Reveal delay={0.24} className="lg:col-span-8">
+            <article className="relative min-h-[252px] overflow-hidden rounded-[2rem] border border-slate-100 bg-porcelain p-7 shadow-premium transition-all duration-500 hover:shadow-2xl">
+              <div className="absolute -left-8 -top-8 h-24 w-24 rounded-full bg-ocean/10" />
+              <div className="absolute -bottom-8 -right-8 h-24 w-24 rounded-full bg-emerald-500/10" />
+              <h3 className="relative z-10 max-w-xs text-2xl font-extrabold leading-tight text-ink">Integrate with the tools already in your business.</h3>
+              <div className="relative z-10 mt-8 grid grid-cols-4 gap-4">
+                {[
+                  { label: "Form", icon: FileText, className: "rotate-[-12deg] bg-ocean text-white" },
+                  { label: "Email", icon: MailCheck, className: "rotate-[8deg] bg-emerald-100 text-emerald-700" },
+                  { label: "CRM", icon: Database, className: "rotate-[-6deg] bg-slate-900 text-white" },
+                  { label: "API", icon: Puzzle, className: "rotate-[12deg] bg-blue-100 text-ocean" },
+                ].map((item) => (
+                  <span key={item.label} className={`flex aspect-square items-center justify-center rounded-2xl shadow-lg transition group-hover:rotate-0 ${item.className}`}>
+                    <item.icon className="h-6 w-6" />
+                    <span className="sr-only">{item.label}</span>
+                  </span>
+                ))}
+              </div>
+            </article>
+          </Reveal>
+
+          <Reveal delay={0.28} className="lg:col-span-4">
+            <article className="relative flex min-h-[252px] flex-col items-center justify-center overflow-hidden rounded-[2rem] border border-slate-100 bg-porcelain p-7 text-center shadow-premium transition-all duration-500 hover:shadow-2xl lg:min-h-[327px]">
+              <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-ocean text-white shadow-xl shadow-blue-500/20">
+                <Bell className="h-7 w-7" />
+              </div>
+              <h3 className="text-xl font-extrabold text-ink">Instant updates</h3>
+              <p className="mt-3 text-sm font-semibold leading-6 text-slate-500">Notify customers and internal owners when the workflow moves.</p>
             </article>
           </Reveal>
         </div>
       </section>
 
-      {/* --- ANALYTICS (Reference Phone Orbit) --- */}
+      {/* --- DELIVERY PROCESS (Reference Phone Orbit) --- */}
       <section className="relative overflow-hidden bg-porcelain px-4 py-24 text-ink sm:px-6 md:py-32">
         <div className="absolute inset-0 tech-grid opacity-70" />
         <div className="absolute left-1/2 top-1/2 h-[720px] w-[720px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-ocean/10 blur-[120px]" />
@@ -672,10 +612,10 @@ export default function HomePage() {
             <div className="text-center">
               <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-ocean/5 border border-ocean/10 px-4 py-1.5">
                 <LayoutDashboard className="h-4 w-4 text-ocean" />
-                <span className="text-[11px] font-bold text-ocean uppercase tracking-[0.2em]">Operational Analytics</span>
+                <span className="text-[11px] font-bold text-ocean uppercase tracking-[0.2em]">Delivery Process</span>
               </div>
               <h2 className="text-4xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">
-                Operational signals, <br /><span className="text-ocean">centered around dispatch.</span>
+                From messy workflow <br /><span className="text-ocean">to working system.</span>
               </h2>
             </div>
           </Reveal>
@@ -703,34 +643,55 @@ export default function HomePage() {
                         </div>
                         <div className="rounded-[1.6rem] border border-slate-100 bg-white p-5 shadow-premium">
                           <div className="mb-5 flex items-center justify-between">
-                            <p className="text-sm font-black">Dispatch</p>
-                            <span className="rounded-full bg-emerald-50 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-emerald-600">Synced</span>
+                            <p className="text-sm font-black">Project flow</p>
+                            <span className="rounded-full bg-emerald-50 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-emerald-600">
+                              {hasSelectedAnalyticsNode ? "Selected" : "Auto"}
+                            </span>
                           </div>
-                          {[
-                            ["Request", "Home Visit", "SW1A"],
-                            ["Queue", "Partner", "Assigned"],
-                          ].map(([label, title, meta]) => (
-                            <div key={label} className="mb-4 rounded-2xl border border-slate-100 bg-slate-50 p-4">
-                              <p className="text-[10px] font-black uppercase tracking-widest text-slate-600">{label}</p>
-                              <div className="mt-2 flex items-center justify-between">
-                                <span className="text-base font-black">{title}</span>
-                                <span className="text-xs font-bold text-ocean">{meta}</span>
+                          <div className="rounded-2xl border border-ocean/15 bg-ocean/5 p-4">
+                            <div className="mb-4 flex items-start gap-3">
+                              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-ocean text-white shadow-lg shadow-blue-500/20">
+                                <ActiveAnalyticsIcon className="h-5 w-5" />
+                              </span>
+                              <div>
+                                <p className="text-[10px] font-black uppercase tracking-widest text-ocean">Active step</p>
+                                <p className="mt-1 text-base font-black leading-tight">{activeAnalytics.title}</p>
                               </div>
                             </div>
-                          ))}
+                            <p className="text-xs font-semibold leading-5 text-slate-600">{activeAnalytics.body}</p>
+                            <div className="mt-5 h-2 overflow-hidden rounded-full bg-white ring-1 ring-slate-100">
+                              <div
+                                className="h-full rounded-full bg-ocean transition-all duration-700"
+                                style={{ width: `${((activeAnalyticsIndex + 1) / ANALYTICS_BEAM_NODES.length) * 100}%` }}
+                              />
+                            </div>
+                          </div>
+                          <div className="mt-4 space-y-3">
+                            {ANALYTICS_BEAM_NODES.map((node, index) => (
+                              <div key={node.title} className={`rounded-2xl border px-4 py-3 transition ${activeAnalytics.title === node.title ? "border-ocean/20 bg-blue-50" : "border-slate-100 bg-slate-50"}`}>
+                                <div className="flex items-center justify-between gap-3">
+                                  <p className="text-xs font-black text-ink">{node.title}</p>
+                                  <span className={`h-2.5 w-2.5 rounded-full ${activeAnalytics.title === node.title ? "bg-ocean" : "bg-slate-300"}`} />
+                                </div>
+                                <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-slate-500">
+                                  Step {String(index + 1).padStart(2, "0")}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
                           <div className="mt-5 grid grid-cols-2 gap-3">
                             <div className="rounded-2xl bg-ocean/10 p-4">
-                              <p className="text-2xl font-black text-ocean">63%</p>
-                              <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-slate-700">Home visits</p>
+                              <p className="text-2xl font-black text-ocean">{String(activeAnalyticsIndex + 1).padStart(2, "0")}</p>
+                              <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-slate-700">Current step</p>
                             </div>
                             <div className="rounded-2xl bg-emerald-50 p-4">
-                              <p className="text-2xl font-black text-emerald-600">100%</p>
-                              <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-slate-700">Consent</p>
+                              <p className="text-2xl font-black text-emerald-600">{String(ANALYTICS_BEAM_NODES.length).padStart(2, "0")}</p>
+                              <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-slate-700">Process steps</p>
                             </div>
                           </div>
                         </div>
                         <div className="mt-auto rounded-2xl bg-ocean px-5 py-4 text-center text-sm font-bold text-white shadow-lg shadow-blue-500/20">
-                          Review workflow
+                          Review launch path
                         </div>
                       </div>
                     </Iphone>
@@ -739,27 +700,15 @@ export default function HomePage() {
               </ParallaxStage>
             </div>
 
-            <div className="pointer-events-none absolute left-1/2 top-[42%] z-30 hidden w-52 -translate-x-[-92px] -translate-y-1/2 rounded-[1.5rem] border border-white/80 bg-white/95 p-4 shadow-2xl shadow-blue-500/15 backdrop-blur md:block">
-              <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-ocean text-white shadow-lg shadow-blue-500/20">
-                  <Workflow className="h-6 w-6" />
-                </div>
-                <div>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-600">Beam hub</p>
-                  <p className="text-sm font-black text-ink">{activeAnalytics.title}</p>
-                </div>
-              </div>
-              <p className="mt-4 text-xs font-semibold leading-5 text-slate-700">
-                {activeAnalytics.body}
-              </p>
-            </div>
-
             <div className="grid gap-6 pt-[620px] md:block md:pt-0">
               {ANALYTICS_BEAM_NODES.map((item) => (
                 <button
                   key={item.title}
                   type="button"
-                  onClick={() => setActiveAnalyticsNode(item.title)}
+                  onClick={() => {
+                    setHasSelectedAnalyticsNode(true);
+                    setActiveAnalyticsNode(item.title);
+                  }}
                   aria-pressed={activeAnalyticsNode === item.title}
                   className={`group flex items-center gap-4 rounded-2xl border p-5 text-left shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-premium focus:outline-none focus-visible:ring-2 focus-visible:ring-ocean/40 md:absolute md:w-80 ${item.side === "left" ? "md:flex-row-reverse md:text-right" : "md:flex-row"} ${item.nodeClassName} ${activeAnalyticsNode === item.title ? "border-ocean/25 bg-white shadow-premium" : "border-slate-100 bg-white/95 shadow-md"}`}
                 >
@@ -777,42 +726,42 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* --- VISION (Detailed Section) --- */}
+      {/* --- PURPOSE (Detailed Section) --- */}
       <section className="py-24 md:py-48 px-4 sm:px-6 max-w-7xl mx-auto">
         <div className="text-center mb-20 md:mb-32">
            <Reveal>
               <div className="inline-flex items-center gap-2 rounded-full bg-ocean/5 border border-ocean/10 px-4 py-1.5 mb-6">
-                 <ShieldCheck className="h-4 w-4 text-ocean" />
-                 <span className="text-[11px] font-bold text-ocean uppercase tracking-[0.2em]">The Vision</span>
+                 <Workflow className="h-4 w-4 text-ocean" />
+                 <span className="text-[11px] font-bold text-ocean uppercase tracking-[0.2em]">Company Purpose</span>
               </div>
               <h2 className="text-4xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">
-                 Experience The <br /><span className="text-ocean">Future of Care.</span>
+                 Digital infrastructure <br /><span className="text-ocean">that fits real work.</span>
               </h2>
            </Reveal>
         </div>
 
         <div className="bg-porcelain/50 border border-slate-100 rounded-[4rem] p-12 md:p-20 grid lg:grid-cols-[1.2fr_1fr] gap-20 items-center overflow-hidden relative group">
-           <BorderBeam colorFrom="#1264ff" colorTo="#10b981" duration={8} borderWidth={2} />
+           <BorderBeam colorFrom="var(--ocean)" colorTo="var(--mint)" duration={8} borderWidth={2} />
            <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
            
            <Reveal className="relative z-10">
               <div className="bg-white rounded-[2.5rem] p-10 border border-slate-100 shadow-premium flex flex-col items-center relative overflow-hidden transition-transform duration-500 hover:scale-[1.02]">
                  <div className="absolute top-0 right-0 w-64 h-64 bg-ocean/5 rounded-full blur-[80px] pointer-events-none" />
                  <div className="flex justify-between items-center w-full mb-10 relative z-10">
-                    <p className="text-lg font-bold text-ink">Care loop</p>
-                    <div className="h-8 w-28 bg-slate-50 rounded-lg border border-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-400">Phase 1 MVP</div>
+                    <p className="text-lg font-bold text-ink">Operating loop</p>
+                    <div className="h-8 w-28 bg-slate-50 rounded-lg border border-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-400">Service stack</div>
                  </div>
                  <div className="relative z-10 flex h-64 w-64 items-center justify-center">
                     <AnimatedCircularProgressBar
                       value={75}
                       max={100}
                       min={0}
-                      gaugePrimaryColor="#1264ff"
-                      gaugeSecondaryColor="#dbeafe"
+                      gaugePrimaryColor="var(--ocean)"
+                      gaugeSecondaryColor="color-mix(in srgb, var(--ocean) 14%, white)"
                       className="size-64 text-4xl font-black text-ink"
                     />
                     <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center pt-14">
-                       <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Core handoffs</p>
+                       <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Core workflow</p>
                     </div>
                  </div>
                  <div className="grid grid-cols-2 gap-10 mt-10 w-full relative z-10">
@@ -820,19 +769,19 @@ export default function HomePage() {
                        <div className="h-3 w-3 rounded-full bg-ocean animate-pulse" />
                        <div>
                           <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Public</p>
-                          <p className="text-base font-bold text-ink">Request</p>
+                          <p className="text-base font-bold text-ink">Enquiry</p>
                        </div>
                     </div>
                     <div className="flex items-center gap-3">
                        <div className="h-3 w-3 rounded-full bg-emerald-500 animate-pulse" style={{ animationDelay: '1s' }} />
                        <div>
                           <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Internal</p>
-                          <p className="text-base font-bold text-ink">Dispatch</p>
+                          <p className="text-base font-bold text-ink">Action</p>
                        </div>
                     </div>
                  </div>
                  <div className="mt-12 grid w-full grid-cols-2 gap-3 relative z-10">
-                    {["Request", "Validate", "Route", "Confirm"].map((step) => (
+                    {["Capture", "Qualify", "Route", "Update"].map((step) => (
                       <div key={step} className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3 text-center text-xs font-black uppercase tracking-widest text-slate-500">
                         {step}
                       </div>
@@ -844,18 +793,18 @@ export default function HomePage() {
            <div className="space-y-12 relative z-10">
               <Reveal delay={0.2}>
                  <div className="text-sm font-bold text-ocean uppercase tracking-widest mb-4 flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-ocean animate-ping" /> Scalable coordination infrastructure
+                    <div className="h-1.5 w-1.5 rounded-full bg-ocean animate-ping" /> Practical digital infrastructure
                  </div>
-                 <h3 className="text-4xl font-bold text-ink tracking-tight">Start with physiotherapy, then reuse the operating model.</h3>
+                 <h3 className="text-4xl font-bold text-ink tracking-tight">Build the tools your service business actually needs.</h3>
                  <p className="mt-6 text-slate-500 text-lg leading-relaxed font-medium">
-                    The requirement is not just a booking form. It is a reusable customer-to-partner layer: public intake, rule-based validation, secure internal queue, status tracking, and follow-up visibility.
+                    P2C Growth focuses on the practical systems behind a UK service business: a clear website, a reliable enquiry path, useful automation, visible customer records, and partner handoff where needed.
                  </p>
                  <div className="mt-10 space-y-4">
                     {[
-                      "Centralize enquiries that would otherwise arrive through calls, email, and messaging.",
-                      "Protect Home Visit operations with postcode and address requirements before dispatch.",
-                      "Keep P2C positioned as the coordinator while HCPC/CSP professionals handle clinical delivery.",
-                      "Prepare the platform for future CRM and partner-routing workflows without adding Phase 1 vendor portals."
+                      "Centralise enquiries that would otherwise arrive through calls, email, forms, and messaging.",
+                      "Give teams a simple status view so every request has an owner and next step.",
+                      "Automate useful customer and internal updates without hiding the human service experience.",
+                      "Prepare the platform for future CRM and partner-routing workflows without overbuilding early."
                     ].map((item) => (
                     <div key={item} className="flex items-center gap-4 bg-white/50 backdrop-blur-sm p-3 rounded-2xl border border-slate-100 shadow-sm">
                        <div className="h-8 w-8 rounded-full bg-ocean/10 text-ocean flex items-center justify-center shrink-0">
@@ -870,69 +819,47 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* --- TESTIMONIALS --- */}
+      {/* --- WHY TEAMS CHOOSE P2C GROWTH --- */}
       <section className="py-24 md:py-32 overflow-hidden bg-white relative">
         <div className="text-center mb-20 px-4 sm:px-6 max-w-7xl mx-auto relative z-20">
            <Reveal>
-              <div className="inline-flex items-center gap-2 rounded-full bg-slate-50 border border-slate-100 px-4 py-1.5 mb-6">
-                 <MessageSquareQuote className="h-4 w-4 text-slate-400" />
-                 <span className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em]">Wall of Love</span>
+              <div className="inline-flex items-center gap-2 rounded-full bg-ocean/5 border border-ocean/10 px-4 py-1.5 mb-6">
+                 <MessageSquareQuote className="h-4 w-4 text-ocean" />
+                 <span className="text-[11px] font-bold text-ocean uppercase tracking-[0.2em]">Why teams choose P2C Growth</span>
               </div>
-              <h2 className="text-4xl md:text-[4.5rem] font-extrabold text-ink tracking-tight display-heading">Trusted by <br /><span className="text-ocean">Elite Clinics.</span></h2>
+              <h2 className="text-5xl md:text-[5.2rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">Less manual work, <br /><span className="text-ocean">clearer operations.</span></h2>
            </Reveal>
         </div>
 
-        <div className="relative flex flex-col items-center justify-center overflow-hidden py-10 w-full max-w-[100vw]">
-          
-          <Marquee pauseOnHover className="[--duration:40s]">
-             {home.testimonials.slice(0, Math.ceil(home.testimonials.length / 2)).map((t, i) => (
-                <div key={i} className="mx-4 flex w-[400px] flex-col justify-between bg-porcelain rounded-[2rem] p-8 border border-slate-100 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-premium relative overflow-hidden group">
-                   <div className="absolute top-0 right-0 w-32 h-32 bg-ocean/5 rounded-full blur-3xl group-hover:bg-ocean/10 transition-colors" />
-                   <div className="relative z-10 flex gap-1 mb-6">
-                      {[1, 2, 3, 4, 5].map(s => <span key={s} className="text-ocean text-lg">★</span>)}
-                   </div>
-                   <p className="relative z-10 text-ink text-base leading-relaxed font-semibold italic flex-1">
-                      &quot;{t.quote}&quot;
-                   </p>
-                   <div className="relative z-10 mt-8 pt-6 border-t border-slate-200/50 flex items-center gap-4">
-                      <div className="h-12 w-12 rounded-full bg-white shadow-sm flex items-center justify-center shrink-0">
-                         <UserCheck className="h-5 w-5 text-ocean" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold text-ink">{t.name}</p>
-                        <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-0.5">{t.role}</p>
-                      </div>
-                   </div>
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-5 px-4 sm:px-6 md:grid-cols-3">
+          {[
+            {
+              icon: Monitor,
+              title: "One clear digital front door",
+              body: "Bring service pages, enquiry capture, booking requests, and contact routes into a website customers can understand quickly.",
+            },
+            {
+              icon: Workflow,
+              title: "Workflow before software",
+              body: "Start with how the team actually works, then build screens and automation around the real operating path.",
+            },
+            {
+              icon: LayoutDashboard,
+              title: "Simple systems teams can run",
+              body: "Keep customer records, ownership, status, and partner context visible without forcing a heavy enterprise tool too early.",
+            },
+          ].map((item, index) => (
+            <Reveal key={item.title} delay={index * 0.1}>
+              <article className="group relative h-full overflow-hidden rounded-[2rem] border border-slate-100 bg-porcelain p-8 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-premium">
+                <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-ocean/5 blur-3xl transition-colors group-hover:bg-ocean/10" />
+                <div className="relative z-10 mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-ocean shadow-sm">
+                  <item.icon className="h-6 w-6" />
                 </div>
-             ))}
-          </Marquee>
-
-          <Marquee reverse pauseOnHover className="[--duration:40s] mt-8">
-             {home.testimonials.slice(Math.ceil(home.testimonials.length / 2)).map((t, i) => (
-                <div key={i + 100} className="mx-4 flex w-[400px] flex-col justify-between bg-porcelain rounded-[2rem] p-8 border border-slate-100 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-premium relative overflow-hidden group">
-                   <div className="absolute bottom-0 left-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-3xl group-hover:bg-emerald-500/10 transition-colors" />
-                   <div className="relative z-10 flex gap-1 mb-6">
-                      {[1, 2, 3, 4, 5].map(s => <span key={s} className="text-ocean text-lg">★</span>)}
-                   </div>
-                   <p className="relative z-10 text-ink text-base leading-relaxed font-semibold italic flex-1">
-                      &quot;{t.quote}&quot;
-                   </p>
-                   <div className="relative z-10 mt-8 pt-6 border-t border-slate-200/50 flex items-center gap-4">
-                      <div className="h-12 w-12 rounded-full bg-white shadow-sm flex items-center justify-center shrink-0">
-                         <UserCheck className="h-5 w-5 text-emerald-500" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold text-ink">{t.name}</p>
-                        <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-0.5">{t.role}</p>
-                      </div>
-                   </div>
-                </div>
-             ))}
-          </Marquee>
-
-          {/* Strong Fade Gradients to hide the edges perfectly */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-[15%] bg-gradient-to-r from-white via-white/80 to-transparent z-10"></div>
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-[15%] bg-gradient-to-l from-white via-white/80 to-transparent z-10"></div>
+                <h3 className="relative z-10 text-2xl font-extrabold tracking-tight text-ink">{item.title}</h3>
+                <p className="relative z-10 mt-5 text-sm font-semibold leading-7 text-slate-600">{item.body}</p>
+              </article>
+            </Reveal>
+          ))}
         </div>
       </section>
 
@@ -950,16 +877,16 @@ export default function HomePage() {
                     <div className="rounded-[2rem] border border-white/20 bg-white/15 p-4 text-left text-white shadow-2xl backdrop-blur-xl">
                       <div className="mb-5 flex items-center justify-between">
                         <div>
-                          <p className="text-[10px] font-black uppercase tracking-[0.24em] text-blue-100">Public intake</p>
-                          <p className="mt-1 text-xl font-black">Request saved</p>
+                          <p className="text-[10px] font-black uppercase tracking-[0.24em] text-blue-100">Website enquiry</p>
+                          <p className="mt-1 text-xl font-black">Request captured</p>
                         </div>
                         <span className="rounded-full bg-white px-3 py-1 text-[10px] font-black uppercase tracking-widest text-ocean">Live</span>
                       </div>
                       <div className="space-y-3">
                         {[
-                          ["Service", "Elderly mobility"],
-                          ["Visit", "Home · SW1A"],
-                          ["Language", "Vietnamese"],
+                          ["Service", "Booking workflow"],
+                          ["Source", "Website form"],
+                          ["Next step", "Discovery call"],
                         ].map(([label, value]) => (
                           <div key={label} className="rounded-2xl border border-white/15 bg-white/15 p-4">
                             <p className="text-[10px] font-black uppercase tracking-widest text-blue-100">{label}</p>
@@ -971,17 +898,17 @@ export default function HomePage() {
                   </MotionDiv>
 
                   <div className="order-1 lg:order-2">
-                    <p className="mb-5 text-[11px] font-black uppercase tracking-[0.24em] text-blue-100">Local review milestone</p>
+                    <p className="mb-5 text-[11px] font-black uppercase tracking-[0.24em] text-blue-100">Start the conversation</p>
                     <h2 className="text-4xl md:text-7xl font-extrabold text-white tracking-tight leading-[1] display-heading">
-                      Ready to launch <br />your operations?
+                      Ready to improve <br />your digital workflow?
                     </h2>
                     <p className="mt-8 text-lg md:text-xl text-blue-100 max-w-xl font-medium">
-                      Start with the request engine, then connect Supabase, Resend, and admin credentials when the production handoff is ready.
+                      Talk to P2C Growth about your website, booking workflow, automation, CRM system, or customer-partner platform.
                     </p>
                     <div className="mt-10 flex flex-col gap-4 sm:flex-row lg:justify-start">
                       <Magnetic>
-                        <Link href="/services/physiotherapy" className="inline-flex h-16 items-center justify-center gap-3 rounded-full bg-white px-12 text-base font-extrabold text-ocean shadow-xl transition-all hover:scale-105 active:scale-95">
-                          Get Started Now
+                        <Link href="/contact" className="inline-flex h-16 items-center justify-center gap-3 rounded-full bg-white px-12 text-base font-extrabold text-ocean shadow-xl transition-all hover:scale-105 active:scale-95">
+                          Contact P2C Growth
                           <ArrowRight className="h-5 w-5" />
                         </Link>
                       </Magnetic>
@@ -992,22 +919,22 @@ export default function HomePage() {
                     <div className="rounded-[2rem] border border-white/20 bg-white p-4 text-left shadow-2xl">
                       <div className="mb-5 flex items-center justify-between">
                         <div>
-                          <p className="text-[10px] font-black uppercase tracking-[0.24em] text-slate-400">Admin dispatch</p>
-                          <p className="mt-1 text-xl font-black text-ink">Queue cockpit</p>
+                          <p className="text-[10px] font-black uppercase tracking-[0.24em] text-slate-400">Internal view</p>
+                          <p className="mt-1 text-xl font-black text-ink">Workflow board</p>
                         </div>
-                        <span className="rounded-full bg-emerald-50 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-emerald-600">Assigned</span>
+                        <span className="rounded-full bg-emerald-50 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-emerald-600">Active</span>
                       </div>
                       <div className="overflow-hidden rounded-2xl border border-slate-100">
                         {[
-                          ["Pending", "02"],
-                          ["Partner assigned", "01"],
-                          ["Confirmed", "03"],
+                          ["New enquiry", "02"],
+                          ["Owner assigned", "01"],
+                          ["Customer updated", "03"],
                           ["Completed", "04"],
                         ].map(([status, count]) => (
                           <div key={status} className="flex items-center justify-between border-b border-slate-100 bg-slate-50/70 px-4 py-3 last:border-b-0">
                             <div>
                               <p className="text-sm font-black text-ink">{status}</p>
-                              <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-400">Physio workflow</p>
+                              <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-400">Service workflow</p>
                             </div>
                             <span className="text-lg font-black text-ocean">{count}</span>
                           </div>
@@ -1023,34 +950,46 @@ export default function HomePage() {
       </section>
 
       {/* --- FAQ SECTION --- */}
-      <section className="py-24 md:py-32 px-4 sm:px-6 max-w-4xl mx-auto">
+      <section className="py-24 md:py-32 px-4 sm:px-6 max-w-5xl mx-auto">
         <div className="text-center mb-16">
            <Reveal>
-              <div className="inline-flex items-center gap-2 rounded-full bg-slate-50 border border-slate-100 px-4 py-1.5 mb-6">
-                 <MessageSquareQuote className="h-4 w-4 text-slate-400" />
-                 <span className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em]">FAQ</span>
+              <div className="inline-flex items-center gap-2 rounded-full bg-ocean/5 border border-ocean/10 px-4 py-1.5 mb-6">
+                 <MessageSquareQuote className="h-4 w-4 text-ocean" />
+                 <span className="text-[11px] font-bold text-ocean uppercase tracking-[0.2em]">FAQ</span>
               </div>
-              <h2 className="text-4xl md:text-6xl font-extrabold text-ink tracking-tight display-heading">Frequently Asked <span className="text-ocean">Questions.</span></h2>
+              <h2 className="text-5xl md:text-[4.8rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">Frequently Asked <span className="text-ocean">Questions.</span></h2>
            </Reveal>
         </div>
         
-        <div className="space-y-4">
-           {[
-             { q: "How often should I review my operational data?", a: "We recommend reviewing your data at least once a week. Regular check-ins help you stay on top of dispatch efficiency and partner coordination." },
-             { q: "What kind of clinical data can I track?", a: "You can track patient intake, consent timestamps, language preferences, and treatment categories securely." },
-             { q: "Can I manage partner matching automatically?", a: "Yes, our system includes smart routing logic to match patients with the most appropriate professional partners." }
-           ].map((item, i) => (
+        <div className="mx-auto max-w-4xl space-y-4">
+           {FAQ_ITEMS.map((item, i) => {
+             const isOpen = openFaqIndex === i;
+
+             return (
              <Reveal key={i} delay={0.1 * i}>
-                <div className="bg-white border border-slate-100 rounded-3xl p-8 hover:border-ocean/30 transition-colors group cursor-pointer">
-                   <div className="flex justify-between items-center gap-6">
-                      <p className="text-lg font-bold text-ink">{item.q}</p>
-                      <div className="h-8 w-8 rounded-full border border-slate-100 flex items-center justify-center group-hover:bg-ocean group-hover:text-white transition-all">
-                         <Plus className="h-4 w-4" />
+                <div className={`bg-white border rounded-3xl transition-colors group ${isOpen ? "border-ocean/30" : "border-slate-100 hover:border-ocean/30"}`}>
+                   <button
+                     type="button"
+                     aria-expanded={isOpen}
+                     onClick={() => setOpenFaqIndex(isOpen ? -1 : i)}
+                     className="flex w-full items-center justify-between gap-6 p-8 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-ocean/40 rounded-3xl"
+                   >
+                      <div>
+                        <p className="text-lg font-bold text-ink">{item.question}</p>
+                        <div className={`grid transition-[grid-template-rows,opacity] duration-300 ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
+                          <div className="overflow-hidden">
+                            <p className="mt-3 text-sm font-semibold leading-6 text-slate-500">{item.answer}</p>
+                          </div>
+                        </div>
                       </div>
-                   </div>
+                      <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-all ${isOpen ? "border-ocean bg-ocean text-white" : "border-slate-100 group-hover:bg-ocean group-hover:text-white"}`}>
+                         <Plus className={`h-4 w-4 transition-transform ${isOpen ? "rotate-45" : ""}`} />
+                      </div>
+                   </button>
                 </div>
              </Reveal>
-           ))}
+             );
+           })}
         </div>
       </section>
 

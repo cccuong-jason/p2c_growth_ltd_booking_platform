@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Activity, ArrowRight, CalendarPlus, ChevronDown, Globe2, LayoutDashboard } from "lucide-react";
+import { Activity, ArrowRight, CalendarPlus, ChevronDown, Globe2 } from "lucide-react";
 
 import { getDictionary } from "@/lib/i18n/dictionary";
 
@@ -18,28 +18,18 @@ const serviceItems = [
   { href: "/services", label: "Customer-Partner Platform", body: "Coordination layer between customers and experts" }
 ] as const;
 
-const languages = ["EN", "ZH-T", "ZH-S", "VI"] as const;
+const languages = [
+  { code: "EN", label: "English", flag: "🇬🇧" },
+  { code: "ZH-T", label: "Traditional Chinese", flag: "🇭🇰" },
+  { code: "ZH-S", label: "Simplified Chinese", flag: "🇨🇳" },
+  { code: "VI", label: "Vietnamese", flag: "🇻🇳" },
+] as const;
 
 export function SiteHeader() {
   const copy = getDictionary();
 
   return (
     <header className="fixed inset-x-0 top-4 z-50 px-4 md:px-6">
-      <div className="mx-auto mb-2 flex max-w-7xl items-center justify-between px-1">
-        <div className="flex items-center gap-1 rounded-full border border-slate-200 bg-white/85 p-1 text-[10px] font-black text-slate-600 shadow-sm backdrop-blur-xl" aria-label="Language switcher">
-          <Globe2 className="ml-2 h-3.5 w-3.5 text-ocean" aria-hidden />
-          {languages.map((language) => (
-            <button
-              key={language}
-              type="button"
-              className={`rounded-full px-2.5 py-1 transition hover:bg-ocean hover:text-white ${language === "EN" ? "bg-ocean text-white" : "text-slate-600"}`}
-              aria-label={`Switch language to ${language}`}
-            >
-              {language}
-            </button>
-          ))}
-        </div>
-      </div>
       <div className="glass-panel mx-auto flex max-w-7xl items-center justify-between rounded-2xl border border-white/20 px-5 py-3 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-xl">
         <Link href="/" className="flex items-center gap-3 rounded-md pr-2 text-lg font-extrabold tracking-tight text-ink">
           <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-ocean to-cyan text-white shadow-lg shadow-blue-500/30">
@@ -56,8 +46,8 @@ export function SiteHeader() {
                   {copy.nav[item.label]}
                   <ChevronDown className="h-3.5 w-3.5" aria-hidden />
                 </Link>
-                <div className="invisible absolute left-1/2 top-full z-50 mt-3 w-[480px] -translate-x-1/2 rounded-2xl border border-slate-100 bg-white p-3 opacity-0 shadow-2xl shadow-blue-500/10 transition group-hover:visible group-hover:opacity-100">
-                  <div className="grid gap-2">
+                <div className="invisible absolute left-1/2 top-full z-50 w-[480px] -translate-x-1/2 pt-3 opacity-0 transition group-hover:visible group-hover:opacity-100">
+                  <div className="grid gap-2 rounded-2xl border border-slate-100 bg-white p-3 shadow-2xl shadow-blue-500/10">
                     {serviceItems.map((service) => (
                       <Link key={service.label} href={service.href} className="rounded-xl p-3 transition hover:bg-blue-50">
                         <span className="block text-sm font-black text-ink">{service.label}</span>
@@ -80,13 +70,36 @@ export function SiteHeader() {
             <CalendarPlus className="h-4 w-4" aria-hidden />
             Book expert
           </Link>
-          <Link
-            href="/admin/login"
-            className="inline-flex h-11 items-center gap-2 rounded-xl border border-slate-200 bg-white/50 px-4 text-sm font-bold text-ink transition hover:border-ocean hover:text-ocean active:scale-95"
-          >
-            <LayoutDashboard className="h-4 w-4" aria-hidden />
-            <span className="hidden sm:inline">{copy.nav.admin}</span>
-          </Link>
+          <div className="group relative" aria-label="Language switcher">
+            <button
+              type="button"
+              className="inline-flex h-11 items-center gap-2 rounded-xl border border-slate-200 bg-white/70 px-3 text-sm font-black text-ink transition hover:border-ocean hover:text-ocean active:scale-95 sm:px-4"
+              aria-haspopup="true"
+            >
+              <Globe2 className="h-4 w-4 text-ocean" aria-hidden />
+              <span aria-hidden>{languages[0].flag}</span>
+              <span className="hidden sm:inline">{languages[0].code}</span>
+              <ChevronDown className="h-3.5 w-3.5" aria-hidden />
+            </button>
+            <div className="invisible absolute right-0 top-full z-50 w-56 pt-3 opacity-0 transition group-hover:visible group-hover:opacity-100">
+              <div className="rounded-2xl border border-slate-100 bg-white p-2 shadow-2xl shadow-blue-500/10">
+                {languages.map((language) => (
+                  <button
+                    key={language.code}
+                    type="button"
+                    className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-bold transition hover:bg-blue-50 hover:text-ocean ${
+                      language.code === "EN" ? "bg-ocean/10 text-ocean" : "text-slate-700"
+                    }`}
+                    aria-label={`Switch language to ${language.label}`}
+                  >
+                    <span className="text-base" aria-hidden>{language.flag}</span>
+                    <span className="flex-1">{language.label}</span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">{language.code}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </header>
