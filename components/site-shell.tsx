@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Activity, ArrowRight, CalendarPlus, ChevronDown, Globe2 } from "lucide-react";
 
 import { getDictionary } from "@/lib/i18n/dictionary";
+import { SectionBadge } from "@/components/ui/section-badge";
 
 const navItems = [
   { href: "/", label: "home" },
@@ -76,7 +77,6 @@ export function SiteHeader() {
               className="inline-flex h-11 items-center gap-2 rounded-xl border border-slate-200 bg-white/70 px-3 text-sm font-black text-ink transition hover:border-ocean hover:text-ocean active:scale-95 sm:px-4"
               aria-haspopup="true"
             >
-              <Globe2 className="h-4 w-4 text-ocean" aria-hidden />
               <span aria-hidden>{languages[0].flag}</span>
               <span className="hidden sm:inline">{languages[0].code}</span>
               <ChevronDown className="h-3.5 w-3.5" aria-hidden />
@@ -152,17 +152,19 @@ export function SiteFooter() {
 export function SectionHeading({
   eyebrow,
   title,
-  description
+  description,
+  icon
 }: {
   eyebrow: string;
   title: string;
   description?: string;
+  icon?: any;
 }) {
   return (
     <div className="max-w-3xl">
-      <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-ocean">{eyebrow}</p>
-      <h2 className="mt-4 text-3xl font-extrabold text-ink md:text-5xl leading-[1.1] tracking-tight display-heading">{title}</h2>
-      {description ? <p className="mt-6 text-lg leading-relaxed text-slate-500 font-medium">{description}</p> : null}
+      <SectionBadge icon={icon}>{eyebrow}</SectionBadge>
+      <h2 className="text-4xl md:text-5xl font-extrabold text-ink tracking-tight leading-[1.1] display-heading">{title}</h2>
+      {description ? <p className="mt-6 text-lg font-medium leading-relaxed text-slate-600">{description}</p> : null}
     </div>
   );
 }

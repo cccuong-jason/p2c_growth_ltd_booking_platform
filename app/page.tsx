@@ -28,6 +28,10 @@ import {
   FileText
 } from "lucide-react";
 
+import { SectionBadge } from "@/components/ui/section-badge";
+import { BentoCard } from "@/components/ui/bento-card";
+import { GlassOverlay } from "@/components/ui/glass-overlay";
+import { FaqAccordion } from "@/components/ui/faq-accordion";
 import { 
   Reveal, 
   SpringReveal, 
@@ -79,7 +83,7 @@ const HERO_GLOBE_CONFIG: COBEOptions = {
 const HOME_SERVICE_BOXES = [
   {
     eyebrow: "Medical",
-    title: "Medical Experts Booking",
+    title: "P2C Health",
     body: "A guided booking and referral workflow for patients, legal cases, insurers, and expert follow-up.",
     href: "/services/physiotherapy",
     icon: Activity,
@@ -90,7 +94,7 @@ const HOME_SERVICE_BOXES = [
     eyebrow: "Design",
     title: "Website Development",
     body: "Premium websites for UK service companies that need clear offers, trust, and conversion paths.",
-    href: "/services",
+    href: "/coming-soon",
     icon: Monitor,
     image:
       "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=85",
@@ -99,7 +103,7 @@ const HOME_SERVICE_BOXES = [
     eyebrow: "Automation",
     title: "Booking System & Email Automation",
     body: "Forms, status handoff, confirmation emails, and internal operations without manual chasing.",
-    href: "/services",
+    href: "/coming-soon",
     icon: Workflow,
     image:
       "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1200&q=85",
@@ -108,7 +112,7 @@ const HOME_SERVICE_BOXES = [
     eyebrow: "CRM",
     title: "Customer Management / Mini CRM",
     body: "Simple customer, enquiry, status, and partner context for teams that need visibility fast.",
-    href: "/services",
+    href: "/coming-soon",
     icon: LayoutDashboard,
     image:
       "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=85",
@@ -117,7 +121,7 @@ const HOME_SERVICE_BOXES = [
     eyebrow: "Platform",
     title: "Customer-Partner Platform",
     body: "A reusable software layer for routing customers to professional partners and tracking outcomes.",
-    href: "/services",
+    href: "/coming-soon",
     icon: UserCheck,
     image:
       "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=85",
@@ -224,7 +228,7 @@ const FAQ_ITEMS = [
     answer: "Yes. We can map the current enquiry, booking, follow-up, and handoff process, then rebuild the parts that create the most manual work.",
   },
   {
-    question: "Is Medical Experts Booking the whole business?",
+    question: "Is P2C Health the whole business?",
     answer: "No. It is one service offering. The homepage represents P2C Growth LTD as a broader technology and software company.",
   },
 ] as const;
@@ -235,7 +239,6 @@ export default function HomePage() {
   const [activeAnalyticsNode, setActiveAnalyticsNode] = useState(ANALYTICS_BEAM_NODES[0].title);
   const [hasSelectedAnalyticsNode, setHasSelectedAnalyticsNode] = useState(false);
   const [activeBuildFeatureIndex, setActiveBuildFeatureIndex] = useState(0);
-  const [openFaqIndex, setOpenFaqIndex] = useState(0);
   const activeAnalytics = ANALYTICS_BEAM_NODES.find((node) => node.title === activeAnalyticsNode) ?? ANALYTICS_BEAM_NODES[0];
   const activeAnalyticsIndex = ANALYTICS_BEAM_NODES.findIndex((node) => node.title === activeAnalytics.title);
   const ActiveAnalyticsIcon = activeAnalytics.icon;
@@ -320,10 +323,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl">
           <Reveal>
             <div className="mx-auto max-w-6xl text-center">
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-ocean/10 bg-ocean/5 px-4 py-1.5">
-                <LayoutDashboard className="h-4 w-4 text-ocean" />
-                <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-ocean">Our services</span>
-              </div>
+              <SectionBadge icon={LayoutDashboard}>Our services</SectionBadge>
               <h2 className="text-5xl font-extrabold leading-[1] tracking-tight text-ink display-heading sm:text-6xl md:text-[5.4rem] lg:text-[5.9rem]">
                 We simplify everything <br /><span className="text-ocean">so your team performs better.</span>
               </h2>
@@ -409,10 +409,7 @@ export default function HomePage() {
       <section className="py-24 md:py-32 px-4 sm:px-6 max-w-7xl mx-auto">
         <div className="text-center mb-20 md:mb-32">
           <Reveal>
-             <div className="inline-flex items-center gap-2 rounded-full bg-ocean/5 border border-ocean/10 px-4 py-1.5 mb-6">
-                <LayoutDashboard className="h-4 w-4 text-ocean" />
-                <span className="text-[11px] font-bold text-ocean uppercase tracking-[0.2em]">What We Build</span>
-             </div>
+             <SectionBadge icon={LayoutDashboard}>What We Build</SectionBadge>
              <h2 className="text-4xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">
                 Practical systems <br /><span className="text-ocean">for service teams.</span>
              </h2>
@@ -610,10 +607,7 @@ export default function HomePage() {
         <div className="relative z-10 mx-auto max-w-7xl">
           <Reveal>
             <div className="text-center">
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-ocean/5 border border-ocean/10 px-4 py-1.5">
-                <LayoutDashboard className="h-4 w-4 text-ocean" />
-                <span className="text-[11px] font-bold text-ocean uppercase tracking-[0.2em]">Delivery Process</span>
-              </div>
+              <SectionBadge icon={LayoutDashboard}>Delivery Process</SectionBadge>
               <h2 className="text-4xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">
                 From messy workflow <br /><span className="text-ocean">to working system.</span>
               </h2>
@@ -730,10 +724,7 @@ export default function HomePage() {
       <section className="py-24 md:py-48 px-4 sm:px-6 max-w-7xl mx-auto">
         <div className="text-center mb-20 md:mb-32">
            <Reveal>
-              <div className="inline-flex items-center gap-2 rounded-full bg-ocean/5 border border-ocean/10 px-4 py-1.5 mb-6">
-                 <Workflow className="h-4 w-4 text-ocean" />
-                 <span className="text-[11px] font-bold text-ocean uppercase tracking-[0.2em]">Company Purpose</span>
-              </div>
+              <SectionBadge icon={Workflow}>Company Purpose</SectionBadge>
               <h2 className="text-4xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">
                  Digital infrastructure <br /><span className="text-ocean">that fits real work.</span>
               </h2>
@@ -823,10 +814,7 @@ export default function HomePage() {
       <section className="py-24 md:py-32 overflow-hidden bg-white relative">
         <div className="text-center mb-20 px-4 sm:px-6 max-w-7xl mx-auto relative z-20">
            <Reveal>
-              <div className="inline-flex items-center gap-2 rounded-full bg-ocean/5 border border-ocean/10 px-4 py-1.5 mb-6">
-                 <MessageSquareQuote className="h-4 w-4 text-ocean" />
-                 <span className="text-[11px] font-bold text-ocean uppercase tracking-[0.2em]">Why teams choose P2C Growth</span>
-              </div>
+              <SectionBadge icon={MessageSquareQuote}>Why teams choose P2C Growth</SectionBadge>
               <h2 className="text-5xl md:text-[5.2rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">Less manual work, <br /><span className="text-ocean">clearer operations.</span></h2>
            </Reveal>
         </div>
@@ -953,44 +941,13 @@ export default function HomePage() {
       <section className="py-24 md:py-32 px-4 sm:px-6 max-w-5xl mx-auto">
         <div className="text-center mb-16">
            <Reveal>
-              <div className="inline-flex items-center gap-2 rounded-full bg-ocean/5 border border-ocean/10 px-4 py-1.5 mb-6">
-                 <MessageSquareQuote className="h-4 w-4 text-ocean" />
-                 <span className="text-[11px] font-bold text-ocean uppercase tracking-[0.2em]">FAQ</span>
-              </div>
-              <h2 className="text-5xl md:text-[4.8rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">Frequently Asked <span className="text-ocean">Questions.</span></h2>
+              <SectionBadge icon={MessageSquareQuote}>FAQ</SectionBadge>
+              <h2 className="text-4xl md:text-5xl font-extrabold text-ink tracking-tight leading-[1.1] display-heading mb-4">Frequently Asked <span className="text-ocean">Questions.</span></h2>
+              <p className="text-lg font-medium text-slate-500 mb-10 max-w-2xl mx-auto">Clear answers to common questions about our platform, features, and support.</p>
            </Reveal>
         </div>
         
-        <div className="mx-auto max-w-4xl space-y-4">
-           {FAQ_ITEMS.map((item, i) => {
-             const isOpen = openFaqIndex === i;
-
-             return (
-             <Reveal key={i} delay={0.1 * i}>
-                <div className={`bg-white border rounded-3xl transition-colors group ${isOpen ? "border-ocean/30" : "border-slate-100 hover:border-ocean/30"}`}>
-                   <button
-                     type="button"
-                     aria-expanded={isOpen}
-                     onClick={() => setOpenFaqIndex(isOpen ? -1 : i)}
-                     className="flex w-full items-center justify-between gap-6 p-8 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-ocean/40 rounded-3xl"
-                   >
-                      <div>
-                        <p className="text-lg font-bold text-ink">{item.question}</p>
-                        <div className={`grid transition-[grid-template-rows,opacity] duration-300 ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
-                          <div className="overflow-hidden">
-                            <p className="mt-3 text-sm font-semibold leading-6 text-slate-500">{item.answer}</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-all ${isOpen ? "border-ocean bg-ocean text-white" : "border-slate-100 group-hover:bg-ocean group-hover:text-white"}`}>
-                         <Plus className={`h-4 w-4 transition-transform ${isOpen ? "rotate-45" : ""}`} />
-                      </div>
-                   </button>
-                </div>
-             </Reveal>
-             );
-           })}
-        </div>
+        <FaqAccordion items={FAQ_ITEMS} />
       </section>
 
     </main>

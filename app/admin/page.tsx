@@ -28,11 +28,11 @@ async function getAdminData() {
 export default async function AdminPage() {
   if (!hasSupabasePublicConfig() || !hasSupabaseServiceConfig()) {
     return (
-      <main className="min-h-screen bg-porcelain px-5 pb-16 pt-32">
-        <div className="mx-auto max-w-2xl rounded-2xl border border-slate-200 bg-white p-8 shadow-panel">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-ocean">Configuration needed</p>
-          <h1 className="mt-4 text-3xl font-extrabold text-ink display-heading tracking-tight">Admin dashboard is ready for credentials.</h1>
-          <p className="mt-6 leading-7 text-slate-600 font-medium">
+      <main className="min-h-screen bg-porcelain px-5 pb-16 pt-32 flex flex-col items-center justify-center font-sans">
+        <div className="w-full max-w-2xl rounded-[2rem] border border-slate-200 bg-white p-10 md:p-14 shadow-premium text-center">
+          <p className="text-[11px] font-bold uppercase tracking-widest text-ocean mb-3">Configuration needed</p>
+          <h1 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-6">Dashboard is ready for credentials.</h1>
+          <p className="text-base font-medium leading-relaxed text-slate-500 max-w-lg mx-auto">
             Add Supabase public keys, service role key, and ADMIN_EMAIL_ALLOWLIST to enable protected live data access.
           </p>
         </div>
@@ -50,10 +50,10 @@ export default async function AdminPage() {
 
   if (!isAdminEmailAllowed(email, getEnv("ADMIN_EMAIL_ALLOWLIST"))) {
     return (
-      <main className="min-h-screen bg-porcelain px-5 pb-16 pt-32">
-        <div className="mx-auto max-w-2xl rounded-2xl border border-slate-200 bg-white p-8 shadow-panel">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-rose-500">Access denied</p>
-          <h1 className="mt-4 text-3xl font-extrabold text-ink display-heading tracking-tight">This account is not on the admin allowlist.</h1>
+      <main className="min-h-screen bg-porcelain px-5 pb-16 pt-32 flex flex-col items-center justify-center font-sans">
+        <div className="w-full max-w-2xl rounded-[2rem] border border-slate-200 bg-white p-10 md:p-14 shadow-premium text-center">
+          <p className="text-[11px] font-bold uppercase tracking-widest text-rose-500 mb-3">Access denied</p>
+          <h1 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight">Account not authorized.</h1>
         </div>
       </main>
     );

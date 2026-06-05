@@ -69,9 +69,19 @@ const medicalLegalReferralTypeIds = medicalLegalReferralTypes.map((type) => type
 const bookingSchema = z
   .object({
     patientName: z.string().trim().min(2, "Full name is required"),
-    patientPhone: z.string().trim().min(7, "Phone number is required"),
-    patientEmail: z.string().trim().email("Valid email is required"),
-    dob: z.string().trim().min(1, "Date of birth is required"),
+    countryCode: z.string().trim().min(1, "Country code is required"),
+    patientPhone: z.string().trim().regex(/^\d{7,15}$/, "Enter a valid phone number (7-15 digits)"),
+    patientEmail: z.string().trim().email("Enter a valid email address"),
+    dob: z
+      .string()
+      .trim()
+      .min(1, "Date of birth is required")
+      .refine((val) => {
+        const birthDate = new Date(val);
+        const today = new Date();
+        const age = today.getFullYear() - birthDate.getFullYear();
+        return age >= 0 && age <= 150;
+      }, "Please enter a valid date of birth (max 150 years)"),
     serviceCategory: z.enum(serviceCategoryIds),
     medicalLegalReferralType: z.preprocess(
       (value) => (typeof value === "string" && value.trim() === "" ? null : value),

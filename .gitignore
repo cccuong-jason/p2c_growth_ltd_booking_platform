@@ -12,3 +12,5 @@ coverage/
 worktrees/
 .playwright-mcp/
 .superpowers/
+.vercel
+.env*

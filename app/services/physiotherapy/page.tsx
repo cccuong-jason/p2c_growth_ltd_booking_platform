@@ -1,48 +1,72 @@
-import { AlertTriangle, CheckCircle2, MapPin, ShieldCheck } from "lucide-react";
+"use client";
 
+import { AlertTriangle, CheckCircle2, MapPin, ShieldCheck, Activity } from "lucide-react";
 import { BookingWizard } from "@/components/booking/booking-wizard";
-import { PageBand, SectionHeading } from "@/components/site-shell";
+import { Reveal } from "@/components/home/motion-primitives";
+import { SectionBadge } from "@/components/ui/section-badge";
 
 export default function PhysiotherapyPage() {
   return (
-    <main>
-      <section className="relative overflow-hidden bg-[linear-gradient(180deg,#f8fbff,#ffffff)] pt-32">
-        <div className="tech-grid absolute inset-0 opacity-80" aria-hidden />
-        <PageBand className="relative">
-        <div className="grid gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
-          <div>
-            <SectionHeading
-              eyebrow="Medical Experts Booking"
-              title="Book medical expert support."
-              description="Submit your details and P2C Growth will coordinate follow-up with a suitable medical expert or professional partner. Medical-legal referrals can be routed by claim context."
-            />
-            <div className="mt-8 grid gap-3">
-              {[
-                [CheckCircle2, "Structured medical intake", "Service category, language, visit type, and preferred timing."],
-                [MapPin, "Medical-legal referrals", "Personal injury, insurance claim, and legal proceedings options are captured when selected."],
-                [ShieldCheck, "Consent hard stop", "Coordinator-only, contact consent, and emergency advice acknowledgements."]
-              ].map(([Icon, title, body]) => (
-                <div key={String(title)} className="glass-panel rounded-lg p-4">
-                  <div className="flex gap-3">
-                    <span className="grid h-10 w-10 place-items-center rounded-md bg-blue-50 text-ocean">
-                      <Icon className="h-5 w-5" aria-hidden />
-                    </span>
-                    <div>
-                      <p className="font-semibold text-ink">{title as string}</p>
-                      <p className="mt-1 text-sm leading-6 text-slate-600">{body as string}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="mt-5 rounded-lg border border-amber-200 bg-amber-50/90 p-4 text-sm leading-6 text-amber-900 shadow-sm">
-              <AlertTriangle className="mb-3 h-5 w-5" aria-hidden />
-              P2C Growth LTD is a booking and coordination platform, not a medical clinic, law firm, or insurer. Clinical opinions, reports, and treatment are provided by qualified professionals. For emergencies, call 999 or NHS urgent care.
-            </div>
-          </div>
-          <BookingWizard />
+    <main className="relative bg-white overflow-hidden selection:bg-blue-100 selection:text-blue-900 font-sans pb-24 md:pb-32">
+      {/* Hero Header */}
+      <section className="relative pt-32 pb-16 md:pt-48 bg-porcelain overflow-hidden">
+        <div className="absolute inset-0 tech-grid opacity-50" />
+        <div className="relative z-10 w-full px-4 sm:px-6 max-w-5xl mx-auto text-center">
+          <Reveal>
+            <SectionBadge icon={Activity}>P2C Health</SectionBadge>
+            <h1 className="text-4xl md:text-6xl font-extrabold text-ink tracking-tight leading-[1.05] display-heading mb-6">
+              Book medical expert <span className="text-ocean">support.</span>
+            </h1>
+            <p className="text-lg font-medium leading-relaxed text-slate-500 max-w-3xl mx-auto">
+              Submit your details and P2C Growth will coordinate follow-up with a suitable medical expert or professional partner.
+            </p>
+          </Reveal>
         </div>
-        </PageBand>
+      </section>
+
+      {/* Main Wizard Area */}
+      <section className="relative z-20 px-4 sm:px-6 max-w-7xl mx-auto -mt-10">
+        <div className="grid lg:grid-cols-[1fr_320px] gap-8 items-start">
+          <div className="w-full">
+            <BookingWizard />
+          </div>
+
+          {/* Right Sidebar Trust Signals */}
+          <aside className="space-y-6 lg:sticky lg:top-32">
+             <Reveal delay={0.2}>
+               <div className="rounded-[2rem] border border-slate-100 bg-white p-8 shadow-sm">
+                  <h3 className="text-sm font-black uppercase tracking-widest text-ink mb-6">Trust Signals</h3>
+                  <div className="space-y-6">
+                    {[
+                      [CheckCircle2, "Structured intake", "Clean medical data capture."],
+                      [MapPin, "Legal referrals", "Case-specific routing."],
+                      [ShieldCheck, "Consent stop", "Mandatory acknowledgements."]
+                    ].map(([Icon, title, body], idx) => (
+                      <div key={idx} className="flex gap-4 items-start">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-ocean/5 text-ocean">
+                          {/* @ts-ignore */}
+                          <Icon className="h-4 w-4" aria-hidden="true" />
+                        </div>
+                        <div>
+                          <h4 className="text-xs font-bold text-ink uppercase tracking-wider">{title as string}</h4>
+                          <p className="mt-1 text-xs font-medium text-slate-500">{body as string}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+               </div>
+             </Reveal>
+
+             <Reveal delay={0.3}>
+                <div className="rounded-[2rem] border border-amber-100 bg-amber-50/50 p-6 shadow-sm flex items-start gap-4">
+                  <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5 text-amber-600" aria-hidden="true" />
+                  <p className="text-[11px] font-medium leading-relaxed text-amber-900">
+                    P2C Growth is a coordination platform. Clinical opinions are provided by qualified professionals.
+                  </p>
+                </div>
+             </Reveal>
+          </aside>
+        </div>
       </section>
     </main>
   );

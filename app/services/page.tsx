@@ -1,39 +1,131 @@
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+"use client";
 
-import { PageBand, SectionHeading } from "@/components/site-shell";
+import Link from "next/link";
+import { ArrowRight, LayoutDashboard, Monitor, Workflow, UserCheck, Activity } from "lucide-react";
+import { Reveal } from "@/components/home/motion-primitives";
+import { BorderBeam } from "@/components/ui/border-beam";
+import { ProgressiveBlur } from "@/components/magicui/progressive-blur";
+import { SectionBadge } from "@/components/ui/section-badge";
+import { BentoCard } from "@/components/ui/bento-card";
 
 const services = [
-  ["Medical Experts Booking", "Medical booking, referral, and internal dispatch for expert-led appointments.", "/services/physiotherapy"],
-  ["Website Development", "Premium conversion-focused websites for UK service businesses."],
-  ["Booking System & Email Automation", "Forms, workflows, confirmations, notifications, and operational handoff."],
-  ["Customer Management System / Mini CRM", "Lightweight dashboards for teams managing high-trust customer relationships."],
-  ["Customer-Partner Platform", "A reusable coordination layer between customers, internal teams, and professional partners."]
+  {
+    title: "P2C Health",
+    body: "A guided booking and referral workflow for patients, legal cases, insurers, and expert follow-up.",
+    href: "/services/physiotherapy",
+    icon: Activity,
+    isPrimary: true,
+  },
+  {
+    title: "Website Development",
+    body: "Premium conversion-focused websites for UK service businesses.",
+    href: "/coming-soon",
+    icon: Monitor,
+    isPrimary: false,
+  },
+  {
+    title: "Booking System & Email Automation",
+    body: "Forms, workflows, confirmations, notifications, and operational handoff.",
+    href: "/coming-soon",
+    icon: Workflow,
+    isPrimary: false,
+  },
+  {
+    title: "Mini CRM",
+    body: "Lightweight dashboards for teams managing high-trust customer relationships.",
+    href: "/coming-soon",
+    icon: LayoutDashboard,
+    isPrimary: false,
+  },
+  {
+    title: "Customer-Partner Platform",
+    body: "A reusable coordination layer between customers, internal teams, and professional partners.",
+    href: "/coming-soon",
+    icon: UserCheck,
+    isPrimary: false,
+  }
 ];
 
 export default function ServicesPage() {
   return (
-    <main className="surface-page">
-      <PageBand className="pt-32">
-        <SectionHeading
-          eyebrow="Services"
-          title="Technology services for websites, booking, CRM, and partner coordination."
-          description="P2C Growth LTD is a UK technology and software company building practical digital systems for service businesses."
-        />
-        <div className="mt-12 grid gap-4 md:grid-cols-2">
-          {services.map(([title, body, href]) => (
-            <article key={title} className="rounded-lg border border-slate-200 bg-white p-6 shadow-panel">
-              <h2 className="text-xl font-semibold text-ink">{title}</h2>
-              <p className="mt-3 leading-7 text-slate-600">{body}</p>
-              {href ? (
-                <Link href={href} className="mt-5 inline-flex items-center gap-2 font-semibold text-ocean">
-                  Open service <ArrowRight className="h-4 w-4" aria-hidden />
-                </Link>
-              ) : null}
-            </article>
-          ))}
+    <main className="relative bg-white overflow-hidden selection:bg-blue-100 selection:text-blue-900 font-sans pb-24">
+      {/* Hero Section */}
+      <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 bg-porcelain overflow-hidden">
+        <div className="absolute inset-0 tech-grid opacity-50" />
+        <div className="relative z-10 flex flex-col items-center text-center px-4 sm:px-6 max-w-5xl mx-auto">
+          <Reveal>
+            <SectionBadge icon={LayoutDashboard}>Our Services</SectionBadge>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <h1 className="text-4xl md:text-7xl font-extrabold text-ink tracking-tight leading-[1.05] display-heading mb-6">
+              Technology services for <br /><span className="text-ocean">service businesses.</span>
+            </h1>
+          </Reveal>
+          <Reveal delay={0.2}>
+            <p className="max-w-2xl text-lg font-semibold leading-relaxed text-slate-600 md:text-xl">
+              P2C Growth LTD builds practical digital systems: websites, booking workflows, CRM tools, and partner coordination platforms.
+            </p>
+          </Reveal>
         </div>
-      </PageBand>
+        <ProgressiveBlur className="bottom-0 z-30 h-28" />
+      </section>
+
+      {/* Services Bento Grid */}
+      <section className="relative z-40 -mt-10 px-4 sm:px-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Primary Service (MVP) */}
+          <Reveal delay={0.3} className="lg:col-span-2">
+            <BentoCard className="group h-full flex flex-col p-8 md:p-10">
+              <BorderBeam colorFrom="var(--ocean)" colorTo="var(--cyanline)" duration={12} borderWidth={1.5} />
+              <div className="absolute right-0 top-0 h-64 w-64 rounded-full bg-ocean/5 blur-[80px] pointer-events-none transition-colors group-hover:bg-ocean/10" />
+              
+              <div className="relative z-10 mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-ocean text-white shadow-lg shadow-blue-500/20">
+                <Activity className="h-8 w-8" />
+              </div>
+              <div className="relative z-10">
+                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-ocean mb-3">Core Product</p>
+                <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4">{services[0].title}</h2>
+                <p className="max-w-md text-base font-semibold leading-relaxed text-slate-500 mb-8">
+                  {services[0].body}
+                </p>
+              </div>
+              <div className="relative z-10 mt-auto">
+                <Link href={services[0].href!} className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-ocean px-6 text-sm font-black text-white shadow-md transition-all hover:bg-blue-600 hover:scale-[1.02] active:scale-[0.98]">
+                  Start booking
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </BentoCard>
+          </Reveal>
+
+          {/* Other Services */}
+          {services.slice(1).map((service, index) => {
+            const Icon = service.icon;
+            
+            return (
+              <Reveal key={service.title} delay={0.4 + (index * 0.1)} className="lg:col-span-1">
+                <BentoCard className="group h-full flex flex-col p-8 bg-porcelain">
+                  <div className="absolute inset-0 tech-grid opacity-30 pointer-events-none" />
+                  <div className="relative z-10 mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-ocean shadow-sm">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <h3 className="relative z-10 text-xl font-extrabold tracking-tight text-ink mb-3">{service.title}</h3>
+                  <p className="relative z-10 text-sm font-semibold leading-relaxed text-slate-500 mb-6">
+                    {service.body}
+                  </p>
+                  {service.href && (
+                    <div className="relative z-10 mt-auto">
+                       <Link href={service.href} className="inline-flex items-center gap-2 text-sm font-black text-ocean transition-colors hover:text-blue-700">
+                          View details <ArrowRight className="h-4 w-4" />
+                       </Link>
+                    </div>
+                  )}
+                </BentoCard>
+              </Reveal>
+            );
+          })}
+        </div>
+      </section>
     </main>
   );
 }

@@ -4,12 +4,13 @@ import { validateBookingInput } from "@/lib/booking";
 
 const baseBooking = {
   patientName: "Mai Nguyen",
-  patientPhone: "+44 7000 000000",
+  countryCode: "+44",
+  patientPhone: "7000000000",
   patientEmail: "mai@example.com",
   dob: "1955-04-12",
-  serviceCategory: "neurological",
+  serviceCategory: "neurological" as const,
   bookingDate: "2026-06-03",
-  preferredLanguage: "vi",
+  preferredLanguage: "vi" as const,
   isHomeVisit: false,
   ukPostcode: "",
   addressDetails: "",

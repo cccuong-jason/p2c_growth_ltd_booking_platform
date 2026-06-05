@@ -25,6 +25,7 @@ function checkboxValue(formData: FormData, name: string): boolean {
 export async function submitBooking(_: ActionState, formData: FormData): Promise<ActionState> {
   const input: BookingInput = {
     patientName: String(formData.get("patientName") || ""),
+    countryCode: String(formData.get("countryCode") || ""),
     patientPhone: String(formData.get("patientPhone") || ""),
     patientEmail: String(formData.get("patientEmail") || ""),
     dob: String(formData.get("dob") || ""),
@@ -62,7 +63,7 @@ export async function submitBooking(_: ActionState, formData: FormData): Promise
 
   const { error } = await supabase.from("bookings").insert({
     patient_name: validation.data.patientName,
-    patient_phone: validation.data.patientPhone,
+    patient_phone: `${validation.data.countryCode}${validation.data.patientPhone}`,
     patient_email: validation.data.patientEmail,
     dob: validation.data.dob,
     service_category: validation.data.serviceCategory,
