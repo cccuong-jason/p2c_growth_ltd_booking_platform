@@ -87,6 +87,8 @@ export default function ContactPage() {
                       <circle cx={x} cy={y} r={imgR} />
                     </clipPath>
 
+                    <title>{label}</title>
+
                     <image
                       href={href}
                       x={x - imgR}
@@ -95,7 +97,6 @@ export default function ContactPage() {
                       height={imgR * 2}
                       preserveAspectRatio="xMidYMid slice"
                       clipPath={`url(#${clipId})`}
-                      title={label}
                     />
                   </g>
                 );
