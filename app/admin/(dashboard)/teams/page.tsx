@@ -85,7 +85,7 @@ export default async function TeamsPage() {
 
       <div className="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden flex flex-col">
         {/* Toolbar */}
-        <div className="p-6 border-b border-slate-100 bg-slate-50/30">
+        <div className="p-6 border-b border-slate-100 bg-slate-50/30 flex flex-col sm:flex-row justify-between items-center gap-4">
           <div className="relative w-full sm:max-w-md">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
             <input 
@@ -96,72 +96,84 @@ export default async function TeamsPage() {
           </div>
         </div>
 
-        {/* Member Grid */}
-        <div className="p-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {teamMembers.map((member) => (
-            <div key={member.id} className="rounded-2xl border border-slate-200 p-6 flex flex-col hover:border-blue-200 hover:shadow-md transition-all group">
-              <div className="flex justify-between items-start mb-4">
-                <div className={`h-12 w-12 rounded-full flex items-center justify-center font-bold text-lg ${member.color}`}>
-                  {member.initial}
-                </div>
-                <div className="flex gap-2">
-                  {member.status === "pending" && (
-                    <form action={async () => {
-                      "use server";
-                      await revokeTeamMember(member.id);
-                    }}>
-                      <button className="text-[10px] font-black uppercase tracking-widest text-rose-500 hover:bg-rose-50 px-2 py-1 rounded-md border border-rose-100 transition-colors">
-                        Revoke
-                      </button>
-                    </form>
-                  )}
-                  <button className="text-slate-400 hover:text-slate-900 transition-colors p-1 rounded-md hover:bg-slate-100">
-                    <MoreVertical className="h-5 w-5" />
-                  </button>
-                </div>
-              </div>
-              
-              <div className="mb-6">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-lg font-bold text-slate-900">{member.name}</h3>
-                  {member.status === "pending" && (
-                    <span className="px-1.5 py-0.5 rounded bg-amber-50 text-amber-600 text-[10px] font-black uppercase tracking-widest border border-amber-100">
-                      Pending
+        {/* Member Table */}
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm whitespace-nowrap">
+            <thead className="bg-white border-b border-slate-100 text-[10px] font-black uppercase tracking-widest text-slate-400">
+              <tr>
+                <th className="px-6 py-4">Member</th>
+                <th className="px-6 py-4">Email</th>
+                <th className="px-6 py-4">Role</th>
+                <th className="px-6 py-4">Status</th>
+                <th className="px-6 py-4">Added</th>
+                <th className="px-6 py-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {teamMembers.map((member) => (
+                <tr key={member.id} className="transition-colors hover:bg-slate-50/50 group">
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-3">
+                      <div className={`h-9 w-9 rounded-full flex items-center justify-center font-bold text-xs ${member.color}`}>
+                        {member.initial}
+                      </div>
+                      <span className="font-bold text-slate-900">{member.name}</span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-slate-600 font-medium">
+                    {member.email}
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${
+                      member.role === 'Super Admin' ? 'bg-rose-50 text-rose-700 border border-rose-100' : 'bg-slate-100 text-slate-700 border border-slate-200'
+                    } border`}>
+                      {member.role}
                     </span>
-                  )}
-                </div>
-                <div className="flex items-center gap-2 text-slate-500 text-sm font-medium mt-1">
-                  <Mail className="h-3.5 w-3.5" /> {member.email}
-                </div>
-              </div>
-
-              <div className="mt-auto space-y-3 border-t border-slate-100 pt-4">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="flex items-center gap-2 text-slate-500 font-medium">
-                    <Shield className="h-4 w-4" /> Role
-                  </span>
-                  <span className={`px-2 py-0.5 rounded-md text-xs font-bold ${
-                    member.role === 'Super Admin' ? 'bg-rose-50 text-rose-700' : 'bg-slate-100 text-slate-700'
-                  }`}>
-                    {member.role}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="flex items-center gap-2 text-slate-500 font-medium">
-                    <Calendar className="h-4 w-4" /> Added
-                  </span>
-                  <span className="font-bold text-slate-900">
+                  </td>
+                  <td className="px-6 py-4">
+                    {member.status === "pending" ? (
+                      <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-amber-50 text-amber-600 text-[10px] font-black uppercase tracking-widest border border-amber-100">
+                        <span className="h-1 w-1 rounded-full bg-amber-600 animate-pulse" />
+                        Pending
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase tracking-widest border border-emerald-100">
+                        <span className="h-1 w-1 rounded-full bg-emerald-600" />
+                        Active
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 text-slate-500 font-medium">
                     {member.lastActive}
-                  </span>
-                </div>
-              </div>
-            </div>
-          ))}
-          {teamMembers.length === 0 && (
-            <div className="col-span-full py-12 text-center text-slate-400 font-medium">
-              No team members found.
-            </div>
-          )}
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      {member.status === "pending" && (
+                        <form action={async () => {
+                          "use server";
+                          await revokeTeamMember(member.id);
+                        }}>
+                          <button className="text-[10px] font-black uppercase tracking-widest text-rose-500 hover:bg-rose-600 hover:text-white px-3 py-1.5 rounded-lg border border-rose-100 hover:border-rose-600 transition-all shadow-sm">
+                            Revoke
+                          </button>
+                        </form>
+                      )}
+                      <button className="p-2 text-slate-400 hover:text-slate-900 transition-colors rounded-lg hover:bg-slate-100">
+                        <MoreVertical className="h-5 w-5" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {teamMembers.length === 0 && (
+                <tr>
+                  <td colSpan={6} className="px-6 py-12 text-center text-slate-400 font-medium italic">
+                    No team members found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
