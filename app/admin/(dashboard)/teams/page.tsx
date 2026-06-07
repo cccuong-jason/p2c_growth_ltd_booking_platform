@@ -1,14 +1,63 @@
-import { Search, Plus, MoreVertical, Shield, User, Mail, Calendar } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { redirect } from "next/navigation";
+import { Search, MoreVertical, Shield, User, Mail, Calendar } from "lucide-react";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { verifyAdminRole } from "@/lib/admin-server";
+import { InviteMemberModal } from "@/components/admin/invite-member";
+import { type AdminRole } from "@/lib/supabase/schema";
 
-const MOCK_TEAM = [
-  { id: 1, name: "Jason Admin", email: "jason@p2cgrowth.com", role: "Super Admin", lastActive: "Just now", initial: "J", color: "bg-blue-100 text-blue-700" },
-  { id: 2, name: "Sarah Connor", email: "sarah@p2cgrowth.com", role: "Dispatcher", lastActive: "2 hours ago", initial: "S", color: "bg-emerald-100 text-emerald-700" },
-  { id: 3, name: "Mike Ross", email: "mike@p2cgrowth.com", role: "Clinical Reviewer", lastActive: "Yesterday", initial: "M", color: "bg-purple-100 text-purple-700" },
-  { id: 4, name: "Emily Chen", email: "emily@p2cgrowth.com", role: "Dispatcher", lastActive: "3 days ago", initial: "E", color: "bg-amber-100 text-amber-700" },
+interface TeamMember {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  lastActive: string;
+  initial: string;
+  color: string;
+}
+
+const colorPool = [
+  "bg-blue-100 text-blue-700",
+  "bg-emerald-100 text-emerald-700",
+  "bg-purple-100 text-purple-700",
+  "bg-amber-100 text-amber-700",
+  "bg-rose-100 text-rose-700"
 ];
 
-export default function TeamsPage() {
+export default async function TeamsPage() {
+  const supabase = await createSupabaseServerClient();
+  const { data: { user } } = supabase ? await supabase.auth.getUser() : { data: { user: null } };
+  
+  if (!user || !supabase) {
+    redirect("/admin/login");
+  }
+
+  const isSuperAdmin = await verifyAdminRole(user.id, ["super_admin"]);
+
+  if (!isSuperAdmin) {
+    return (
+      <div className="flex h-full min-h-screen items-center justify-center p-8 bg-slate-50/50">
+        <div className="w-full max-w-xl rounded-3xl border border-slate-200 bg-white p-12 text-center shadow-premium">
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-rose-500 mb-3">Access Restricted</p>
+          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-4">Insufficient Permissions</h1>
+          <p className="text-slate-500 text-sm font-medium">You need Super Admin privileges to view and manage teams.</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Fetch real team members
+  const { data: profiles, error } = await supabase.from("admin_profiles").select("*").order("created_at", { ascending: false });
+  
+  const teamMembers: TeamMember[] = (profiles || []).map((p, index) => ({
+    id: p.id,
+    name: p.full_name,
+    email: p.email,
+    role: p.role === "super_admin" ? "Super Admin" : "Dispatcher",
+    lastActive: new Date(p.created_at).toLocaleDateString('en-GB'),
+    initial: p.full_name.charAt(0).toUpperCase() || "?",
+    color: colorPool[index % colorPool.length]
+  }));
+
   return (
     <div className="p-6 md:p-10 lg:p-14 space-y-8 bg-slate-50/50 min-h-screen">
       <header className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -21,9 +70,7 @@ export default function TeamsPage() {
           </p>
         </div>
         <div className="flex gap-3">
-          <Button className="rounded-xl bg-blue-600 font-bold text-white shadow-lg shadow-blue-200 transition-all hover:bg-blue-700">
-            <Plus className="mr-2 h-4 w-4" /> Invite Member
-          </Button>
+          <InviteMemberModal />
         </div>
       </header>
 
@@ -42,7 +89,7 @@ export default function TeamsPage() {
 
         {/* Member Grid */}
         <div className="p-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {MOCK_TEAM.map((member) => (
+          {teamMembers.map((member) => (
             <div key={member.id} className="rounded-2xl border border-slate-200 p-6 flex flex-col hover:border-blue-200 hover:shadow-md transition-all group">
               <div className="flex justify-between items-start mb-4">
                 <div className={`h-12 w-12 rounded-full flex items-center justify-center font-bold text-lg ${member.color}`}>
@@ -73,7 +120,7 @@ export default function TeamsPage() {
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <span className="flex items-center gap-2 text-slate-500 font-medium">
-                    <Calendar className="h-4 w-4" /> Last Active
+                    <Calendar className="h-4 w-4" /> Added
                   </span>
                   <span className="font-bold text-slate-900">
                     {member.lastActive}
@@ -82,6 +129,11 @@ export default function TeamsPage() {
               </div>
             </div>
           ))}
+          {teamMembers.length === 0 && (
+            <div className="col-span-full py-12 text-center text-slate-400 font-medium">
+              No team members found.
+            </div>
+          )}
         </div>
       </div>
     </div>

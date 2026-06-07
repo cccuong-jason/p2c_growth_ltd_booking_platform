@@ -18,12 +18,25 @@ import {
 import { getAllWorkspaces } from "@/lib/admin/registry";
 import { cn } from "@/lib/utils";
 
+import { useRouter } from "next/navigation";
+import { createSupabaseBrowserClient } from "@/lib/supabase/client";
+
 export function AdminSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const workspaces = getAllWorkspaces();
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
+
+  const handleLogout = async () => {
+    const supabase = createSupabaseBrowserClient();
+    if (supabase) {
+      await supabase.auth.signOut();
+    }
+    router.push("/admin/login");
+    router.refresh();
+  };
 
   return (
     <aside className={cn(
@@ -155,18 +168,6 @@ export function AdminSidebar() {
             </Link>
           </nav>
         </div>
-      </div>
-
-      <div className="p-4 mt-auto border-t border-slate-100">
-        <button className={cn(
-          "w-full flex items-center rounded-xl py-2.5 font-bold text-rose-500 hover:bg-rose-50 transition-all",
-          isCollapsed ? "justify-center px-0" : "gap-3 px-4"
-        )}
-        title={isCollapsed ? "Logout" : undefined}
-        >
-          <LogOut className="h-5 w-5 shrink-0" />
-          {!isCollapsed && <span className="text-sm whitespace-nowrap">Logout</span>}
-        </button>
       </div>
     </aside>
   );

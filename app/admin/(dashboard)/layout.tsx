@@ -1,9 +1,11 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { isAdminEmailAllowed } from "@/lib/admin";
 import { getAdminProfile } from "@/lib/admin-server";
 import { getEnv, hasSupabasePublicConfig, hasSupabaseServiceConfig } from "@/lib/env";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { AdminSidebar } from "@/components/admin/sidebar";
+import { HeaderUserNav } from "@/components/admin/header-user-nav";
 
 export default async function AdminLayout({
   children,
@@ -14,6 +16,9 @@ export default async function AdminLayout({
 
   // Determine the content to render
   let content = children;
+  let userInitial = "A";
+  let userRole = "dispatcher";
+  let userEmail = "";
 
   if (!hasConfig) {
     content = (
@@ -36,6 +41,7 @@ export default async function AdminLayout({
     }
 
     const email = data.user.email;
+    userEmail = email || "";
     const allowlist = getEnv("ADMIN_EMAIL_ALLOWLIST");
 
     if (!isAdminEmailAllowed(email, allowlist)) {
@@ -60,6 +66,9 @@ export default async function AdminLayout({
             </div>
           </div>
         );
+      } else {
+        userInitial = profileResult.data?.full_name?.charAt(0).toUpperCase() || "A";
+        userRole = profileResult.data?.role || "dispatcher";
       }
     }
   }
@@ -75,9 +84,7 @@ export default async function AdminLayout({
             <span className="text-slate-900">Operations Console</span>
           </div>
           <div className="flex items-center gap-3">
-             <div className="h-8 w-8 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs">
-                A
-             </div>
+             <HeaderUserNav userInitial={userInitial} email={userEmail} role={userRole} />
           </div>
         </header>
         
