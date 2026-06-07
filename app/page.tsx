@@ -410,7 +410,7 @@ export default function HomePage() {
         <div className="text-center mb-20 md:mb-32">
           <Reveal>
              <SectionBadge icon={LayoutDashboard}>What We Build</SectionBadge>
-             <h2 className="text-4xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">
+             <h2 className="text-4xl md:text-5xl lg:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">
                 Practical systems <br /><span className="text-ocean">for service teams.</span>
              </h2>
           </Reveal>
@@ -608,7 +608,7 @@ export default function HomePage() {
           <Reveal>
             <div className="text-center">
               <SectionBadge icon={LayoutDashboard}>Delivery Process</SectionBadge>
-              <h2 className="text-4xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">
+              <h2 className="text-4xl md:text-5xl lg:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">
                 From messy workflow <br /><span className="text-ocean">to working system.</span>
               </h2>
             </div>
@@ -725,7 +725,7 @@ export default function HomePage() {
         <div className="text-center mb-20 md:mb-32">
            <Reveal>
               <SectionBadge icon={Workflow}>Company Purpose</SectionBadge>
-              <h2 className="text-4xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">
+              <h2 className="text-4xl md:text-5xl lg:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">
                  Digital infrastructure <br /><span className="text-ocean">that fits real work.</span>
               </h2>
            </Reveal>
@@ -815,7 +815,7 @@ export default function HomePage() {
         <div className="text-center mb-20 px-4 sm:px-6 max-w-7xl mx-auto relative z-20">
            <Reveal>
               <SectionBadge icon={MessageSquareQuote}>Why teams choose P2C Growth</SectionBadge>
-              <h2 className="text-5xl md:text-[5.2rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">Less manual work, <br /><span className="text-ocean">clearer operations.</span></h2>
+              <h2 className="text-4xl md:text-5xl lg:text-[5.2rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">Less manual work, <br /><span className="text-ocean">clearer operations.</span></h2>
            </Reveal>
         </div>
 
@@ -887,7 +887,7 @@ export default function HomePage() {
 
                   <div className="order-1 lg:order-2">
                     <p className="mb-5 text-[11px] font-black uppercase tracking-[0.24em] text-blue-100">Start the conversation</p>
-                    <h2 className="text-4xl md:text-7xl font-extrabold text-white tracking-tight leading-[1] display-heading">
+                    <h2 className="text-4xl md:text-5xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1] display-heading">
                       Ready to improve <br />your digital workflow?
                     </h2>
                     <p className="mt-8 text-lg md:text-xl text-blue-100 max-w-xl font-medium">

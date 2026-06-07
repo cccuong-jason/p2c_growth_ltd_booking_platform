@@ -1,5 +1,6 @@
+import React from "react";
 import Link from "next/link";
-import { Activity, ArrowRight, CalendarPlus, ChevronDown, Globe2 } from "lucide-react";
+import { Activity, ArrowRight, CalendarPlus, ChevronDown, Globe2, Menu, X } from "lucide-react";
 
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { SectionBadge } from "@/components/ui/section-badge";
@@ -28,18 +29,53 @@ const languages = [
 
 export function SiteHeader() {
   const copy = getDictionary();
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
   return (
     <header className="fixed inset-x-0 top-4 z-50 px-4 md:px-6">
       <div className="glass-panel mx-auto flex max-w-7xl items-center justify-between rounded-2xl border border-white/20 px-5 py-3 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-xl">
-        <Link href="/" className="flex items-center gap-3 rounded-md pr-2 text-lg font-extrabold tracking-tight text-ink">
+        <Link href="/" className="flex items-center gap-3 rounded-md pr-2 text-lg font-extrabold tracking-tight text-ink relative z-20">
           <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-ocean to-cyan text-white shadow-lg shadow-blue-500/30">
             <Activity className="h-6 w-6" aria-hidden />
           </span>
           P2C Growth
         </Link>
         
-        <nav className="hidden items-center gap-1 rounded-xl bg-slate-900/5 p-1 text-[13px] font-bold text-slate-600 md:flex">
+        {/* Mobile Menu Toggle */}
+        <button 
+          className="md:hidden relative z-20 p-2 text-slate-600 hover:text-ink"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        </button>
+
+        {/* Mobile Navigation Dropdown */}
+        {mobileMenuOpen && (
+          <div className="absolute inset-x-4 top-[120%] bg-white/95 backdrop-blur-xl border border-slate-100 rounded-2xl shadow-2xl p-6 flex flex-col gap-4 md:hidden">
+            {navItems.map((item) => (
+              <Link 
+                key={item.href} 
+                href={item.href} 
+                className="text-lg font-bold text-ink hover:text-ocean transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {copy.nav[item.label]}
+              </Link>
+            ))}
+            <hr className="border-slate-100 my-2" />
+            <Link 
+              href="/services/physiotherapy" 
+              className="flex h-12 items-center justify-center gap-2 rounded-xl bg-ocean px-5 text-sm font-bold text-white shadow-lg shadow-blue-500/20"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <CalendarPlus className="h-4 w-4" aria-hidden />
+              Book expert
+            </Link>
+          </div>
+        )}
+
+        {/* Desktop Navigation */}
+        <nav className="hidden items-center gap-1 rounded-xl bg-slate-900/5 p-1 text-[13px] font-bold text-slate-600 md:flex relative z-20">
           {navItems.map((item) => (
             item.label === "services" ? (
               <div key={item.href} className="group relative">
