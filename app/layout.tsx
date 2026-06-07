@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 
 import { SmoothScroll } from "@/components/providers/smooth-scroll";
-import { SiteFooter, SiteHeader } from "@/components/site-shell";
+import { ConditionalShell } from "@/components/providers/conditional-shell";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta" });
@@ -17,9 +17,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={jakarta.className}>
         <SmoothScroll>
-          <SiteHeader />
-          {children}
-          <SiteFooter />
+          <ConditionalShell>
+            {children}
+          </ConditionalShell>
         </SmoothScroll>
       </body>
     </html>

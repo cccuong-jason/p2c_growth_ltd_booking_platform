@@ -36,5 +36,12 @@ export function isAdminEmailAllowed(email: string | undefined, allowlist: string
     .split(",")
     .map((entry) => entry.trim().toLowerCase())
     .filter(Boolean)
-    .includes(email.toLowerCase());
+    .includes(email.trim().toLowerCase());
+}
+
+export interface OperationalDataUpdate {
+  status?: BookingStatus;
+  assigned_partner_name?: string | null;
+  internal_notes?: string | null;
+  booking_date?: string;
 }

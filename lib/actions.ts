@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 
 import { normalizeStatus } from "@/lib/admin";
+import { updateBookingOperationalData } from "@/lib/admin-server";
 import {
   validateBookingInput,
   validateEnquiryInput,
@@ -120,15 +121,29 @@ export async function submitEnquiry(_: ActionState, formData: FormData): Promise
   return { ok: true, message: "Thanks. P2C Growth will follow up with you shortly." };
 }
 
-export async function updateBookingStatus(formData: FormData): Promise<void> {
+export async function updateBookingStatusAction(formData: FormData): Promise<void> {
   const bookingId = String(formData.get("bookingId") || "");
   const status = normalizeStatus(String(formData.get("status") || ""));
-  const supabase = createSupabaseAdminClient();
+  
+  await updateBookingOperationalData(bookingId, { status });
+  revalidatePath("/admin");
+}
 
-  if (!supabase || !bookingId) {
-    return;
-  }
+export async function updateBookingDetailsAction(formData: FormData): Promise<void> {
+  const bookingId = String(formData.get("bookingId") || "");
+  const status = normalizeStatus(String(formData.get("status") || ""));
+  const assigned_partner_name = String(formData.get("assigned_partner_name") || "") || null;
+  const internal_notes = String(formData.get("internal_notes") || "") || null;
+  const booking_date = String(formData.get("booking_date") || "");
 
-  await supabase.from("bookings").update({ status }).eq("id", bookingId);
+  if (!bookingId) return;
+
+  await updateBookingOperationalData(bookingId, {
+    status,
+    assigned_partner_name,
+    internal_notes,
+    booking_date
+  });
+
   revalidatePath("/admin");
 }
