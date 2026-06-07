@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { Search, MoreVertical, Shield, User, Mail, Calendar } from "lucide-react";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabaseServerClient, createSupabaseAdminClient } from "@/lib/supabase/server";
 import { verifyAdminRole } from "@/lib/admin-server";
 import { InviteMemberModal } from "@/components/admin/invite-member";
 import { type AdminRole } from "@/lib/supabase/schema";
@@ -48,8 +48,13 @@ export default async function TeamsPage() {
     );
   }
 
-  // Fetch real team members
-  const { data: profiles, error } = await supabase.from("admin_profiles").select("*").order("created_at", { ascending: false });
+  // Fetch real team members using Admin Client (Service Role) to avoid RLS recursion
+  const adminClient = createSupabaseAdminClient();
+  if (!adminClient) {
+    return <div className="p-10 text-rose-500 font-bold">Admin client configuration missing.</div>;
+  }
+
+  const { data: profiles, error } = await adminClient.from("admin_profiles").select("*").order("created_at", { ascending: false });
   
   const teamMembers: TeamMember[] = (profiles || []).map((p, index) => ({
     id: p.id,
