@@ -29,12 +29,14 @@ async function getStats() {
     };
   }
 
-  const { count: totalLeads } = await supabase.from("bookings").select("*", { count: "exact", head: true });
-  const { count: pendingLeads } = await supabase.from("bookings").select("*", { count: "exact", head: true }).eq("status", "pending");
+  const [totalResult, pendingResult] = await Promise.all([
+    supabase.from("bookings").select("*", { count: "exact", head: true }),
+    supabase.from("bookings").select("*", { count: "exact", head: true }).eq("status", "pending")
+  ]);
 
   return {
-    totalLeads: totalLeads || 0,
-    pendingLeads: pendingLeads || 0,
+    totalLeads: totalResult.count || 0,
+    pendingLeads: pendingResult.count || 0,
     avgVelocity: "1.2h",
     conversionRate: "18.2%",
     velocityChange: "-5%",

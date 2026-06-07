@@ -28,19 +28,26 @@ import { revokeTeamMember } from "@/lib/admin-actions";
 
 export default async function TeamsPage() {
   const supabase = await createSupabaseServerClient();
-  const { data: { user } } = supabase ? await supabase.auth.getUser() : { data: { user: null } };
-  
-  if (!user || !supabase) {
+  if (!supabase) {
     redirect("/admin/login");
   }
 
-  const isSuperAdmin = await verifyAdminRole(user.id, ["super_admin"]);
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    redirect("/admin/login");
+  }
+
+  // Parallelize role verification and data fetching
+  const [isSuperAdmin, adminClient] = await Promise.all([
+    verifyAdminRole(user.id, ["super_admin"]),
+    Promise.resolve(createSupabaseAdminClient())
+  ]);
 
   if (!isSuperAdmin) {
     return (
       <div className="flex h-full min-h-screen items-center justify-center p-8 bg-slate-50/50">
         <div className="w-full max-w-xl rounded-3xl border border-slate-200 bg-white p-12 text-center shadow-premium">
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-rose-500 mb-3">Access Restricted</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-rose-50 mb-3">Access Restricted</p>
           <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-4">Insufficient Permissions</h1>
           <p className="text-slate-500 text-sm font-medium">You need Super Admin privileges to view and manage teams.</p>
         </div>
@@ -48,13 +55,11 @@ export default async function TeamsPage() {
     );
   }
 
-  // Fetch real team members using Admin Client (Service Role) to avoid RLS recursion
-  const adminClient = createSupabaseAdminClient();
   if (!adminClient) {
     return <div className="p-10 text-rose-500 font-bold">Admin client configuration missing.</div>;
   }
 
-  const { data: profiles, error } = await adminClient.from("admin_profiles").select("*").order("created_at", { ascending: false });
+  const { data: profiles } = await adminClient.from("admin_profiles").select("*").order("created_at", { ascending: false });
   
   const teamMembers: TeamMember[] = (profiles || []).map((p, index) => ({
     id: p.id,

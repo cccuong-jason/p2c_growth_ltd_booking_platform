@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 import { type AdminRole } from "@/lib/supabase/schema";
 import { type BookingStatus, type OperationalDataUpdate } from "@/lib/admin";
@@ -29,7 +30,7 @@ export async function updateBookingOperationalData(
   return { success: true };
 }
 
-export async function getAdminProfile(userId: string) {
+export const getAdminProfile = cache(async (userId: string) => {
   const supabase = createSupabaseAdminClient();
 
   if (!supabase) {
@@ -58,7 +59,7 @@ export async function getAdminProfile(userId: string) {
   }
 
   return { success: true, data };
-}
+});
 
 export async function verifyAdminRole(userId: string, allowedRoles: AdminRole[]) {
   const result = await getAdminProfile(userId);
