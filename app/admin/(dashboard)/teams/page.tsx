@@ -10,6 +10,7 @@ interface TeamMember {
   name: string;
   email: string;
   role: string;
+  status: string;
   lastActive: string;
   initial: string;
   color: string;
@@ -22,6 +23,8 @@ const colorPool = [
   "bg-amber-100 text-amber-700",
   "bg-rose-100 text-rose-700"
 ];
+
+import { revokeTeamMember } from "@/lib/admin-actions";
 
 export default async function TeamsPage() {
   const supabase = await createSupabaseServerClient();
@@ -53,6 +56,7 @@ export default async function TeamsPage() {
     name: p.full_name,
     email: p.email,
     role: p.role === "super_admin" ? "Super Admin" : "Dispatcher",
+    status: p.status || "active",
     lastActive: new Date(p.created_at).toLocaleDateString('en-GB'),
     initial: p.full_name.charAt(0).toUpperCase() || "?",
     color: colorPool[index % colorPool.length]
@@ -95,13 +99,32 @@ export default async function TeamsPage() {
                 <div className={`h-12 w-12 rounded-full flex items-center justify-center font-bold text-lg ${member.color}`}>
                   {member.initial}
                 </div>
-                <button className="text-slate-400 hover:text-slate-900 transition-colors p-1 rounded-md hover:bg-slate-100">
-                  <MoreVertical className="h-5 w-5" />
-                </button>
+                <div className="flex gap-2">
+                  {member.status === "pending" && (
+                    <form action={async () => {
+                      "use server";
+                      await revokeTeamMember(member.id);
+                    }}>
+                      <button className="text-[10px] font-black uppercase tracking-widest text-rose-500 hover:bg-rose-50 px-2 py-1 rounded-md border border-rose-100 transition-colors">
+                        Revoke
+                      </button>
+                    </form>
+                  )}
+                  <button className="text-slate-400 hover:text-slate-900 transition-colors p-1 rounded-md hover:bg-slate-100">
+                    <MoreVertical className="h-5 w-5" />
+                  </button>
+                </div>
               </div>
               
               <div className="mb-6">
-                <h3 className="text-lg font-bold text-slate-900">{member.name}</h3>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-lg font-bold text-slate-900">{member.name}</h3>
+                  {member.status === "pending" && (
+                    <span className="px-1.5 py-0.5 rounded bg-amber-50 text-amber-600 text-[10px] font-black uppercase tracking-widest border border-amber-100">
+                      Pending
+                    </span>
+                  )}
+                </div>
                 <div className="flex items-center gap-2 text-slate-500 text-sm font-medium mt-1">
                   <Mail className="h-3.5 w-3.5" /> {member.email}
                 </div>

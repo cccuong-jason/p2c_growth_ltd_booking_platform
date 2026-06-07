@@ -40,6 +40,7 @@ export interface AdminProfileRow {
   email: string;
   full_name: string;
   role: AdminRole;
+  status: "active" | "pending";
   created_at: string;
 }
 

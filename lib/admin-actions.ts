@@ -98,7 +98,8 @@ export async function inviteTeamMember(formData: FormData) {
     id: authData.user.id,
     email,
     full_name: fullName,
-    role
+    role,
+    status: "pending"
   });
 
   if (profileError) {
@@ -106,6 +107,31 @@ export async function inviteTeamMember(formData: FormData) {
     await adminClient.auth.admin.deleteUser(authData.user.id);
     return { error: "Failed to create profile record. " + profileError.message };
   }
+
+  revalidatePath("/admin/teams");
+  return { success: true };
+}
+
+export async function revokeTeamMember(userId: string) {
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) return { error: "Supabase not configured." };
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: "Unauthorized." };
+
+  const adminClient = createSupabaseAdminClient();
+  if (!adminClient) return { error: "Server admin client not configured." };
+
+  // Verify requester is super_admin
+  const { data: requesterProfile } = await adminClient.from("admin_profiles").select("role").eq("id", user.id).single();
+  if (requesterProfile?.role !== "super_admin") return { error: "Forbidden. Super Admin required." };
+
+  // 1. Delete from Auth (this triggers cascade delete to admin_profiles if configured, but let's be explicit)
+  const { error: authError } = await adminClient.auth.admin.deleteUser(userId);
+  if (authError) return { error: authError.message };
+
+  // 2. Explicitly delete from profile just in case cascade is missing
+  await adminClient.from("admin_profiles").delete().eq("id", userId);
 
   revalidatePath("/admin/teams");
   return { success: true };
