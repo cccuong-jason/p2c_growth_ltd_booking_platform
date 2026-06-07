@@ -66,8 +66,11 @@ export async function inviteTeamMember(formData: FormData) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: "Unauthorized." };
 
-  // Verify super_admin role
-  const { data: profile } = await supabase.from("admin_profiles").select("role").eq("id", user.id).single();
+  const adminClient = createSupabaseAdminClient();
+  if (!adminClient) return { error: "Server admin client not configured." };
+
+  // Verify super_admin role using admin client (bypasses RLS)
+  const { data: profile } = await adminClient.from("admin_profiles").select("role").eq("id", user.id).single();
   if (profile?.role !== "super_admin") return { error: "Forbidden. Super Admin required." };
 
   const email = formData.get("email")?.toString() || "";
@@ -78,9 +81,6 @@ export async function inviteTeamMember(formData: FormData) {
   if (!email || !fullName || !password) {
     return { error: "Email, full name, and temporary password are required." };
   }
-
-  const adminClient = createSupabaseAdminClient();
-  if (!adminClient) return { error: "Server admin client not configured." };
 
   // 1. Create the user in Auth
   const { data: authData, error: authError } = await adminClient.auth.admin.createUser({
