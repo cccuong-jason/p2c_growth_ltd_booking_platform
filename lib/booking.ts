@@ -69,6 +69,8 @@ const medicalLegalReferralTypeIds = medicalLegalReferralTypes.map((type) => type
 const bookingSchema = z
   .object({
     patientName: z.string().trim().min(2, "Full name is required"),
+    customerName: z.string().trim().optional().nullable(),
+    relationshipToPatient: z.string().trim().optional().nullable(),
     countryCode: z.string().trim().min(1, "Country code is required"),
     patientPhone: z.string().trim().regex(/^\d{7,15}$/, "Enter a valid phone number (7-15 digits)"),
     patientEmail: z.string().trim().email("Enter a valid email address"),
@@ -94,7 +96,11 @@ const bookingSchema = z
     addressDetails: z.string().trim().optional().nullable(),
     acknowledgeCoordinatorOnly: z.boolean().refine((value) => value, "required"),
     consentContact: z.boolean().refine((value) => value, "required"),
-    acknowledgeEmergencyAdvice: z.boolean().refine((value) => value, "required")
+    acknowledgeEmergencyAdvice: z.boolean().refine((value) => value, "required"),
+    // Admin fields (optional during public submission)
+    missingInformation: z.string().trim().optional().nullable(),
+    priorityLevel: z.string().trim().optional().default("medium"),
+    providerReason: z.string().trim().optional().nullable()
   })
   .superRefine((data, context) => {
     if (data.serviceCategory === "medico_legal" && !data.medicalLegalReferralType) {
@@ -149,7 +155,7 @@ export function validateBookingInput(input: BookingInput): ValidationResult<Book
       ...result.data,
       ukPostcode: result.data.ukPostcode || null,
       addressDetails: result.data.addressDetails || null,
-      status: bookingStatuses[0],
+      status: "new_request",
       consentedAt: new Date().toISOString()
     }
   };

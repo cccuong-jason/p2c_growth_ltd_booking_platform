@@ -31,7 +31,7 @@ async function getStats() {
 
   const [totalResult, pendingResult] = await Promise.all([
     supabase.from("bookings").select("*", { count: "exact", head: true }),
-    supabase.from("bookings").select("*", { count: "exact", head: true }).eq("status", "pending")
+    supabase.from("bookings").select("*", { count: "exact", head: true }).eq("status", "new_request")
   ]);
 
   return {

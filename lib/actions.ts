@@ -26,6 +26,8 @@ function checkboxValue(formData: FormData, name: string): boolean {
 export async function submitBooking(_: ActionState, formData: FormData): Promise<ActionState> {
   const input: BookingInput = {
     patientName: String(formData.get("patientName") || ""),
+    customerName: String(formData.get("customerName") || "") || null,
+    relationshipToPatient: String(formData.get("relationshipToPatient") || "") || null,
     countryCode: String(formData.get("countryCode") || ""),
     patientPhone: String(formData.get("patientPhone") || ""),
     patientEmail: String(formData.get("patientEmail") || ""),
@@ -64,6 +66,8 @@ export async function submitBooking(_: ActionState, formData: FormData): Promise
 
   const { error } = await supabase.from("bookings").insert({
     patient_name: validation.data.patientName,
+    customer_name: validation.data.customerName,
+    relationship_to_patient: validation.data.relationshipToPatient,
     patient_phone: `${validation.data.countryCode}${validation.data.patientPhone}`,
     patient_email: validation.data.patientEmail,
     dob: validation.data.dob,
@@ -134,6 +138,9 @@ export async function updateBookingDetailsAction(formData: FormData): Promise<vo
   const status = normalizeStatus(String(formData.get("status") || ""));
   const assigned_partner_name = String(formData.get("assigned_partner_name") || "") || null;
   const internal_notes = String(formData.get("internal_notes") || "") || null;
+  const missing_information = String(formData.get("missing_information") || "") || null;
+  const priority_level = String(formData.get("priority_level") || "medium");
+  const provider_reason = String(formData.get("provider_reason") || "") || null;
   const booking_date = String(formData.get("booking_date") || "");
 
   if (!bookingId) return;
@@ -142,6 +149,9 @@ export async function updateBookingDetailsAction(formData: FormData): Promise<vo
     status,
     assigned_partner_name,
     internal_notes,
+    missing_information,
+    priority_level,
+    provider_reason,
     booking_date
   });
 

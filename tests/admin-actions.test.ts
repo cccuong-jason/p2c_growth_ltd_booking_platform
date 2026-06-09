@@ -22,11 +22,11 @@ describe("administrative server actions", () => {
     it("updates status and revalidates path", async () => {
       const formData = new FormData();
       formData.append("bookingId", "b-1");
-      formData.append("status", "confirmed");
+      formData.append("status", "appointment_confirmed");
 
       await updateBookingStatusAction(formData);
 
-      expect(updateBookingOperationalData).toHaveBeenCalledWith("b-1", { status: "confirmed" });
+      expect(updateBookingOperationalData).toHaveBeenCalledWith("b-1", { status: "appointment_confirmed" });
       expect(revalidatePath).toHaveBeenCalledWith("/admin");
     });
   });
@@ -35,7 +35,7 @@ describe("administrative server actions", () => {
     it("updates full operational data and revalidates path", async () => {
       const formData = new FormData();
       formData.append("bookingId", "b-2");
-      formData.append("status", "partner_assigned");
+      formData.append("status", "awaiting_provider");
       formData.append("assigned_partner_name", "Partner X");
       formData.append("internal_notes", "Some notes");
       formData.append("booking_date", "2026-07-01");
@@ -43,10 +43,13 @@ describe("administrative server actions", () => {
       await updateBookingDetailsAction(formData);
 
       expect(updateBookingOperationalData).toHaveBeenCalledWith("b-2", {
-        status: "partner_assigned",
+        status: "awaiting_provider",
         assigned_partner_name: "Partner X",
         internal_notes: "Some notes",
-        booking_date: "2026-07-01"
+        missing_information: null,
+        priority_level: "medium",
+        provider_reason: null,
+        booking_date: "2026-07-01",
       });
       expect(revalidatePath).toHaveBeenCalledWith("/admin");
     });
@@ -54,7 +57,7 @@ describe("administrative server actions", () => {
     it("handles nulls for optional fields", async () => {
       const formData = new FormData();
       formData.append("bookingId", "b-3");
-      formData.append("status", "pending");
+      formData.append("status", "new_request");
       // partner and notes left empty
 
       await updateBookingDetailsAction(formData);

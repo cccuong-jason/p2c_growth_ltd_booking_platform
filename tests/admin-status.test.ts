@@ -5,9 +5,9 @@ import { updateBookingOperationalData } from "@/lib/admin-server";
 
 describe("admin booking status helpers", () => {
   it("accepts the Phase 1 status contract", () => {
-    expect(isBookingStatus("pending")).toBe(true);
-    expect(isBookingStatus("partner_assigned")).toBe(true);
-    expect(isBookingStatus("confirmed")).toBe(true);
+    expect(isBookingStatus("new_request")).toBe(true);
+    expect(isBookingStatus("awaiting_provider")).toBe(true);
+    expect(isBookingStatus("appointment_confirmed")).toBe(true);
     expect(isBookingStatus("completed")).toBe(true);
     expect(isBookingStatus("cancelled")).toBe(true);
   });
@@ -24,7 +24,7 @@ describe("admin operational mutations", () => {
     const mockUpdate = vi.fn().mockResolvedValue({ success: true });
     
     const result = await updateBookingOperationalData("booking-123", {
-      status: "partner_assigned",
+      status: "awaiting_provider",
       assigned_partner_name: "John Doe",
       internal_notes: "Call patient tomorrow"
     });

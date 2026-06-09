@@ -6,6 +6,8 @@ export type AdminRole = "super_admin" | "dispatcher";
 export interface BookingRow {
   id: string;
   patient_name: string;
+  customer_name: string | null;
+  relationship_to_patient: string | null;
   patient_phone: string;
   patient_email: string;
   dob: string;
@@ -18,6 +20,9 @@ export interface BookingRow {
   status: BookingStatus;
   assigned_partner_name: string | null;
   internal_notes: string | null;
+  missing_information: string | null;
+  priority_level: string;
+  provider_reason: string | null;
   acknowledge_coordinator_only: boolean;
   consent_contact: boolean;
   acknowledge_emergency_advice: boolean;

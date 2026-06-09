@@ -17,7 +17,7 @@ describe("admin server logic", () => {
     it("mocks the update when Supabase client is missing", async () => {
       vi.mocked(createSupabaseAdminClient).mockReturnValue(null as any);
       
-      const result = await updateBookingOperationalData("booking-1", { status: "confirmed" });
+      const result = await updateBookingOperationalData("booking-1", { status: "appointment_confirmed" });
       expect(result.success).toBe(true);
       if (result.success) {
         expect(result.data).toBeDefined();
@@ -34,10 +34,10 @@ describe("admin server logic", () => {
       
       vi.mocked(createSupabaseAdminClient).mockReturnValue(mockSupabase as any);
 
-      const result = await updateBookingOperationalData("booking-1", { status: "confirmed" });
+      const result = await updateBookingOperationalData("booking-1", { status: "appointment_confirmed" });
       expect(result.success).toBe(true);
       expect(mockSupabase.from).toHaveBeenCalledWith("bookings");
-      expect(mockUpdate).toHaveBeenCalledWith(expect.objectContaining({ status: "confirmed" }));
+      expect(mockUpdate).toHaveBeenCalledWith(expect.objectContaining({ status: "appointment_confirmed" }));
     });
 
     it("returns an error if the DB update fails", async () => {
@@ -50,7 +50,7 @@ describe("admin server logic", () => {
       
       vi.mocked(createSupabaseAdminClient).mockReturnValue(mockSupabase as any);
 
-      const result = await updateBookingOperationalData("booking-1", { status: "confirmed" });
+      const result = await updateBookingOperationalData("booking-1", { status: "appointment_confirmed" });
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.error).toBe("DB Error");

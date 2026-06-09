@@ -5,8 +5,8 @@ import { getStatusLabel, isAdminEmailAllowed } from "@/lib/admin";
 describe("admin utility helpers", () => {
   describe("getStatusLabel", () => {
     it("formats snake_case statuses to Title Case", () => {
-      expect(getStatusLabel("pending")).toBe("Pending");
-      expect(getStatusLabel("partner_assigned")).toBe("Partner Assigned");
+      expect(getStatusLabel("new_request")).toBe("New Request");
+      expect(getStatusLabel("awaiting_provider")).toBe("Awaiting Provider");
     });
   });
 

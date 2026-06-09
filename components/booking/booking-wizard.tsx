@@ -20,6 +20,7 @@ import {
   Activity,
   UserCheck,
   User,
+  Users,
   Mail,
   Phone,
   Calendar,
@@ -323,8 +324,11 @@ export function BookingWizard() {
   const [bookingDate, setBookingDate] = useState("");
   const [preferredLanguage, setPreferredLanguage] = useState("en");
   const [countryCode, setCountryCode] = useState("+44");
+  const [isBookingForSelf, setIsBookingForSelf] = useState(true);
   const [patientData, setPatientData] = useState({
     patientName: "",
+    customerName: "",
+    relationshipToPatient: "",
     patientPhone: "",
     patientEmail: "",
     dob: ""
@@ -370,7 +374,13 @@ export function BookingWizard() {
     }
     
     if (currentStep === 1) {
-      if (!patientData.patientName.trim()) newErrors.patientName = "Full name is required.";
+      if (!patientData.patientName.trim()) newErrors.patientName = "Patient name is required.";
+      
+      if (!isBookingForSelf) {
+        if (!patientData.customerName.trim()) newErrors.customerName = "Your name is required.";
+        if (!patientData.relationshipToPatient.trim()) newErrors.relationshipToPatient = "Relationship is required.";
+      }
+
       if (!patientData.patientEmail.trim()) {
         newErrors.patientEmail = "Email address is required.";
       } else if (!validateEmail(patientData.patientEmail)) {
@@ -579,6 +589,8 @@ export function BookingWizard() {
                   <input type="hidden" name="visitType" value={visitType} />
                   <input type="hidden" name="bookingDate" value={bookingDate} />
                   <input type="hidden" name="patientName" value={patientData.patientName} />
+                  <input type="hidden" name="customerName" value={patientData.customerName} />
+                  <input type="hidden" name="relationshipToPatient" value={patientData.relationshipToPatient} />
                   <input type="hidden" name="countryCode" value={countryCode} />
                   <input type="hidden" name="patientPhone" value={patientData.patientPhone} />
                   <input type="hidden" name="patientEmail" value={patientData.patientEmail} />
@@ -691,11 +703,74 @@ export function BookingWizard() {
                     transition={{ duration: 0.2 }}
                     className="space-y-8"
                   >
+                    <div className="rounded-2xl border border-slate-100 bg-slate-50/50 p-6">
+                       <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4">Reservation Contact</h4>
+                       <div className="flex gap-4">
+                          {[
+                            { id: true, label: "Booking for myself" },
+                            { id: false, label: "Booking for someone else" }
+                          ].map((opt) => (
+                            <button
+                              key={String(opt.id)}
+                              type="button"
+                              onClick={() => {
+                                setIsBookingForSelf(opt.id);
+                                setErrors({});
+                              }}
+                              className={cn(
+                                "flex-1 py-3 px-4 rounded-xl text-xs font-bold transition-all border",
+                                isBookingForSelf === opt.id 
+                                  ? "bg-white border-ocean text-ocean shadow-sm ring-4 ring-ocean/5" 
+                                  : "bg-transparent border-slate-200 text-slate-500 hover:bg-white"
+                              )}
+                            >
+                              {opt.label}
+                            </button>
+                          ))}
+                       </div>
+
+                       <AnimatePresence mode="wait">
+                          {!isBookingForSelf && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: "auto" }}
+                              exit={{ opacity: 0, height: 0 }}
+                              className="overflow-hidden"
+                            >
+                              <div className="grid gap-4 md:grid-cols-2 mt-6 pt-6 border-t border-slate-200/60">
+                                <InputWithIcon 
+                                  icon={User} 
+                                  label="Your Full Name" 
+                                  placeholder="Contact person" 
+                                  error={errors.customerName}
+                                  value={patientData.customerName} 
+                                  onChange={(e: any) => {
+                                    setPatientData({ ...patientData, customerName: e.target.value });
+                                    if (errors.customerName) setErrors({ ...errors, customerName: "" });
+                                  }} 
+                                />
+                                <InputWithIcon 
+                                  icon={Users} 
+                                  label="Relationship to patient" 
+                                  placeholder="e.g. Parent, Carer, Case Manager" 
+                                  error={errors.relationshipToPatient}
+                                  value={patientData.relationshipToPatient} 
+                                  onChange={(e: any) => {
+                                    setPatientData({ ...patientData, relationshipToPatient: e.target.value });
+                                    if (errors.relationshipToPatient) setErrors({ ...errors, relationshipToPatient: "" });
+                                  }} 
+                                />
+                              </div>
+                            </motion.div>
+                          )}
+                       </AnimatePresence>
+                    </div>
+
                     <div className="grid gap-5 md:grid-cols-2">
                       <InputWithIcon 
                         icon={User} 
-                        label="Full Name" 
-                        placeholder="Enter your full name" 
+                        label={isBookingForSelf ? "Full Name" : "Patient Full Name"}
+                        placeholder={isBookingForSelf ? "Enter your full name" : "Enter patient's full name"} 
                         required 
                         error={errors.patientName}
                         value={patientData.patientName} 
@@ -948,7 +1023,7 @@ export function BookingWizard() {
                         <div className="grid gap-3">
                            {[
                              { label: "Category", value: serviceCategories.find(c => c.id === service)?.title, icon: Activity },
-                             { label: "Patient", value: patientData.patientName, icon: User },
+                             { label: isBookingForSelf ? "Patient" : "Booking For", value: isBookingForSelf ? patientData.patientName : `${patientData.patientName} (${patientData.relationshipToPatient})`, icon: User },
                              { label: "Phone", value: `${countryCode} ${patientData.patientPhone}`, icon: Phone },
                              { label: "Visit", value: visitType === "home" ? "Home Visit" : "Clinic Visit", icon: MapPin },
                              { label: "Schedule", value: bookingDate ? new Date(bookingDate).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' }) : "Not set", icon: Calendar }

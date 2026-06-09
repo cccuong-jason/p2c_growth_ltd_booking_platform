@@ -2,29 +2,26 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { 
   Activity, 
   LayoutDashboard, 
   Users, 
   Settings, 
-  ChevronRight,
   ChevronLeft,
   Menu,
-  LogOut,
   ShieldCheck,
-  Package
+  CalendarCheck,
+  Zap,
+  Monitor,
+  MessageSquareText
 } from "lucide-react";
-import { getAllWorkspaces } from "@/lib/admin/registry";
 import { cn } from "@/lib/utils";
-
-import { useRouter } from "next/navigation";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 export function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const workspaces = getAllWorkspaces();
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
@@ -95,46 +92,78 @@ export function AdminSidebar() {
             {!isCollapsed && <span className="text-sm whitespace-nowrap">Overview</span>}
           </Link>
           <Link
-            href="/admin/crm"
+            href="/admin/physio"
             className={cn(
               "flex items-center rounded-xl py-2.5 font-bold transition-all",
               isCollapsed ? "justify-center px-0" : "gap-3 px-4",
-              isActive("/admin/crm") ? "bg-blue-50 text-blue-700" : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+              isActive("/admin/physio") ? "bg-blue-50 text-blue-700" : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
             )}
-            title={isCollapsed ? "CRM" : undefined}
+            title={isCollapsed ? "Physio Booking" : undefined}
           >
-            <Users className="h-5 w-5 shrink-0" />
-            {!isCollapsed && <span className="text-sm whitespace-nowrap">CRM</span>}
+            <CalendarCheck className="h-5 w-5 shrink-0" />
+            {!isCollapsed && <span className="text-sm whitespace-nowrap">Physio Booking</span>}
           </Link>
         </nav>
 
-        {/* Workspaces */}
+        {/* B2B Services */}
         <div className="space-y-2">
-          {!isCollapsed && <p className="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-400 whitespace-nowrap">Services</p>}
+          {!isCollapsed && <p className="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-400 whitespace-nowrap">Solutions</p>}
           <nav className="space-y-1">
-            {workspaces.map((ws) => (
-              <Link
-                key={ws.id}
-                href={`/admin/workspaces/${ws.id}`}
-                className={cn(
-                  "group flex items-center rounded-xl py-2.5 font-bold transition-all",
-                  isCollapsed ? "justify-center px-0" : "justify-between px-4",
-                  isActive(`/admin/workspaces/${ws.id}`) ? "bg-blue-50 text-blue-700" : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
-                )}
-                title={isCollapsed ? ws.label : undefined}
-              >
-                <div className="flex items-center gap-3">
-                  <ws.icon className="h-5 w-5 shrink-0" />
-                  {!isCollapsed && <span className="text-sm whitespace-nowrap">{ws.label}</span>}
-                </div>
-                {!isCollapsed && (
-                  <ChevronRight className={cn(
-                    "h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0",
-                    isActive(`/admin/workspaces/${ws.id}`) && "opacity-100"
-                  )} />
-                )}
-              </Link>
-            ))}
+            <Link
+              href="/admin/automation"
+              className={cn(
+                "flex items-center rounded-xl py-2.5 font-bold transition-all",
+                isCollapsed ? "justify-center px-0" : "gap-3 px-4",
+                isActive("/admin/automation") ? "bg-blue-50 text-blue-700" : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+              )}
+              title={isCollapsed ? "Booking & Email Automation" : undefined}
+            >
+              <Zap className="h-5 w-5 shrink-0" />
+              {!isCollapsed && <span className="text-sm whitespace-nowrap">Automation</span>}
+            </Link>
+            <Link
+              href="/admin/web-dev"
+              className={cn(
+                "flex items-center rounded-xl py-2.5 font-bold transition-all",
+                isCollapsed ? "justify-center px-0" : "gap-3 px-4",
+                isActive("/admin/web-dev") ? "bg-blue-50 text-blue-700" : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+              )}
+              title={isCollapsed ? "Website Development" : undefined}
+            >
+              <Monitor className="h-5 w-5 shrink-0" />
+              {!isCollapsed && <span className="text-sm whitespace-nowrap">Website Dev</span>}
+            </Link>
+          </nav>
+        </div>
+
+        {/* CRM & Comm */}
+        <div className="space-y-2">
+          {!isCollapsed && <p className="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-400 whitespace-nowrap">Relationship</p>}
+          <nav className="space-y-1">
+            <Link
+              href="/admin/customers"
+              className={cn(
+                "flex items-center rounded-xl py-2.5 font-bold transition-all",
+                isCollapsed ? "justify-center px-0" : "gap-3 px-4",
+                isActive("/admin/customers") ? "bg-blue-50 text-blue-700" : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+              )}
+              title={isCollapsed ? "Customers" : undefined}
+            >
+              <Users className="h-5 w-5 shrink-0" />
+              {!isCollapsed && <span className="text-sm whitespace-nowrap">Customers</span>}
+            </Link>
+            <Link
+              href="/admin/messages"
+              className={cn(
+                "flex items-center rounded-xl py-2.5 font-bold transition-all",
+                isCollapsed ? "justify-center px-0" : "gap-3 px-4",
+                isActive("/admin/messages") ? "bg-blue-50 text-blue-700" : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+              )}
+              title={isCollapsed ? "Messages" : undefined}
+            >
+              <MessageSquareText className="h-5 w-5 shrink-0" />
+              {!isCollapsed && <span className="text-sm whitespace-nowrap">Messages</span>}
+            </Link>
           </nav>
         </div>
 
