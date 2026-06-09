@@ -1,21 +1,51 @@
 import { Search, Filter, MoreHorizontal, Mail, Phone, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { createSupabaseAdminClient } from "@/lib/supabase/server";
 
-const MOCK_CUSTOMERS = [
-  { id: 1, name: "Alice Johnson", email: "alice@example.com", phone: "+44 7700 900123", requests: 3, lastActive: "2026-06-05", status: "Active" },
-  { id: 2, name: "Bob Smith", email: "bob@example.com", phone: "+44 7700 900456", requests: 1, lastActive: "2026-06-02", status: "Inactive" },
-  { id: 3, name: "Charlie Davis", email: "charlie@example.com", phone: "+44 7700 900789", requests: 5, lastActive: "2026-06-06", status: "Active" },
-  { id: 4, name: "Diana Evans", email: "diana@example.com", phone: "+44 7700 900321", requests: 0, lastActive: "2026-05-15", status: "Lead" },
-  { id: 5, name: "Ethan Harris", email: "ethan@example.com", phone: "+44 7700 900654", requests: 2, lastActive: "2026-06-01", status: "Active" },
-];
+export const dynamic = "force-dynamic";
 
-export default function CrmPage() {
+export default async function CrmPage() {
+  const supabase = createSupabaseAdminClient();
+  const { data: bookings } = supabase 
+    ? await supabase.from("bookings").select("*").order("created_at", { ascending: false })
+    : { data: [] };
+
+  // Aggregate bookings into unique customers based on email
+  const customerMap = new Map<string, any>();
+  
+  (bookings || []).forEach((booking) => {
+    const email = booking.patient_email;
+    if (!customerMap.has(email)) {
+      customerMap.set(email, {
+        id: booking.id, // using first booking id as a ref
+        name: booking.customer_name || booking.patient_name,
+        email: email,
+        phone: booking.patient_phone,
+        requests: 1,
+        lastActive: booking.created_at,
+        status: booking.status === "completed" ? "Inactive" : "Active"
+      });
+    } else {
+      const existing = customerMap.get(email);
+      existing.requests += 1;
+      if (new Date(booking.created_at) > new Date(existing.lastActive)) {
+        existing.lastActive = booking.created_at;
+      }
+      if (booking.status !== "completed" && booking.status !== "cancelled") {
+        existing.status = "Active";
+      }
+      customerMap.set(email, existing);
+    }
+  });
+
+  const customers = Array.from(customerMap.values());
+
   return (
     <div className="p-6 md:p-10 lg:p-14 space-y-8 bg-slate-50/50 min-h-screen">
       <header className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div className="space-y-1">
           <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
-            Customer Relationship Management
+            Customer Directory
           </h1>
           <p className="text-slate-500 text-sm font-medium">
             Centralized directory of all patients, clients, and leads.
@@ -51,23 +81,23 @@ export default function CrmPage() {
               <tr>
                 <th className="px-6 py-4">Customer</th>
                 <th className="px-6 py-4">Contact Details</th>
-                <th className="px-6 py-4">Requests</th>
+                <th className="px-6 py-4">Total Requests</th>
                 <th className="px-6 py-4">Last Active</th>
                 <th className="px-6 py-4">Status</th>
                 <th className="px-6 py-4 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {MOCK_CUSTOMERS.map((customer) => (
+              {customers.map((customer) => (
                 <tr key={customer.id} className="transition-colors hover:bg-slate-50/50">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold">
-                        {customer.name.charAt(0)}
+                        {customer.name.charAt(0).toUpperCase()}
                       </div>
                       <div>
                         <p className="font-bold text-slate-900">{customer.name}</p>
-                        <p className="text-xs font-medium text-slate-500 mt-0.5">ID: P2C-{1000 + customer.id}</p>
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-0.5">ID: {customer.id.slice(0, 8)}</p>
                       </div>
                     </div>
                   </td>
@@ -106,18 +136,27 @@ export default function CrmPage() {
                   </td>
                 </tr>
               ))}
+              {customers.length === 0 && (
+                <tr>
+                  <td colSpan={6} className="px-6 py-12 text-center text-slate-400 font-medium italic">
+                    No customers found.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
         
         {/* Pagination Footer */}
-        <div className="p-4 border-t border-slate-100 flex items-center justify-between text-sm font-medium text-slate-500 bg-slate-50/30">
-          <span>Showing 1 to 5 of 24 records</span>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="rounded-lg h-8 border-slate-200 text-slate-600 font-bold hover:bg-slate-50">Previous</Button>
-            <Button variant="outline" size="sm" className="rounded-lg h-8 border-slate-200 text-slate-600 font-bold hover:bg-slate-50">Next</Button>
+        {customers.length > 0 && (
+          <div className="p-4 border-t border-slate-100 flex items-center justify-between text-sm font-medium text-slate-500 bg-slate-50/30">
+            <span>Showing 1 to {customers.length} of {customers.length} records</span>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" className="rounded-lg h-8 border-slate-200 text-slate-600 font-bold hover:bg-slate-50 disabled:opacity-50" disabled>Previous</Button>
+              <Button variant="outline" size="sm" className="rounded-lg h-8 border-slate-200 text-slate-600 font-bold hover:bg-slate-50 disabled:opacity-50" disabled>Next</Button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

@@ -1,12 +1,16 @@
 import { Search, Filter, Monitor, Calendar, MoreHorizontal, Terminal, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { createSupabaseAdminClient } from "@/lib/supabase/server";
 
-export default function WebDevDashboard() {
-  // Mock data for B2B Web Dev leads (these will likely come from enquiries or a specific B2B bookings filter later)
-  const records = [
-    { id: "WD-101", client: "London Health Clinic", objective: "Service Booking System", budget: "£2,500", status: "Proposal Sent", date: "2026-06-05" },
-    { id: "WD-102", client: "Pure Physio Hub", objective: "Website Redesign & SEO", budget: "£1,800", status: "Lead", date: "2026-06-03" },
-  ];
+export const dynamic = "force-dynamic";
+
+export default async function WebDevDashboard() {
+  const supabase = createSupabaseAdminClient();
+  const { data: records } = supabase 
+    ? await supabase.from("b2b_projects").select("*").eq("service_type", "web-dev").order("created_at", { ascending: false })
+    : { data: [] };
+
+  const projects = records || [];
 
   return (
     <div className="p-6 md:p-10 lg:p-14 space-y-8 bg-slate-50/50 min-h-screen">
@@ -47,12 +51,12 @@ export default function WebDevDashboard() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {records.map((item) => (
+              {projects.map((item) => (
                 <tr key={item.id} className="transition-colors hover:bg-slate-50/50 group">
-                  <td className="px-6 py-4 font-bold text-slate-500 text-xs">#{item.id}</td>
-                  <td className="px-6 py-4 font-bold text-slate-900">{item.client}</td>
-                  <td className="px-6 py-4 text-slate-600 font-medium">{item.objective}</td>
-                  <td className="px-6 py-4 font-black text-ink">{item.budget}</td>
+                  <td className="px-6 py-4 font-bold text-slate-500 text-xs">#{item.id.slice(0, 8)}</td>
+                  <td className="px-6 py-4 font-bold text-slate-900">{item.client_name}</td>
+                  <td className="px-6 py-4 text-slate-600 font-medium">{item.core_objective}</td>
+                  <td className="px-6 py-4 font-black text-ink">{item.estimated_budget}</td>
                   <td className="px-6 py-4">
                     <span className="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 text-[10px] font-bold uppercase tracking-wider border border-blue-100">
                       {item.status}
@@ -65,6 +69,13 @@ export default function WebDevDashboard() {
                   </td>
                 </tr>
               ))}
+              {projects.length === 0 && (
+                <tr>
+                  <td colSpan={6} className="px-6 py-12 text-center text-slate-400 font-medium italic">
+                    No web development projects found.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
