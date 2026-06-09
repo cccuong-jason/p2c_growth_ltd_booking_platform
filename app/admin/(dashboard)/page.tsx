@@ -22,25 +22,38 @@ async function getStats() {
     return {
       totalLeads: 124,
       pendingLeads: 12,
+      confirmedLeads: 80,
+      cancelledLeads: 5,
       avgVelocity: "1.4h",
       conversionRate: "24.5%",
       velocityChange: "+12%",
       conversionChange: "+2.1%",
+      recentActivity: []
     };
   }
 
-  const [totalResult, pendingResult] = await Promise.all([
+  const [totalResult, pendingResult, confirmedResult, cancelledResult, recentActivity] = await Promise.all([
     supabase.from("bookings").select("*", { count: "exact", head: true }),
-    supabase.from("bookings").select("*", { count: "exact", head: true }).eq("status", "new_request")
+    supabase.from("bookings").select("*", { count: "exact", head: true }).eq("status", "new_request"),
+    supabase.from("bookings").select("*", { count: "exact", head: true }).in("status", ["appointment_confirmed", "completed"]),
+    supabase.from("bookings").select("*", { count: "exact", head: true }).in("status", ["cancelled", "no_show"]),
+    supabase.from("bookings").select("id, patient_name, status, created_at").order("created_at", { ascending: false }).limit(5)
   ]);
 
+  const total = totalResult.count || 0;
+  const confirmed = confirmedResult.count || 0;
+  const conversion = total > 0 ? Math.round((confirmed / total) * 100) : 0;
+
   return {
-    totalLeads: totalResult.count || 0,
+    totalLeads: total,
     pendingLeads: pendingResult.count || 0,
+    confirmedLeads: confirmed,
+    cancelledLeads: cancelledResult.count || 0,
     avgVelocity: "1.2h",
-    conversionRate: "18.2%",
+    conversionRate: `${conversion}%`,
     velocityChange: "-5%",
     conversionChange: "+0.4%",
+    recentActivity: recentActivity.data || []
   };
 }
 
@@ -125,33 +138,73 @@ export default async function AdminOverviewPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 bg-white border border-slate-200 rounded-3xl p-10 shadow-sm min-h-[400px] flex flex-col items-center justify-center text-center space-y-4">
-          <div className="h-16 w-16 rounded-2xl bg-slate-50 flex items-center justify-center">
-            <Activity className="h-8 w-8 text-slate-300" />
-          </div>
+        <div className="lg:col-span-2 bg-white border border-slate-200 rounded-3xl p-10 shadow-sm min-h-[400px] flex flex-col space-y-8">
           <div>
-            <p className="text-slate-900 text-lg font-extrabold">Weekly Lead Volume</p>
-            <p className="text-slate-400 text-sm font-medium max-w-xs mt-2">Visualized performance trends and marketplace activity will appear here.</p>
+            <h3 className="text-slate-900 text-xl font-extrabold">Conversion Analytics</h3>
+            <p className="text-slate-500 text-sm font-medium mt-1">Lead status breakdown for the current period.</p>
           </div>
-          <Button variant="outline" className="rounded-xl border-slate-100 text-slate-400 font-bold pointer-events-none">
-            Analytics Module Pending
-          </Button>
+          
+          <div className="flex-1 flex flex-col justify-end gap-6">
+            <div className="flex items-end gap-8 h-48 border-b border-slate-100 pb-4">
+              {/* Simple CSS Bar Chart */}
+              <div className="flex-1 flex flex-col items-center justify-end gap-2 group">
+                <div className="w-full max-w-[80px] bg-blue-100 rounded-t-lg relative transition-all group-hover:bg-blue-200" style={{ height: `${stats.totalLeads > 0 ? 100 : 5}%` }}>
+                  <div className="absolute -top-6 inset-x-0 text-center text-xs font-bold text-slate-600">{stats.totalLeads}</div>
+                </div>
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Total</span>
+              </div>
+              
+              <div className="flex-1 flex flex-col items-center justify-end gap-2 group">
+                <div className="w-full max-w-[80px] bg-amber-100 rounded-t-lg relative transition-all group-hover:bg-amber-200" style={{ height: `${stats.totalLeads > 0 ? Math.max((stats.pendingLeads / stats.totalLeads) * 100, 5) : 5}%` }}>
+                  <div className="absolute -top-6 inset-x-0 text-center text-xs font-bold text-slate-600">{stats.pendingLeads}</div>
+                </div>
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pending</span>
+              </div>
+
+              <div className="flex-1 flex flex-col items-center justify-end gap-2 group">
+                <div className="w-full max-w-[80px] bg-emerald-100 rounded-t-lg relative transition-all group-hover:bg-emerald-200" style={{ height: `${stats.totalLeads > 0 ? Math.max((stats.confirmedLeads / stats.totalLeads) * 100, 5) : 5}%` }}>
+                  <div className="absolute -top-6 inset-x-0 text-center text-xs font-bold text-slate-600">{stats.confirmedLeads}</div>
+                </div>
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Confirmed</span>
+              </div>
+
+              <div className="flex-1 flex flex-col items-center justify-end gap-2 group">
+                <div className="w-full max-w-[80px] bg-rose-100 rounded-t-lg relative transition-all group-hover:bg-rose-200" style={{ height: `${stats.totalLeads > 0 ? Math.max((stats.cancelledLeads / stats.totalLeads) * 100, 5) : 5}%` }}>
+                  <div className="absolute -top-6 inset-x-0 text-center text-xs font-bold text-slate-600">{stats.cancelledLeads}</div>
+                </div>
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Lost</span>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-4 text-sm text-slate-500 font-medium">
+               <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-blue-100" /> Total Intake</div>
+               <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-emerald-100" /> Successful Conversion</div>
+               <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-rose-100" /> Dropped</div>
+            </div>
+          </div>
         </div>
         
         <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm flex flex-col">
           <h3 className="text-slate-900 font-extrabold mb-6">Recent Activity</h3>
           <div className="space-y-6 flex-1">
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="flex gap-4">
-                <div className="h-10 w-10 shrink-0 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center">
-                  <Users className="h-5 w-5 text-slate-300" />
+            {stats.recentActivity.map((activity: any) => (
+              <div key={activity.id} className="flex gap-4 items-start">
+                <div className="h-10 w-10 shrink-0 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 font-bold text-xs">
+                  {activity.patient_name.charAt(0).toUpperCase()}
                 </div>
                 <div className="space-y-1">
-                  <div className="h-2 w-24 bg-slate-100 rounded-full animate-pulse" />
-                  <div className="h-2 w-32 bg-slate-50 rounded-full" />
+                  <p className="text-sm font-bold text-slate-900 leading-tight">
+                    {activity.patient_name} <span className="font-medium text-slate-500">submitted a request</span>
+                  </p>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                    {new Date(activity.created_at).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })} • {activity.status.replace('_', ' ')}
+                  </p>
                 </div>
               </div>
             ))}
+            {stats.recentActivity.length === 0 && (
+              <p className="text-sm text-slate-400 italic">No recent activity.</p>
+            )}
           </div>
           <Button variant="ghost" className="mt-6 w-full text-blue-600 font-bold hover:bg-blue-50">
             View all logs

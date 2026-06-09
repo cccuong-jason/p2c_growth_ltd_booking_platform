@@ -136,3 +136,44 @@ export async function revokeTeamMember(userId: string) {
   revalidatePath("/admin/teams");
   return { success: true };
 }
+
+import { Resend } from "resend";
+import { getEnv, hasResendConfig } from "@/lib/env";
+
+export async function sendCustomEmail(formData: FormData) {
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) return { error: "Supabase not configured." };
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: "Unauthorized." };
+
+  if (!hasResendConfig()) {
+    return { error: "Resend is not configured." };
+  }
+
+  const to = formData.get("to")?.toString();
+  const subject = formData.get("subject")?.toString();
+  const text = formData.get("text")?.toString();
+
+  if (!to || !subject || !text) {
+    return { error: "Missing required fields." };
+  }
+
+  try {
+    const resend = new Resend(getEnv("RESEND_API_KEY"));
+    const { error } = await resend.emails.send({
+      from: getEnv("RESEND_FROM_EMAIL")!,
+      to,
+      subject,
+      text
+    });
+
+    if (error) {
+      return { error: error.message };
+    }
+    
+    return { success: true };
+  } catch (err: any) {
+    return { error: err.message };
+  }
+}
