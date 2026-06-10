@@ -4,6 +4,7 @@ import { Activity, ArrowRight, CalendarPlus, ChevronDown, Globe2, Menu, X } from
 
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { SectionBadge } from "@/components/ui/section-badge";
+import { Logo } from "@/components/ui/logo";
 
 const navItems = [
   { href: "/", label: "home" },
@@ -13,7 +14,7 @@ const navItems = [
 ] as const;
 
 const serviceItems = [
-  { href: "/services/physiotherapy", label: "Medical Experts Booking", body: "Medical appointment and referral request workflow" },
+  { href: "/services/physiotherapy", label: "P2C Health", body: "End-to-end booking, vetting, and coordination" },
   { href: "/services", label: "Website Development", body: "High-converting websites for service businesses" },
   { href: "/services", label: "Booking System & Email Automation", body: "Forms, notifications, and operational handoff" },
   { href: "/services", label: "Customer Management / Mini CRM", body: "Lightweight customer and status tracking" },
@@ -35,9 +36,7 @@ export function SiteHeader() {
     <header className="fixed inset-x-0 top-4 z-50 px-4 md:px-6">
       <div className="glass-panel mx-auto flex max-w-7xl items-center justify-between rounded-2xl border border-white/20 px-5 py-3 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-xl">
         <Link href="/" className="flex items-center gap-3 rounded-md pr-2 text-lg font-extrabold tracking-tight text-ink relative z-20">
-          <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-ocean to-cyan text-white shadow-lg shadow-blue-500/30">
-            <Activity className="h-6 w-6" aria-hidden />
-          </span>
+          <Logo className="h-10 w-10 shrink-0" />
           P2C Growth
         </Link>
         
