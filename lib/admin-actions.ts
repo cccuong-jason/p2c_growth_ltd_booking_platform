@@ -177,3 +177,31 @@ export async function sendCustomEmail(formData: FormData) {
     return { error: err.message };
   }
 }
+
+export async function updateB2BProject(projectId: string, milestones: any[], status: string) {
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) return { error: "Supabase not configured." };
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: "Unauthorized." };
+
+  const adminClient = createSupabaseAdminClient();
+  if (!adminClient) return { error: "Server admin client not configured." };
+
+  const { error } = await adminClient
+    .from("b2b_projects")
+    .update({ 
+      milestones, 
+      status,
+      updated_at: new Date().toISOString()
+    })
+    .eq("id", projectId);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath("/admin/web-dev");
+  revalidatePath("/admin/automation");
+  return { success: true };
+}

@@ -49,6 +49,19 @@ export interface AdminProfileRow {
   created_at: string;
 }
 
+export interface B2BProjectRow {
+  id: string;
+  client_name: string;
+  contact_email: string | null;
+  service_type: string;
+  core_objective: string;
+  estimated_budget: string | null;
+  status: string;
+  milestones: { title: string; completed: boolean; date: string }[] | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export type Database = {
   public: {
     Tables: {
@@ -66,6 +79,11 @@ export type Database = {
         Row: AdminProfileRow;
         Insert: Omit<AdminProfileRow, "created_at">;
         Update: Partial<Omit<AdminProfileRow, "id" | "created_at">>;
+      };
+      b2b_projects: {
+        Row: B2BProjectRow;
+        Insert: Omit<B2BProjectRow, "id" | "created_at" | "updated_at">;
+        Update: Partial<Omit<B2BProjectRow, "id" | "created_at">>;
       };
     };
   };
