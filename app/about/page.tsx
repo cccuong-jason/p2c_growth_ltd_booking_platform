@@ -41,7 +41,7 @@ export default function AboutPage() {
                   Partner to Customer (P2C) Journey
                 </h2>
                 <p className="text-base font-semibold text-slate-500 leading-relaxed">
-                  We don't replace professional service providers. Instead, we develop workflow tools and coordination platforms to make business execution simpler, faster, and more reliable.
+                  We don&apos;t replace professional service providers. Instead, we develop workflow tools and coordination platforms to make business execution simpler, faster, and more reliable.
                 </p>
               </div>
 
