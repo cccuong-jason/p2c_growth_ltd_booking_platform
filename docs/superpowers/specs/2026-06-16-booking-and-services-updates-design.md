@@ -1,6 +1,6 @@
-# Design Specification: Booking, Services, About Page, and Footer Updates
+# Design Specification: Booking, Services, Simplified About Page, and Footer Updates
 
-**Date:** 2026-06-16  
+**Date:** 2026-06-17  
 **Status:** APPROVED  
 **Author:** Antigravity  
 
@@ -13,7 +13,7 @@ This design specification details updates to the navigation, home page services 
 - Convert the home page "Our services" section from an expanding accordion into a smooth horizontal slider carousel with visible card images.
 - Replace the "View More" CTA on the P2C Health service card with a "Book expert" button linking directly to the booking form.
 - Add an elegant placeholder background image behind the booking page hero section.
-- Revamp the About page to feature high-contrast cards, decorative grids, background overlays, and a premium visual structure.
+- Revamp and drastically simplify the About page to only show the core company information alongside exactly 2 high-contrast placeholder images, removing all extra sections (FAQ, Team, Stats, Zig-zags).
 - Colorize the Site Footer with the brand's blue color code (`bg-ocean`) to boost contrast and make it distinct.
 
 ---
@@ -28,7 +28,6 @@ This design specification details updates to the navigation, home page services 
   - Remove the "Explore systems" secondary button in the hero section.
 
 ### 2.2 Card Contrast and Clarity Improvements
-- **Goal:** Ensure all cards stand out clearly on light backgrounds and do not look faded.
 - **File:** [components/booking/booking-wizard.tsx](file:///home/cuongchung/Jason/p2c_growth_ltd_booking_platform/components/booking/booking-wizard.tsx)
   - Modify step-wizard content card wrappers, summary panels, and option cards.
   - Change background colors from `bg-porcelain` / light-gray to pure `bg-white`.
@@ -53,12 +52,15 @@ This design specification details updates to the navigation, home page services 
   - Add a full-bleed placeholder background image to the hero section.
   - Overlay it with a gradient/solid overlay (`bg-porcelain/90`) to preserve text readability and ensure text contrast is high.
 
-### 2.6 About Page Revamp
+### 2.6 Simplified About Page
 - **File:** [app/about/page.tsx](file:///home/cuongchung/Jason/p2c_growth_ltd_booking_platform/app/about/page.tsx)
-  - Add SectionBadges with icons (`Activity`, `HelpCircle`) to sections.
-  - Add a `tech-grid` background overlay and gradient backdrop blur circles to the hero section.
-  - Update all bento cards and team cards to use high-contrast white backgrounds (`bg-white`), prominent borders (`border-slate-200`), and premium drop shadows.
-  - Add hover scale animations to team profile images.
+  - Rewrite the page to follow an ultra-clean structure:
+    - **Header:** Title and description.
+    - **Core Grid (2 columns):**
+      - **Left Column:** Mission details, brief explanation of the "P2C" acronym, and three bullet points outlining key features (Workflow Automation, Partner Coordination, UK Operational Focus) using crisp icons (`Activity`, `Users`, `Target`).
+      - **Right Column:** Staggered display of exactly two high-contrast, border-rounded placeholder images representing P2C Health and operations.
+    - **Bottom Block:** A simple call-to-action button prompting users to explore services or get in touch.
+  - Remove all other sections (Team list, Stats cards, FAQ accordions, Zig-zag sub-features) to fulfill the customer request for extreme simplicity.
 
 ### 2.7 Colorized Footer
 - **File:** [components/site-shell.tsx](file:///home/cuongchung/Jason/p2c_growth_ltd_booking_platform/components/site-shell.tsx)
@@ -78,5 +80,5 @@ This design specification details updates to the navigation, home page services 
 - [x] "Book expert" button in Services carousel directs directly to `/services/physiotherapy`.
 - [x] Secondary features grouped inside a single Bento Card.
 - [x] Background image setup in booking hero section with readable overlay.
-- [x] About page revamped with high-contrast cards, grids, and premium layouts.
+- [x] About page simplified to contain exactly 2 images and core text only.
 - [x] Site footer styled in blue background (`bg-ocean`) with white high-contrast text.
