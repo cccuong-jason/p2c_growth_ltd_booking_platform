@@ -97,33 +97,60 @@ export default function ServicesPage() {
               </div>
             </BentoCard>
           </Reveal>
+          {/* Website Development */}
+          <Reveal delay={0.4} className="lg:col-span-1">
+            <BentoCard className="group h-full flex flex-col p-8 bg-white border border-slate-200">
+              <div className="absolute inset-0 tech-grid opacity-30 pointer-events-none" />
+              <div className="relative z-10 mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-slate-50 border border-slate-200 text-ocean shadow-sm">
+                <Monitor className="h-5 w-5" />
+              </div>
+              <h3 className="relative z-10 text-xl font-extrabold tracking-tight text-ink mb-3">{services[1].title}</h3>
+              <p className="relative z-10 text-sm font-semibold leading-relaxed text-slate-500 mb-6">
+                {services[1].body}
+              </p>
+              {services[1].href && (
+                <div className="relative z-10 mt-auto">
+                   <Link href={services[1].href} className="inline-flex items-center gap-2 text-sm font-black text-ocean transition-colors hover:text-blue-700">
+                      View details <ArrowRight className="h-4 w-4" />
+                   </Link>
+                </div>
+              )}
+            </BentoCard>
+          </Reveal>
 
-          {/* Other Services */}
-          {services.slice(1).map((service, index) => {
-            const Icon = service.icon;
-            
-            return (
-              <Reveal key={service.title} delay={0.4 + (index * 0.1)} className="lg:col-span-1">
-                <BentoCard className="group h-full flex flex-col p-8 bg-porcelain">
-                  <div className="absolute inset-0 tech-grid opacity-30 pointer-events-none" />
-                  <div className="relative z-10 mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-ocean shadow-sm">
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <h3 className="relative z-10 text-xl font-extrabold tracking-tight text-ink mb-3">{service.title}</h3>
-                  <p className="relative z-10 text-sm font-semibold leading-relaxed text-slate-500 mb-6">
-                    {service.body}
-                  </p>
-                  {service.href && (
-                    <div className="relative z-10 mt-auto">
-                       <Link href={service.href} className="inline-flex items-center gap-2 text-sm font-black text-ocean transition-colors hover:text-blue-700">
-                          View details <ArrowRight className="h-4 w-4" />
-                       </Link>
+          {/* Grouped Other Features */}
+          <Reveal delay={0.5} className="lg:col-span-3">
+            <BentoCard className="group relative overflow-hidden bg-white p-8 md:p-10 border border-slate-200">
+              <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
+              
+              <div className="relative z-10 mb-8">
+                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-ocean mb-2">Operational Suite</p>
+                <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-ink">Integrated Business Systems</h2>
+              </div>
+
+              <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8 mt-8 pt-8 border-t border-slate-100">
+                {services.slice(2).map((service) => {
+                  const Icon = service.icon;
+                  return (
+                    <div key={service.title} className="flex flex-col h-full">
+                      <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 border border-slate-200 text-ocean shadow-sm">
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <h3 className="text-lg font-extrabold tracking-tight text-ink mb-2">{service.title}</h3>
+                      <p className="text-xs font-semibold leading-relaxed text-slate-500 mb-4 flex-1">
+                        {service.body}
+                      </p>
+                      {service.href && (
+                        <Link href={service.href} className="inline-flex items-center gap-1.5 text-xs font-black text-ocean transition-colors hover:text-blue-700 mt-auto">
+                          View details <ArrowRight className="h-3 w-3" />
+                        </Link>
+                      )}
                     </div>
-                  )}
-                </BentoCard>
-              </Reveal>
-            );
-          })}
+                  );
+                })}
+              </div>
+            </BentoCard>
+          </Reveal>
         </div>
       </section>
     </main>

@@ -153,7 +153,7 @@ function SchedulePicker({ value, onChange, error }: { value: string; onChange: (
 
   return (
     <div className="relative">
-      <div className={cn("w-full bg-white rounded-3xl border p-6 shadow-sm transition-colors", error ? "border-rose-200 bg-rose-50/10" : "border-slate-100")}>
+      <div className={cn("w-full bg-white rounded-3xl border p-6 shadow-sm transition-colors", error ? "border-rose-200 bg-rose-50/10" : "border-slate-200")}>
         <div className="flex items-center justify-between mb-8">
           <h3 className="text-lg font-black text-ink">{monthNames[month]} {year}</h3>
           <div className="flex gap-2">
@@ -161,11 +161,11 @@ function SchedulePicker({ value, onChange, error }: { value: string; onChange: (
               type="button" 
               onClick={prevMonth} 
               disabled={Boolean(isPastMonth(year, month - 1))}
-              className="p-2 rounded-xl border border-slate-100 hover:bg-slate-50 transition-colors text-slate-600 disabled:opacity-20 disabled:cursor-not-allowed"
+              className="p-2 rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors text-slate-600 disabled:opacity-20 disabled:cursor-not-allowed"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
-            <button type="button" onClick={nextMonth} className="p-2 rounded-xl border border-slate-100 hover:bg-slate-50 transition-colors text-slate-600">
+            <button type="button" onClick={nextMonth} className="p-2 rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors text-slate-600">
               <ChevronRight className="h-4 w-4" />
             </button>
           </div>
@@ -246,7 +246,7 @@ function SchedulePicker({ value, onChange, error }: { value: string; onChange: (
                     key={time}
                     type="button"
                     onClick={() => handleTimeSelect(time)}
-                    className="py-2.5 rounded-xl text-xs font-bold bg-slate-50 text-ink border border-slate-100 hover:border-ocean/30 hover:bg-ocean/5 hover:text-ocean transition-all"
+                    className="py-2.5 rounded-xl text-xs font-bold bg-slate-50 text-ink border border-slate-200 hover:border-ocean/30 hover:bg-ocean/5 hover:text-ocean transition-all"
                   >
                     {time}
                   </button>
@@ -426,9 +426,9 @@ export function BookingWizard() {
       
       {/* Sidebar Progress */}
       <aside className="w-full lg:w-[280px] shrink-0 space-y-6 lg:sticky lg:top-32">
-        <BentoCard className="p-6 md:p-8 bg-white border-slate-100 shadow-sm overflow-visible">
+        <BentoCard className="p-6 md:p-8 bg-white border-slate-200 shadow-sm overflow-visible">
           <div className="hidden lg:flex flex-col gap-10 relative">
-            <div className="absolute left-[23px] top-6 bottom-6 w-0.5 bg-slate-100" />
+            <div className="absolute left-[23px] top-6 bottom-6 w-0.5 bg-slate-200" />
             <div 
               className="absolute left-[23px] top-6 w-0.5 bg-ocean transition-all duration-500 origin-top" 
               style={{ height: `${isSuccess ? 100 : (step / (steps.length - 1)) * 100}%` }} 
@@ -449,7 +449,7 @@ export function BookingWizard() {
                       "w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all duration-300 shadow-sm z-10",
                       isCompleted ? "bg-ocean border-ocean text-white" : 
                       isActive ? "bg-white border-ocean text-ocean ring-4 ring-ocean/10" : 
-                      "bg-white border-slate-100 text-slate-300"
+                      "bg-white border-slate-200 text-slate-300"
                     )}
                   >
                     {isCompleted ? <Check className="h-5 w-5" /> : <Icon className="h-5 w-5" />}
@@ -491,7 +491,7 @@ export function BookingWizard() {
           </div>
         </BentoCard>
 
-        <BentoCard className="hidden lg:block p-6 bg-porcelain border-slate-100">
+        <BentoCard className="hidden lg:block p-6 bg-white border-slate-200 shadow-sm">
            <div className="flex items-center gap-3 text-ocean mb-3">
               <Info className="h-4 w-4" />
               <span className="text-[10px] font-black tracking-widest uppercase">Need help?</span>
@@ -1057,7 +1057,7 @@ export function BookingWizard() {
                         ["consentContact", "I consent to be contacted about this request."],
                         ["acknowledgeEmergencyAdvice", "I acknowledge emergencies require 999 or NHS care."]
                       ].map(([name, label]) => (
-                        <label key={name} className="flex gap-4 rounded-xl border border-slate-100 bg-white p-4 text-sm font-semibold text-slate-600 transition hover:border-ocean/20 cursor-pointer shadow-sm">
+                        <label key={name} className="flex gap-4 rounded-xl border border-slate-200 bg-white p-4 text-sm font-semibold text-slate-600 transition hover:border-ocean/20 cursor-pointer shadow-sm">
                           <div className="pt-0.5">
                             <input name={name} type="checkbox" required className="h-5 w-5 rounded border-slate-300 text-ocean focus:ring-ocean" />
                           </div>

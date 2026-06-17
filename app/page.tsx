@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import type { COBEOptions } from "cobe";
 import {
   ArrowRight,
   CheckCircle2,
   ChevronRight,
+  ChevronLeft,
   Activity,
   UserCheck,
   Workflow,
@@ -235,7 +236,18 @@ const FAQ_ITEMS = [
 
 export default function HomePage() {
   const { home } = getDictionary();
-  const [activeServiceIndex, setActiveServiceIndex] = useState(0);
+  const servicesScrollRef = useRef<HTMLDivElement>(null);
+  
+  const scrollServices = (direction: "left" | "right") => {
+    if (servicesScrollRef.current) {
+      const scrollAmount = 424; // Card width + gap
+      servicesScrollRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth"
+      });
+    }
+  };
+
   const [activeAnalyticsNode, setActiveAnalyticsNode] = useState(ANALYTICS_BEAM_NODES[0].title);
   const [hasSelectedAnalyticsNode, setHasSelectedAnalyticsNode] = useState(false);
   const [activeBuildFeatureIndex, setActiveBuildFeatureIndex] = useState(0);
@@ -307,10 +319,6 @@ export default function HomePage() {
                   <ArrowRight className="h-5 w-5" />
                 </Link>
               </Magnetic>
-              <Link href="/services" className="inline-flex h-16 items-center justify-center gap-3 rounded-full border border-slate-200 bg-white/80 backdrop-blur-md px-10 text-base font-extrabold text-slate-600 transition-all hover:bg-white hover:text-ink active:scale-95 shadow-sm">
-                {home.secondaryCta}
-                <ChevronRight className="h-4 w-4" />
-              </Link>
             </div>
           </Reveal>
 
@@ -318,71 +326,100 @@ export default function HomePage() {
         <ProgressiveBlur className="bottom-0 z-30 h-28" />
       </section>
 
-      {/* --- SERVICES ACCORDION --- */}
-      <section className="bg-white px-4 py-24 sm:px-6 md:py-32">
+      {/* --- SERVICES CAROUSEL --- */}
+      <section className="bg-white px-4 py-24 sm:px-6 md:py-32 overflow-hidden">
         <div className="mx-auto max-w-7xl">
-          <Reveal>
-            <div className="mx-auto max-w-6xl text-center">
-              <SectionBadge icon={LayoutDashboard}>Our services</SectionBadge>
-              <h2 className="text-5xl font-extrabold leading-[1] tracking-tight text-ink display-heading sm:text-6xl md:text-[5.4rem] lg:text-[5.9rem]">
-                We simplify everything <br /><span className="text-ocean">so your team performs better.</span>
-              </h2>
-            </div>
-          </Reveal>
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+            <Reveal>
+              <div className="max-w-2xl">
+                <SectionBadge icon={LayoutDashboard}>Our services</SectionBadge>
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-ink display-heading mt-4">
+                  We simplify everything <br /><span className="text-ocean">so your team performs better.</span>
+                </h2>
+              </div>
+            </Reveal>
+            
+            {/* Carousel Control Buttons */}
+            <Reveal delay={0.1}>
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => scrollServices("left")}
+                  aria-label="Scroll left"
+                  className="h-12 w-12 rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95 flex items-center justify-center"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => scrollServices("right")}
+                  aria-label="Scroll right"
+                  className="h-12 w-12 rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95 flex items-center justify-center"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+              </div>
+            </Reveal>
+          </div>
 
           <Reveal delay={0.12}>
-            <div className="mt-16 flex gap-5 overflow-x-auto pb-3 no-scrollbar md:h-[400px] md:overflow-hidden">
-              {HOME_SERVICE_BOXES.map((service, index) => {
-                const isActive = activeServiceIndex === index;
-
+            <div 
+              ref={servicesScrollRef}
+              className="flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scroll-smooth no-scrollbar"
+            >
+              {HOME_SERVICE_BOXES.map((service) => {
+                const isP2CHealth = service.title === "P2C Health";
                 return (
                   <article
                     key={service.title}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={`Show ${service.title}`}
-                    onMouseEnter={() => setActiveServiceIndex(index)}
-                    onFocus={() => setActiveServiceIndex(index)}
-                    onClick={() => setActiveServiceIndex(index)}
-                    onKeyDown={(event) => {
-                      if (event.key === "Enter" || event.key === " ") {
-                        event.preventDefault();
-                        setActiveServiceIndex(index);
-                      }
-                    }}
-                    className={`group relative h-[390px] flex-none overflow-hidden rounded-[1.25rem] bg-slate-900 shadow-sm outline-none ring-0 transition-[flex,width,box-shadow,transform] duration-500 ease-out focus-visible:ring-2 focus-visible:ring-ocean/40 md:h-full ${
-                      isActive ? "w-[82vw] md:flex-[6.4] md:shadow-2xl" : "w-[76px] md:flex-[0.82]"
-                    }`}
+                    className="snap-start flex-none w-[310px] md:w-[400px] h-[480px] rounded-[2rem] border border-slate-200 bg-white p-8 relative overflow-hidden flex flex-col justify-between shadow-premium transition-all duration-500 hover:shadow-2xl hover:-translate-y-1"
                   >
-                    <div
-                      className="absolute inset-0 bg-cover bg-center transition duration-700 group-hover:scale-105"
-                      style={{ backgroundImage: `url(${service.image})` }}
+                    <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
+                    
+                    {/* Background Image / Pattern */}
+                    <div 
+                      className="absolute inset-0 bg-cover bg-center transition-transform duration-700 hover:scale-105 opacity-[0.08] hover:opacity-[0.12] z-0"
+                      style={{ backgroundImage: `url(${service.image})`, mixBlendMode: "overlay" }}
                     />
-                    <div className={`absolute inset-0 transition duration-500 ${isActive ? "bg-black/18" : "bg-black/34"}`} />
-                    <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-slate-950 via-slate-950/55 to-transparent" />
-
-                    <div className={`absolute bottom-6 left-6 right-6 flex items-end gap-5 transition duration-500 ${
-                      isActive ? "opacity-100 translate-y-0" : "pointer-events-none opacity-0 translate-y-3 md:opacity-0"
-                    }`}>
-                      <div className="min-w-0 flex-1 text-white">
-                        <span className="rounded-md bg-white/18 px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-white backdrop-blur">
-                          {service.eyebrow}
-                        </span>
-                        <h3 className="mt-4 text-2xl font-black tracking-tight md:text-3xl">{service.title}</h3>
-                        <p className="mt-2 max-w-xl text-sm font-medium leading-6 text-slate-200">{service.body}</p>
-                      </div>
-                      <Link
-                        href={service.href}
-                        className="hidden shrink-0 items-center gap-2 rounded-lg bg-white px-4 py-3 text-xs font-black text-ink shadow-lg transition hover:bg-blue-50 hover:text-ocean sm:inline-flex"
-                      >
-                        View More <ArrowRight className="h-3.5 w-3.5" aria-hidden />
-                      </Link>
+                    
+                    {/* Top part */}
+                    <div className="relative z-10">
+                      <span className="rounded-md bg-ocean/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-ocean">
+                        {service.eyebrow}
+                      </span>
+                      <h3 className="mt-6 text-2xl md:text-3xl font-extrabold tracking-tight text-ink">{service.title}</h3>
+                      <p className="mt-3 text-xs font-semibold leading-relaxed text-slate-500">{service.body}</p>
                     </div>
 
-                    <div className={`absolute inset-x-0 bottom-6 flex justify-center transition duration-500 md:hidden ${
-                      isActive ? "opacity-0" : "opacity-100"
-                    }`}>
-                      <span className="h-10 w-1 rounded-full bg-white/70" />
+                    {/* Visible Placeholder Image Container */}
+                    <div className="relative w-full h-36 my-4 rounded-xl overflow-hidden border border-slate-100 shadow-sm z-10">
+                      <div 
+                        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                        style={{ backgroundImage: `url(${service.image})` }}
+                      />
+                    </div>
+
+                    {/* Bottom CTA */}
+                    <div className="relative z-10 mt-auto flex justify-between items-center">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-50 border border-slate-200 text-ocean shadow-sm">
+                        <service.icon className="h-6 w-6" />
+                      </div>
+                      
+                      {isP2CHealth ? (
+                        <Link
+                          href="/services/physiotherapy"
+                          className="inline-flex h-12 items-center gap-2 rounded-xl bg-ocean px-6 text-sm font-black text-white shadow-lg shadow-blue-500/20 transition-all hover:scale-105 hover:bg-blue-600 active:scale-95"
+                        >
+                          Book expert <ArrowRight className="h-4 w-4" aria-hidden />
+                        </Link>
+                      ) : (
+                        <Link
+                          href={service.href}
+                          className="inline-flex h-12 items-center gap-2 rounded-xl bg-white border border-slate-200 px-6 text-sm font-bold text-slate-600 shadow-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95"
+                        >
+                          View More <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+                        </Link>
+                      )}
                     </div>
                   </article>
                 );
@@ -391,14 +428,14 @@ export default function HomePage() {
           </Reveal>
 
           <Reveal delay={0.18}>
-            <div className="mt-8 flex justify-center">
+            <div className="mt-12 flex justify-center">
               <Link
                 href="/services"
                 className="inline-flex items-center gap-3 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-ink shadow-sm transition hover:border-ocean/30 hover:text-ocean"
               >
                 <MessageSquareQuote className="h-4 w-4" aria-hidden />
                 Make work simpler for your team
-                <span className="font-black underline underline-offset-4">Learn more</span>
+                <span className="font-black underline underline-offset-4 ml-1">Learn more</span>
               </Link>
             </div>
           </Reveal>

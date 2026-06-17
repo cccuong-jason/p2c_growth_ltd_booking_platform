@@ -61,15 +61,6 @@ export function SiteHeader() {
                 {copy.nav[item.label]}
               </Link>
             ))}
-            <hr className="border-slate-100 my-2" />
-            <Link 
-              href="/services/physiotherapy" 
-              className="flex h-12 items-center justify-center gap-2 rounded-xl bg-ocean px-5 text-sm font-bold text-white shadow-lg shadow-blue-500/20"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <CalendarPlus className="h-4 w-4" aria-hidden />
-              Book expert
-            </Link>
           </div>
         )}
 
@@ -102,10 +93,6 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Link href="/services/physiotherapy" className="hidden h-11 items-center gap-2 rounded-xl bg-ocean px-5 text-sm font-bold text-white shadow-lg shadow-blue-500/20 transition hover:scale-105 hover:bg-blue-600 active:scale-95 sm:inline-flex">
-            <CalendarPlus className="h-4 w-4" aria-hidden />
-            Book expert
-          </Link>
           <div className="group relative" aria-label="Language switcher">
             <button
               type="button"
@@ -143,41 +130,41 @@ export function SiteHeader() {
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-slate-100 bg-white">
-      <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 text-sm text-slate-500 md:grid-cols-[2fr_1fr_1fr]">
+    <footer className="border-t border-blue-400/20 bg-ocean text-blue-100">
+      <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 text-sm md:grid-cols-[2fr_1fr_1fr]">
         <div className="space-y-6">
-          <Link href="/" className="flex items-center gap-3 font-extrabold text-ink tracking-tight text-lg">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-ocean text-white">
+          <Link href="/" className="flex items-center gap-3 font-extrabold text-white tracking-tight text-lg relative z-20">
+            <span className="grid h-8 w-8 place-items-center rounded-lg bg-white text-ocean">
               <Activity className="h-5 w-5" aria-hidden />
             </span>
             P2C Growth
           </Link>
-          <p className="max-w-xs leading-relaxed font-medium">
+          <p className="max-w-xs leading-relaxed font-semibold text-blue-50">
             Building websites, booking systems, automation, CRM tools, and customer-partner platforms for UK service companies.
           </p>
         </div>
         <div>
-          <h4 className="font-bold text-ink mb-6 uppercase tracking-widest text-[10px]">Legal</h4>
+          <h4 className="font-black text-white mb-6 uppercase tracking-widest text-[10px]">Legal</h4>
           <div className="flex flex-col gap-4 font-bold">
-            <Link href="/privacy" className="hover:text-ocean transition-colors">
+            <Link href="/privacy" className="hover:text-white transition-colors text-blue-100">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="hover:text-ocean transition-colors">
+            <Link href="/terms" className="hover:text-white transition-colors text-blue-100">
               Terms & Conditions
             </Link>
           </div>
         </div>
         <div>
-          <h4 className="font-bold text-ink mb-6 uppercase tracking-widest text-[10px]">Action</h4>
+          <h4 className="font-black text-white mb-6 uppercase tracking-widest text-[10px]">Action</h4>
           <Link
             href="/services/physiotherapy"
-            className="inline-flex items-center gap-2 font-bold text-ocean hover:gap-3 transition-all"
+            className="inline-flex items-center gap-2 font-bold text-white hover:gap-3 transition-all underline underline-offset-4 decoration-blue-200/50 hover:decoration-white"
           >
             Start a medical expert request <ArrowRight className="h-4 w-4" aria-hidden />
           </Link>
         </div>
       </div>
-      <div className="border-t border-slate-50 py-8 text-center text-[10px] font-bold text-slate-300 uppercase tracking-[0.2em]">
+      <div className="border-t border-blue-400/20 py-8 text-center text-[10px] font-bold text-blue-200/60 uppercase tracking-[0.2em]">
         © {new Date().getFullYear()} P2C Growth LTD. ALL RIGHTS RESERVED.
       </div>
     </footer>

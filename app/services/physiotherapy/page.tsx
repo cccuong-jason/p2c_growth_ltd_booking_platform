@@ -9,15 +9,23 @@ export default function PhysiotherapyPage() {
   return (
     <main className="relative bg-white overflow-hidden selection:bg-blue-100 selection:text-blue-900 font-sans pb-24 md:pb-32">
       {/* Hero Header */}
-      <section className="relative pt-32 pb-16 md:pt-48 bg-porcelain overflow-hidden">
-        <div className="absolute inset-0 tech-grid opacity-50" />
+      <section className="relative pt-32 pb-16 md:pt-48 bg-porcelain overflow-hidden flex items-center justify-center min-h-[320px]">
+        {/* Background Placeholder Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 scale-100 hover:scale-105"
+          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=2000&q=80')` }}
+        />
+        {/* Semi-transparent Overlay to ensure readability of text */}
+        <div className="absolute inset-0 bg-porcelain/90 backdrop-blur-[1px] z-0" />
+        <div className="absolute inset-0 tech-grid opacity-30 z-0" />
+
         <div className="relative z-10 w-full px-4 sm:px-6 max-w-5xl mx-auto text-center">
           <Reveal>
             <SectionBadge icon={Activity}>P2C Health</SectionBadge>
-            <h1 className="text-4xl md:text-6xl font-extrabold text-ink tracking-tight leading-[1.05] display-heading mb-6">
+            <h1 className="text-4xl md:text-6xl font-extrabold text-ink tracking-tight leading-[1.05] display-heading mb-6 mt-4">
               Book medical expert <span className="text-ocean">support.</span>
             </h1>
-            <p className="text-lg font-medium leading-relaxed text-slate-500 max-w-3xl mx-auto">
+            <p className="text-lg font-semibold leading-relaxed text-slate-600 max-w-3xl mx-auto">
               Submit your details and P2C Growth will coordinate follow-up with a suitable medical expert or professional partner.
             </p>
           </Reveal>
