@@ -14,7 +14,7 @@ export default function TermsPage() {
               <ShieldCheck className="h-4 w-4 text-ocean" />
               <span className="text-[11px] font-bold text-ocean uppercase tracking-[0.2em]">Terms</span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-extrabold text-ink tracking-tight leading-[1.1] display-heading mb-6">
+            <h1 className="legal-page-heading text-ink mb-6">
               Terms & Conditions
             </h1>
             <p className="text-lg font-medium leading-relaxed text-slate-600 mb-10">

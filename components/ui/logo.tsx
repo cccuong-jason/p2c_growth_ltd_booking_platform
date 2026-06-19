@@ -8,8 +8,8 @@ export function Logo({ className = "h-10 w-10" }: { className?: string }) {
     >
       <defs>
         <linearGradient id="p2c-bg" x1="0%" y1="100%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#1264ff" />
-          <stop offset="100%" stopColor="#00c2ff" />
+          <stop offset="0%" stopColor="#0b4ec7" />
+          <stop offset="100%" stopColor="#0099cc" />
         </linearGradient>
         <linearGradient id="p2c-line" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#ffffff" />
@@ -35,14 +35,14 @@ export function Logo({ className = "h-10 w-10" }: { className?: string }) {
         
         {/* Partner Node */}
         <circle cx="28" cy="65" r="9" fill="#ffffff" />
-        <circle cx="28" cy="65" r="4" fill="#1264ff" />
+        <circle cx="28" cy="65" r="4" fill="#0b4ec7" />
         
         {/* P2C Hub Node */}
         <circle cx="50" cy="38" r="9" fill="#ffffff" />
         
         {/* Customer Node */}
         <circle cx="72" cy="50" r="9" fill="#ffffff" />
-        <circle cx="72" cy="50" r="4" fill="#00c2ff" />
+        <circle cx="72" cy="50" r="4" fill="#0099cc" />
       </g>
 
       {/* Sparkle/Growth Accent */}

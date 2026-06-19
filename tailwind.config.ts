@@ -12,8 +12,8 @@ const config: Config = {
     extend: {
       colors: {
         ink: "#0b1220",
-        ocean: "#1264ff",
-        cyanline: "#00c2ff",
+        ocean: "#0b4ec7",
+        cyanline: "#0099cc",
         mint: "#14b8a6",
         porcelain: "#f7fbff",
         background: "hsl(var(--background))",
