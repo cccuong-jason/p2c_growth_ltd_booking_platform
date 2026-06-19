@@ -20,7 +20,7 @@ export function BorderBeam({
   className,
   duration = 8,
   delay = 0,
-  colorFrom = "#1264ff",
+  colorFrom = "#0b4ec7",
   colorTo = "#10b981",
   style,
   reverse = false,
