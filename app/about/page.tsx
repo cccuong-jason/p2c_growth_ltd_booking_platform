@@ -19,7 +19,7 @@ export default function AboutPage() {
         <Reveal>
           <div className="max-w-3xl">
             <SectionBadge icon={Activity}>About P2C Growth</SectionBadge>
-            <h1 className="text-4xl md:text-7xl font-extrabold text-ink tracking-tight leading-[1.05] display-heading mb-6 mt-4">
+            <h1 className="page-heading text-ink mb-6 mt-4">
               Connecting businesses, <br />partners, and customers.
             </h1>
             <p className="text-lg font-semibold leading-relaxed text-slate-600 md:text-xl">
