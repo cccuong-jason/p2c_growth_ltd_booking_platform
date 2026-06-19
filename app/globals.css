@@ -5,8 +5,8 @@
 :root {
   --background: #ffffff;
   --foreground: #09090b;
-  --ocean: #1264ff;
-  --cyan: #00c2ff;
+  --ocean: #0b4ec7;
+  --cyan: #0099cc;
   --ink: #09090b;
   --porcelain: #f8fafc;
   --mint: #10b981;
@@ -22,15 +22,30 @@ body {
 
 /* Refined Premium Typography */
 .display-heading {
-  letter-spacing: -0.04em;
+  letter-spacing: -0.025em;
   line-height: 1.05;
   font-weight: 800;
 }
 
-.section-heading {
+.page-heading {
+  font-size: clamp(2.375rem, 4.5vw, 4rem);
+  letter-spacing: -0.025em;
+  line-height: 1.06;
+  font-weight: 800;
+}
+
+.legal-page-heading {
+  font-size: clamp(2.25rem, 3.5vw, 3.25rem);
   letter-spacing: -0.02em;
-  line-height: 1.2;
-  font-weight: 700;
+  line-height: 1.08;
+  font-weight: 800;
+}
+
+.section-heading {
+  font-size: clamp(2rem, 3.5vw, 3.5rem);
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  font-weight: 800;
 }
 
 /* Base custom utilities */
@@ -50,7 +65,7 @@ body {
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, #1264ff, #00c2ff);
+  background: linear-gradient(135deg, #0b4ec7, #0099cc);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
