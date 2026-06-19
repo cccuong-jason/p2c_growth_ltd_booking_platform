@@ -33,11 +33,11 @@ import { SectionBadge } from "@/components/ui/section-badge";
 import { BentoCard } from "@/components/ui/bento-card";
 import { GlassOverlay } from "@/components/ui/glass-overlay";
 import { FaqAccordion } from "@/components/ui/faq-accordion";
-import { 
-  Reveal, 
-  SpringReveal, 
-  Magnetic, 
-  ParallaxStage, 
+import {
+  Reveal,
+  SpringReveal,
+  Magnetic,
+  ParallaxStage,
   MotionDiv
 } from "@/components/home/motion-primitives";
 import { Globe } from "@/components/ui/globe";
@@ -126,6 +126,15 @@ const HOME_SERVICE_BOXES = [
     icon: UserCheck,
     image:
       "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=85",
+  },
+  {
+    eyebrow: "Custom",
+    title: "Tailored Solutions",
+    body: "Custom integrations, API links, and specialized databases built around your specific dispatching rules.",
+    href: "/contact",
+    icon: Workflow,
+    image:
+      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=85",
   },
 ];
 
@@ -237,10 +246,10 @@ const FAQ_ITEMS = [
 export default function HomePage() {
   const { home } = getDictionary();
   const servicesScrollRef = useRef<HTMLDivElement>(null);
-  
+
   const scrollServices = (direction: "left" | "right") => {
     if (servicesScrollRef.current) {
-      const scrollAmount = 424; // Card width + gap
+      const scrollAmount = servicesScrollRef.current.clientWidth;
       servicesScrollRef.current.scrollBy({
         left: direction === "left" ? -scrollAmount : scrollAmount,
         behavior: "smooth"
@@ -250,12 +259,9 @@ export default function HomePage() {
 
   const [activeAnalyticsNode, setActiveAnalyticsNode] = useState(ANALYTICS_BEAM_NODES[0].title);
   const [hasSelectedAnalyticsNode, setHasSelectedAnalyticsNode] = useState(false);
-  const [activeBuildFeatureIndex, setActiveBuildFeatureIndex] = useState(0);
   const activeAnalytics = ANALYTICS_BEAM_NODES.find((node) => node.title === activeAnalyticsNode) ?? ANALYTICS_BEAM_NODES[0];
   const activeAnalyticsIndex = ANALYTICS_BEAM_NODES.findIndex((node) => node.title === activeAnalytics.title);
   const ActiveAnalyticsIcon = activeAnalytics.icon;
-  const activeBuildFeature = BUILD_FEATURES[activeBuildFeatureIndex];
-  const ActiveBuildIcon = activeBuildFeature.icon;
 
   useEffect(() => {
     if (hasSelectedAnalyticsNode) {
@@ -276,7 +282,7 @@ export default function HomePage() {
 
   return (
     <main className="relative bg-white overflow-hidden selection:bg-blue-100 selection:text-blue-900 font-sans">
-      
+
       {/* --- HERO SECTION WITH GLOBE --- */}
       <section className="relative min-h-[95vh] flex flex-col items-center justify-center pt-32 pb-20 md:pt-48 md:pb-40 bg-porcelain overflow-hidden">
         <div className="pointer-events-none absolute left-1/2 top-[47%] z-0 w-[760px] max-w-[132vw] -translate-x-1/2 -translate-y-1/2 opacity-55 md:w-[980px]">
@@ -297,7 +303,7 @@ export default function HomePage() {
           </SpringReveal>
 
           <div className="max-w-5xl mx-auto min-h-[140px] flex items-center justify-center">
-             <TypingAnimation 
+             <TypingAnimation
                 className="text-5xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1.1] justify-center display-heading"
                 duration={50}
              >
@@ -327,97 +333,294 @@ export default function HomePage() {
       </section>
 
       {/* --- SERVICES CAROUSEL --- */}
-      <section className="bg-white px-4 py-24 sm:px-6 md:py-32 overflow-hidden">
+      <section className="bg-white px-4 py-24 sm:px-6 md:py-32 overflow-hidden relative">
         <div className="mx-auto max-w-7xl">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+          <div className="mb-12">
             <Reveal>
-              <div className="max-w-2xl">
-                <SectionBadge icon={LayoutDashboard}>Our services</SectionBadge>
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-ink display-heading mt-4">
-                  We simplify everything <br /><span className="text-ocean">so your team performs better.</span>
-                </h2>
-              </div>
-            </Reveal>
-            
-            {/* Carousel Control Buttons */}
-            <Reveal delay={0.1}>
-              <div className="flex gap-3">
-                <button
-                  type="button"
-                  onClick={() => scrollServices("left")}
-                  aria-label="Scroll left"
-                  className="h-12 w-12 rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95 flex items-center justify-center"
-                >
-                  <ChevronLeft className="h-5 w-5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => scrollServices("right")}
-                  aria-label="Scroll right"
-                  className="h-12 w-12 rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95 flex items-center justify-center"
-                >
-                  <ChevronRight className="h-5 w-5" />
-                </button>
-              </div>
+              <SectionBadge icon={LayoutDashboard}>Our services</SectionBadge>
             </Reveal>
           </div>
 
-          <Reveal delay={0.12}>
-            <div 
-              ref={servicesScrollRef}
-              className="flex gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scroll-smooth no-scrollbar"
-            >
+          {/* Desktop Layout (Hidden on mobile) */}
+          <div className="hidden md:block relative px-1">
+            <article className="group relative w-full rounded-[2.5rem] border border-slate-200 bg-white p-8 md:p-12 shadow-premium hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col md:flex-row justify-between gap-8 md:items-center">
+              <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
+              <div className="relative z-10 flex-1 max-w-xl">
+                <span className="rounded-lg bg-blue-50 text-[10px] font-black uppercase tracking-widest text-ocean px-3 py-1.5 inline-block mb-6">
+                  Medical
+                </span>
+                <h3 className="text-3xl md:text-5xl font-black text-ink tracking-tight mb-4 leading-none">P2C Health</h3>
+                <p className="text-sm md:text-base font-semibold leading-relaxed text-slate-500 mb-8">
+                  A guided booking and referral workflow for patients, legal cases, insurers, and expert follow-up.
+                </p>
+                <div className="flex items-center gap-3">
+                  <Link
+                    href="/services/physiotherapy"
+                    className="inline-flex h-12 items-center gap-2 rounded-xl bg-ocean px-6 text-sm font-black text-white shadow-lg shadow-blue-500/20 transition-all hover:scale-105 hover:bg-blue-600 active:scale-95"
+                  >
+                    Book expert <ArrowRight className="h-4 w-4" aria-hidden />
+                  </Link>
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white border border-slate-200 text-ocean shadow-sm hover:bg-slate-50 transition active:scale-95 cursor-pointer">
+                    <Activity className="h-5 w-5" />
+                  </div>
+                </div>
+              </div>
+              <div className="relative w-full md:w-[48%] h-[200px] md:h-[280px] rounded-2xl overflow-hidden border border-slate-100 shadow-sm z-10 flex-shrink-0">
+                <div
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                  style={{ backgroundImage: `url(https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=85)` }}
+                />
+              </div>
+            </article>
+
+            <div className="relative mt-6">
+              <div
+                ref={servicesScrollRef}
+                className="flex gap-8 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar pb-2"
+              >
+                <div className="w-full flex-none snap-start">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Website Development */}
+                  <article className="group relative w-full rounded-[2rem] border border-slate-200 bg-white p-6 md:p-8 shadow-premium hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col sm:flex-row justify-between gap-6">
+                    <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
+                    <div className="relative z-10 flex-1 flex flex-col justify-between">
+                      <div>
+                        <span className="rounded-md bg-blue-50 text-[9px] font-black uppercase tracking-widest text-ocean px-2.5 py-1 inline-block mb-4">
+                          Design
+                        </span>
+                        <h3 className="text-xl md:text-2xl font-black text-ink tracking-tight mb-2 leading-tight">Website Development</h3>
+                        <p className="text-xs md:text-sm font-semibold leading-relaxed text-slate-500 mb-6">
+                          Premium websites for UK service companies that need clear offers, trust, and conversion paths.
+                        </p>
+                      </div>
+                      <div className="flex items-center justify-between mt-auto">
+                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50/50 border border-blue-100 text-ocean shadow-sm">
+                          <Monitor className="h-5 w-5" />
+                        </div>
+                        <Link
+                          href="/coming-soon"
+                          className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-4 text-xs font-bold text-slate-600 shadow-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95"
+                        >
+                          View More <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="relative w-full sm:w-[40%] h-[140px] sm:h-[180px] rounded-xl overflow-hidden border border-slate-100 shadow-sm z-10 flex-shrink-0 self-center">
+                      <div
+                        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                        style={{ backgroundImage: `url(https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=85)` }}
+                      />
+                    </div>
+                  </article>
+
+                  {/* Booking System & Email Automation */}
+                  <article className="group relative w-full rounded-[2rem] border border-slate-200 bg-white p-6 md:p-8 shadow-premium hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col sm:flex-row justify-between gap-6">
+                    <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
+                    <div className="relative z-10 flex-1 flex flex-col justify-between">
+                      <div>
+                        <span className="rounded-md bg-blue-50 text-[9px] font-black uppercase tracking-widest text-ocean px-2.5 py-1 inline-block mb-4">
+                          Automation
+                        </span>
+                        <h3 className="text-xl md:text-2xl font-black text-ink tracking-tight mb-2 leading-tight">Booking & Email Automation</h3>
+                        <p className="text-xs md:text-sm font-semibold leading-relaxed text-slate-500 mb-6">
+                          Forms, status handoff, confirmation emails, and internal operations without manual chasing.
+                        </p>
+                      </div>
+                      <div className="flex items-center justify-between mt-auto">
+                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50/50 border border-blue-100 text-ocean shadow-sm">
+                          <Workflow className="h-5 w-5" />
+                        </div>
+                        <Link
+                          href="/coming-soon"
+                          className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-4 text-xs font-bold text-slate-600 shadow-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95"
+                        >
+                          View More <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="relative w-full sm:w-[40%] h-[140px] sm:h-[180px] rounded-xl overflow-hidden border border-slate-100 shadow-sm z-10 flex-shrink-0 self-center">
+                      <div
+                        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                        style={{ backgroundImage: `url(https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1200&q=85)` }}
+                      />
+                    </div>
+                  </article>
+                </div>
+              </div>
+
+                <div className="w-full flex-none snap-start">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Customer Management / Mini CRM */}
+                  <article className="group relative w-full rounded-[2rem] border border-slate-200 bg-white p-6 md:p-8 shadow-premium hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col sm:flex-row justify-between gap-6">
+                    <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
+                    <div className="relative z-10 flex-1 flex flex-col justify-between">
+                      <div>
+                        <span className="rounded-md bg-blue-50 text-[9px] font-black uppercase tracking-widest text-ocean px-2.5 py-1 inline-block mb-4">
+                          CRM
+                        </span>
+                        <h3 className="text-xl md:text-2xl font-black text-ink tracking-tight mb-2 leading-tight">Customer Management / Mini CRM</h3>
+                        <p className="text-xs md:text-sm font-semibold leading-relaxed text-slate-500 mb-6">
+                          Simple customer, enquiry, status, and partner context for teams that need visibility fast.
+                        </p>
+                      </div>
+                      <div className="flex items-center justify-between mt-auto">
+                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50/50 border border-blue-100 text-ocean shadow-sm">
+                          <LayoutDashboard className="h-5 w-5" />
+                        </div>
+                        <Link
+                          href="/coming-soon"
+                          className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-4 text-xs font-bold text-slate-600 shadow-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95"
+                        >
+                          View More <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="relative w-full sm:w-[40%] h-[140px] sm:h-[180px] rounded-xl overflow-hidden border border-slate-100 shadow-sm z-10 flex-shrink-0 self-center">
+                      <div
+                        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                        style={{ backgroundImage: `url(https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=85)` }}
+                      />
+                    </div>
+                  </article>
+
+                  {/* Customer-Partner Platform */}
+                  <article className="group relative w-full rounded-[2rem] border border-slate-200 bg-white p-6 md:p-8 shadow-premium hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col sm:flex-row justify-between gap-6">
+                    <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
+                    <div className="relative z-10 flex-1 flex flex-col justify-between">
+                      <div>
+                        <span className="rounded-md bg-blue-50 text-[9px] font-black uppercase tracking-widest text-ocean px-2.5 py-1 inline-block mb-4">
+                          Platform
+                        </span>
+                        <h3 className="text-xl md:text-2xl font-black text-ink tracking-tight mb-2 leading-tight">Customer-Partner Platform</h3>
+                        <p className="text-xs md:text-sm font-semibold leading-relaxed text-slate-500 mb-6">
+                          A reusable software layer for routing customers to professional partners and tracking outcomes.
+                        </p>
+                      </div>
+                      <div className="flex items-center justify-between mt-auto">
+                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50/50 border border-blue-100 text-ocean shadow-sm">
+                          <UserCheck className="h-5 w-5" />
+                        </div>
+                        <Link
+                          href="/coming-soon"
+                          className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-4 text-xs font-bold text-slate-600 shadow-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95"
+                        >
+                          View More <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="relative w-full sm:w-[40%] h-[140px] sm:h-[180px] rounded-xl overflow-hidden border border-slate-100 shadow-sm z-10 flex-shrink-0 self-center">
+                      <div
+                        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                        style={{ backgroundImage: `url(https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=85)` }}
+                      />
+                    </div>
+                  </article>
+                </div>
+              </div>
+
+                <div className="w-full flex-none snap-start">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Tailored Solutions */}
+                  <article className="group relative w-full rounded-[2rem] border border-slate-200 bg-white p-6 md:p-8 shadow-premium hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col sm:flex-row justify-between gap-6">
+                    <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
+                    <div className="relative z-10 flex-1 flex flex-col justify-between">
+                      <div>
+                        <span className="rounded-md bg-blue-50 text-[9px] font-black uppercase tracking-widest text-ocean px-2.5 py-1 inline-block mb-4">
+                          Custom
+                        </span>
+                        <h3 className="text-xl md:text-2xl font-black text-ink tracking-tight mb-2 leading-tight">Tailored Solutions</h3>
+                        <p className="text-xs md:text-sm font-semibold leading-relaxed text-slate-500 mb-6">
+                          Custom integrations, API links, and specialized databases built around your specific dispatching rules.
+                        </p>
+                      </div>
+                      <div className="flex items-center justify-between mt-auto">
+                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50/50 border border-blue-100 text-ocean shadow-sm">
+                          <Workflow className="h-5 w-5" />
+                        </div>
+                        <Link
+                          href="/contact"
+                          className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-4 text-xs font-bold text-slate-600 shadow-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95"
+                        >
+                          Contact Us <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="relative w-full sm:w-[40%] h-[140px] sm:h-[180px] rounded-xl overflow-hidden border border-slate-100 shadow-sm z-10 flex-shrink-0 self-center">
+                      <div
+                        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                        style={{ backgroundImage: `url(https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=85)` }}
+                      />
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+
+              {/* Absolute side navigation controls */}
+              <button
+                type="button"
+                onClick={() => scrollServices("left")}
+                aria-label="Scroll left"
+                className="absolute -left-4 lg:-left-7 top-1/2 -translate-y-1/2 h-14 w-14 rounded-full border border-slate-200 bg-white/95 text-slate-800 shadow-xl backdrop-blur-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95 flex items-center justify-center z-40"
+              >
+                <ChevronLeft className="h-6 w-6" />
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollServices("right")}
+                aria-label="Scroll right"
+                className="absolute -right-4 lg:-right-7 top-1/2 -translate-y-1/2 h-14 w-14 rounded-full border border-slate-200 bg-white/95 text-slate-800 shadow-xl backdrop-blur-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95 flex items-center justify-center z-40"
+              >
+                <ChevronRight className="h-6 w-6" />
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Layout (Touch friendly scroll list, hidden on desktop) */}
+          <div className="block md:hidden relative">
+            <div className="flex gap-5 overflow-x-auto pb-6 snap-x snap-mandatory scroll-smooth no-scrollbar px-4">
               {HOME_SERVICE_BOXES.map((service) => {
                 const isP2CHealth = service.title === "P2C Health";
+                const Icon = service.icon;
                 return (
                   <article
                     key={service.title}
-                    className="snap-start flex-none w-[310px] md:w-[400px] h-[480px] rounded-[2rem] border border-slate-200 bg-white p-8 relative overflow-hidden flex flex-col justify-between shadow-premium transition-all duration-500 hover:shadow-2xl hover:-translate-y-1"
+                    className="snap-start flex-none w-[290px] h-[450px] rounded-[2rem] border border-slate-200 bg-white p-6 relative overflow-hidden flex flex-col justify-between shadow-premium transition-all duration-500"
                   >
                     <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
-                    
-                    {/* Background Image / Pattern */}
-                    <div 
-                      className="absolute inset-0 bg-cover bg-center transition-transform duration-700 hover:scale-105 opacity-[0.08] hover:opacity-[0.12] z-0"
-                      style={{ backgroundImage: `url(${service.image})`, mixBlendMode: "overlay" }}
-                    />
-                    
-                    {/* Top part */}
                     <div className="relative z-10">
-                      <span className="rounded-md bg-ocean/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-ocean">
+                      <span className="rounded-md bg-blue-50 px-2.5 py-1 text-[9px] font-black uppercase tracking-widest text-ocean">
                         {service.eyebrow}
                       </span>
-                      <h3 className="mt-6 text-2xl md:text-3xl font-extrabold tracking-tight text-ink">{service.title}</h3>
-                      <p className="mt-3 text-xs font-semibold leading-relaxed text-slate-500">{service.body}</p>
+                      <h3 className="mt-4 text-xl font-extrabold tracking-tight text-ink">{service.title}</h3>
+                      <p className="mt-2 text-xs font-semibold leading-relaxed text-slate-500 line-clamp-3">{service.body}</p>
                     </div>
 
-                    {/* Visible Placeholder Image Container */}
-                    <div className="relative w-full h-36 my-4 rounded-xl overflow-hidden border border-slate-100 shadow-sm z-10">
-                      <div 
-                        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                    <div className="relative w-full h-32 my-3 rounded-xl overflow-hidden border border-slate-100 shadow-sm z-10">
+                      <div
+                        className="absolute inset-0 bg-cover bg-center"
                         style={{ backgroundImage: `url(${service.image})` }}
                       />
                     </div>
 
-                    {/* Bottom CTA */}
                     <div className="relative z-10 mt-auto flex justify-between items-center">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-50 border border-slate-200 text-ocean shadow-sm">
-                        <service.icon className="h-6 w-6" />
+                      <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-50 border border-slate-200 text-ocean shadow-sm">
+                        <Icon className="h-5 w-5" />
                       </div>
-                      
+
                       {isP2CHealth ? (
                         <Link
                           href="/services/physiotherapy"
-                          className="inline-flex h-12 items-center gap-2 rounded-xl bg-ocean px-6 text-sm font-black text-white shadow-lg shadow-blue-500/20 transition-all hover:scale-105 hover:bg-blue-600 active:scale-95"
+                          className="inline-flex h-11 items-center gap-1.5 rounded-xl bg-ocean px-5 text-xs font-black text-white shadow-lg shadow-blue-500/20"
                         >
-                          Book expert <ArrowRight className="h-4 w-4" aria-hidden />
+                          Book expert <ArrowRight className="h-3.5 w-3.5" />
                         </Link>
                       ) : (
                         <Link
                           href={service.href}
-                          className="inline-flex h-12 items-center gap-2 rounded-xl bg-white border border-slate-200 px-6 text-sm font-bold text-slate-600 shadow-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95"
+                          className="inline-flex h-11 items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-5 text-xs font-bold text-slate-600 shadow-sm"
                         >
-                          View More <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+                          {service.title === "Tailored Solutions" ? "Contact Us" : "View More"} <ArrowRight className="h-3 w-3" />
                         </Link>
                       )}
                     </div>
@@ -425,212 +628,216 @@ export default function HomePage() {
                 );
               })}
             </div>
-          </Reveal>
-
-          <Reveal delay={0.18}>
-            <div className="mt-12 flex justify-center">
-              <Link
-                href="/services"
-                className="inline-flex items-center gap-3 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-ink shadow-sm transition hover:border-ocean/30 hover:text-ocean"
-              >
-                <MessageSquareQuote className="h-4 w-4" aria-hidden />
-                Make work simpler for your team
-                <span className="font-black underline underline-offset-4 ml-1">Learn more</span>
-              </Link>
-            </div>
-          </Reveal>
+          </div>
         </div>
       </section>
 
-      {/* --- WHAT WE BUILD (Bento Grid) --- */}
+      {/* --- WHAT WE BUILD (Simplified Grid) --- */}
       <section className="py-24 md:py-32 px-4 sm:px-6 max-w-7xl mx-auto">
-        <div className="text-center mb-20 md:mb-32">
+        <div className="text-center mb-20 md:mb-24">
           <Reveal>
              <SectionBadge icon={LayoutDashboard}>What We Build</SectionBadge>
-             <h2 className="text-4xl md:text-5xl lg:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">
-                Practical systems <br /><span className="text-ocean">for service teams.</span>
+             <h2 className="section-heading text-ink">
+                Practical systems <br className="hidden md:inline" /><span className="text-ocean">for service teams.</span>
              </h2>
           </Reveal>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 lg:grid-flow-dense lg:grid-cols-12">
-          <Reveal className="lg:col-span-5">
-            <article className="group relative flex min-h-[470px] flex-col overflow-hidden rounded-[2rem] bg-ocean p-8 text-white shadow-2xl shadow-blue-500/20 transition-all duration-500 lg:min-h-[490px]">
-              <div className="absolute inset-0 tech-grid opacity-30" />
-              <div className="absolute inset-x-8 bottom-14 top-40 rounded-[50%] border border-white/10 [transform:perspective(700px)_rotateX(62deg)]" />
-              <div className="absolute inset-x-14 bottom-20 top-44 rounded-[50%] border border-white/10 [transform:perspective(700px)_rotateX(62deg)]" />
-              <div className="relative z-10 mx-auto mb-7 flex h-16 w-16 items-center justify-center rounded-full bg-white text-ocean shadow-xl">
-                <ShieldCheck className="h-8 w-8" />
-              </div>
-              <div className="relative z-10 mx-auto max-w-sm text-center">
-                <p className="text-[11px] font-black uppercase tracking-[0.24em] text-blue-100">Website development</p>
-                <h3 className="mt-4 text-3xl font-extrabold leading-tight tracking-tight">A sharper digital front door for your business.</h3>
-                <p className="mt-5 text-sm font-semibold leading-7 text-blue-50">
-                  Service pages, enquiry capture, and clear next steps built around the way your customers actually decide.
-                </p>
-              </div>
-              <Link href="/services" className="relative z-10 mx-auto mt-auto inline-flex h-12 items-center justify-center rounded-xl bg-white px-6 text-sm font-black text-ink shadow-lg transition hover:bg-blue-50 hover:text-ocean">
-                View website builds
-              </Link>
-            </article>
-          </Reveal>
-
-          <Reveal delay={0.08} className="lg:col-span-7">
-            <article className="relative grid min-h-[470px] overflow-hidden rounded-[2rem] border border-slate-100 bg-porcelain p-8 shadow-premium transition-all duration-500 hover:shadow-2xl md:grid-cols-[0.86fr_1.14fr] md:items-center md:gap-7 lg:min-h-[490px]">
-              <div className="absolute inset-0 tech-grid opacity-60" />
-              <div className="relative z-10">
-                <p className="text-[11px] font-black uppercase tracking-[0.24em] text-ocean">Workflow intelligence</p>
-                <h3 className="mt-4 text-3xl font-extrabold leading-tight tracking-tight text-ink">{activeBuildFeature.title}</h3>
-                <p className="mt-5 text-sm font-semibold leading-7 text-slate-600">
-                  {activeBuildFeature.body}
-                </p>
-              </div>
-
-              <div className="relative z-10 mt-8 overflow-hidden rounded-[1.5rem] border border-slate-100 bg-white p-5 shadow-2xl shadow-blue-500/10 md:mt-0">
-                <div className="mb-5 flex items-center gap-2">
-                  <span className="rounded-md bg-slate-50 px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-slate-500">Weekly report</span>
-                  <span className="rounded-md bg-ocean/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-widest text-ocean">Live</span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl ${activeBuildFeature.accentClassName}`}>
-                    <ActiveBuildIcon className="h-5 w-5" />
-                  </span>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          {/* Left Card: Website Development */}
+          <Reveal className="lg:col-span-7 flex">
+            <article className="group relative w-full rounded-[2.5rem] border border-slate-200/80 bg-white p-8 md:p-10 shadow-premium hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col justify-between">
+              <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center h-full">
+                <div className="md:col-span-7 flex flex-col justify-between h-full">
                   <div>
-                    <h4 className="text-xl font-black tracking-tight text-ink">{activeBuildFeature.reportTitle}</h4>
-                    <p className="mt-2 text-xs font-semibold leading-5 text-slate-500">{activeBuildFeature.reportBody}</p>
+                    <span className="rounded-md bg-blue-50 text-[9px] font-black uppercase tracking-widest text-ocean px-2.5 py-1 inline-block mb-6 w-max">
+                      Website Development
+                    </span>
+                    <h3 className="text-2xl md:text-3xl font-extrabold text-ink tracking-tight leading-tight mb-4">
+                      A sharper digital front door for your business.
+                    </h3>
+                    <p className="text-slate-500 text-sm leading-relaxed mb-8">
+                      Clear service pages, enquiry capture, and conversion-focused journeys built for service businesses.
+                    </p>
                   </div>
+                  <Link
+                    href="/services"
+                    className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-ocean px-6 text-sm font-black text-white shadow-lg shadow-blue-500/20 transition-all hover:scale-105 hover:bg-blue-600 active:scale-95 w-max mt-auto"
+                  >
+                    View website builds <ArrowRight className="h-4 w-4" />
+                  </Link>
                 </div>
-                <div className="mt-6 grid grid-cols-2 gap-3">
-                  <div className="rounded-2xl bg-slate-50 p-4">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Active lane</p>
-                    <div className="mt-4 flex items-center gap-3">
-                      <span className={`flex h-10 w-10 items-center justify-center rounded-full ${activeBuildFeature.accentClassName}`}>
-                        <ActiveBuildIcon className="h-5 w-5" />
-                      </span>
-                      <div>
-                        <p className="text-sm font-black text-ink">{activeBuildFeature.label}</p>
-                        <p className="mt-0.5 text-[10px] font-black uppercase tracking-widest text-slate-400">{activeBuildFeature.status}</p>
+
+                {/* Mockup Graphic */}
+                <div className="md:col-span-5 flex justify-center md:justify-end h-full items-center">
+                  <div className="relative w-full max-w-[210px] aspect-[4/5] bg-white border border-slate-200/80 rounded-2xl shadow-xl p-3 flex flex-col gap-2 transition-transform duration-500 group-hover:scale-105">
+                    {/* Browser Dots */}
+                    <div className="flex gap-1 mb-1.5">
+                      <span className="h-1.5 w-1.5 rounded-full bg-slate-200" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-slate-200" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-slate-200" />
+                    </div>
+                    {/* Header bar */}
+                    <div className="h-4 w-full bg-blue-50/50 rounded flex items-center px-1.5">
+                      <div className="h-1 w-8 bg-ocean/20 rounded" />
+                    </div>
+                    {/* Hero title lines */}
+                    <div className="h-2 w-3/4 bg-slate-100 rounded mt-2" />
+                    <div className="h-2 w-1/2 bg-slate-100 rounded" />
+                    {/* Body content lines */}
+                    <div className="h-1 w-full bg-slate-50 rounded mt-3" />
+                    <div className="h-1 w-full bg-slate-50 rounded" />
+                    <div className="h-1 w-5/6 bg-slate-50 rounded" />
+                    {/* Placeholder image grid */}
+                    <div className="grid grid-cols-2 gap-2 mt-4 flex-grow">
+                      <div className="bg-slate-50/80 rounded-lg p-1.5 flex flex-col justify-end">
+                        <div className="h-1.5 w-6 bg-slate-200 rounded" />
+                      </div>
+                      <div className="bg-slate-50/80 rounded-lg p-1.5 flex flex-col justify-end">
+                        <div className="h-1.5 w-6 bg-slate-200 rounded" />
                       </div>
                     </div>
                   </div>
-                  <div className="rounded-2xl bg-slate-50 p-4">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">{activeBuildFeature.focus}</p>
-                    <div className="mt-5 h-4 overflow-hidden rounded-full bg-white ring-1 ring-slate-200">
-                      <div className="h-full rounded-full bg-ocean transition-all duration-500" style={{ width: activeBuildFeature.progress }} />
-                    </div>
-                    <p className="mt-3 text-xs font-black text-ocean">{activeBuildFeature.progress} ready</p>
-                  </div>
                 </div>
-                <Link href="/services" className="mt-5 flex h-12 items-center justify-center rounded-xl bg-ink text-sm font-black text-white transition hover:bg-ocean">
-                  View systems
+              </div>
+            </article>
+          </Reveal>
+
+          {/* Right Column: Stack of 3 Cards */}
+          <div className="lg:col-span-5 flex flex-col gap-6 w-full">
+            {/* Card 1: Booking Workflow Hub */}
+            <Reveal delay={0.05} className="flex-1 flex">
+              <article className="group relative w-full rounded-3xl border border-slate-200/80 bg-white p-6 md:p-8 shadow-premium hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col justify-between">
+                <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
+                <div className="relative z-10 flex-grow">
+                  <span className="rounded-md bg-blue-50 text-[9px] font-black uppercase tracking-widest text-ocean px-2 py-0.5 inline-block mb-3">
+                    Workflow
+                  </span>
+                  <h3 className="text-xl font-extrabold text-ink tracking-tight mb-2 leading-tight">
+                    Booking Workflow Hub
+                  </h3>
+                  <p className="text-xs font-semibold leading-relaxed text-slate-500 mb-4">
+                    Manage intake, routing, confirmation, and internal handoff in one simple flow.
+                  </p>
+                </div>
+                <div className="relative z-10 mt-auto flex justify-between items-center">
+                  <Link
+                    href="/coming-soon"
+                    className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-ocean active:scale-95"
+                  >
+                    Get started <ChevronRight className="h-3.5 w-3.5 text-slate-500" />
+                  </Link>
+                </div>
+              </article>
+            </Reveal>
+
+            {/* Card 2: Share with partners */}
+            <Reveal delay={0.1} className="flex-1 flex">
+              <article className="group relative w-full rounded-3xl border border-slate-200/80 bg-white p-6 md:p-8 shadow-premium hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col justify-between">
+                <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
+                <div className="relative z-10 flex-grow">
+                  <span className="rounded-md bg-blue-50 text-[9px] font-black uppercase tracking-widest text-ocean px-2 py-0.5 inline-block mb-3">
+                    Collaboration
+                  </span>
+                  <h3 className="text-xl font-extrabold text-ink tracking-tight mb-2 leading-tight">
+                    Share with partners
+                  </h3>
+                  <p className="text-xs font-semibold leading-relaxed text-slate-500 mb-4">
+                    Send structured updates and handoff links to partner teams and reviewers.
+                  </p>
+                </div>
+                <div className="relative z-10 mt-auto flex justify-between items-center">
+                  <Link
+                    href="/coming-soon"
+                    className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-ocean active:scale-95"
+                  >
+                    Learn more <ChevronRight className="h-3.5 w-3.5 text-slate-500" />
+                  </Link>
+                </div>
+              </article>
+            </Reveal>
+
+            {/* Card 3: Instant updates */}
+            <Reveal delay={0.15} className="flex-1 flex">
+              <article className="group relative w-full rounded-3xl border border-slate-200/80 bg-white p-6 md:p-8 shadow-premium hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col justify-between">
+                <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
+                <div className="relative z-10 flex-grow">
+                  <span className="rounded-md bg-blue-50 text-[9px] font-black uppercase tracking-widest text-ocean px-2 py-0.5 inline-block mb-3">
+                    Updates
+                  </span>
+                  <h3 className="text-xl font-extrabold text-ink tracking-tight mb-2 leading-tight">
+                    Instant updates
+                  </h3>
+                  <p className="text-xs font-semibold leading-relaxed text-slate-500 mb-4">
+                    Notify customers and internal owners when a workflow changes.
+                  </p>
+                </div>
+                <div className="relative z-10 mt-auto flex justify-between items-center">
+                  <Link
+                    href="/coming-soon"
+                    className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-ocean active:scale-95"
+                  >
+                    Learn more <ChevronRight className="h-3.5 w-3.5 text-slate-500" />
+                  </Link>
+                </div>
+              </article>
+            </Reveal>
+          </div>
+
+          {/* Bottom Card: Integrations */}
+          <Reveal delay={0.2} className="lg:col-span-12">
+            <article className="group relative w-full rounded-[2.5rem] border border-slate-200/80 bg-white p-8 shadow-premium hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
+              <div className="relative z-10 flex-grow">
+                <span className="rounded-md bg-blue-50 text-[9px] font-black uppercase tracking-widest text-ocean px-2.5 py-1 inline-block mb-4 w-max">
+                  Integrations
+                </span>
+                <h3 className="text-2xl font-extrabold text-ink tracking-tight mb-2 leading-tight">
+                  Works with tools you already use.
+                </h3>
+                <p className="text-slate-500 text-xs md:text-sm font-semibold leading-relaxed mb-6 max-w-xl">
+                  Connect your website and workflow to the platforms your team already uses.
+                </p>
+                <Link
+                  href="/coming-soon"
+                  className="inline-flex h-10 items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-5 text-xs font-bold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-ocean"
+                >
+                  See integrations <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
               </div>
-            </article>
-          </Reveal>
 
-          <Reveal delay={0.12} className="lg:col-span-5">
-            <article className="relative flex min-h-[220px] flex-col justify-between overflow-hidden rounded-[1.5rem] border border-slate-100 bg-porcelain p-6 shadow-premium lg:min-h-[390px]">
-              <div className="flex items-start justify-between gap-5">
-                <div>
-                  <h3 className="text-xl font-extrabold leading-tight text-ink">Built around five service lanes</h3>
-                  <p className="mt-2 text-sm font-semibold text-slate-500">Websites, bookings, automation, CRM, and partner workflows.</p>
+              {/* Logo container */}
+              <div className="relative z-10 flex flex-wrap gap-4 items-center justify-center">
+                {/* Salesforce */}
+                <div className="bg-white border border-slate-100 shadow-sm rounded-2xl h-14 w-14 flex items-center justify-center transition hover:scale-105" title="Salesforce">
+                  <svg viewBox="0 0 24 24" className="h-8 w-8 text-[#00a1e0] fill-current">
+                    <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z" />
+                  </svg>
                 </div>
-                <div className="flex -space-x-3">
-                {BUILD_FEATURES.map((feature, index) => {
-                  const Icon = feature.icon;
-
-                  return (
-                    <span key={index} className={`flex h-12 w-12 items-center justify-center rounded-full border-4 border-porcelain ${
-                      index === 0 ? "bg-ocean text-white" : index === 1 ? "bg-emerald-100 text-emerald-700" : index === 2 ? "bg-amber-100 text-amber-700" : "bg-slate-900 text-white"
-                    }`}>
-                      <Icon className="h-5 w-5" />
-                    </span>
-                  );
-                })}
+                {/* Pipedrive */}
+                <div className="bg-white border border-slate-100 shadow-sm rounded-2xl h-14 w-14 flex items-center justify-center transition hover:scale-105" title="Pipedrive">
+                  <span className="text-[#00b853] font-black text-xl font-display">P</span>
+                </div>
+                {/* HubSpot */}
+                <div className="bg-white border border-slate-100 shadow-sm rounded-2xl h-14 w-14 flex items-center justify-center transition hover:scale-105" title="HubSpot">
+                  <svg viewBox="0 0 24 24" className="h-7 w-7 text-[#ff7a59] fill-current">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                  </svg>
+                </div>
+                {/* Intercom */}
+                <div className="bg-white border border-slate-100 shadow-sm rounded-2xl h-14 w-14 flex items-center justify-center transition hover:scale-105" title="Intercom">
+                  <svg viewBox="0 0 24 24" className="h-7 w-7 text-[#0057ff] fill-current">
+                    <path d="M12 2C6.477 2 2 6.484 2 12.016 2 14.816 3.12 17.352 4.96 19.184l-.16 2.016c-.016.176.08.336.24.4.048.016.096.032.144.032.112 0 .224-.048.304-.128l2.064-2.064C10.384 21.36 11.184 21.52 12 21.52c5.523 0 10-4.484 10-10.016S17.523 2 12 2zm3.328 12.56c-.208.336-.592.512-.96.448l-2.064-.336c-.304-.048-.56-.24-.688-.512l-1.04-2.064c-.16-.336-.112-.736.128-1.008l1.456-1.6c.256-.288.688-.336 1.008-.128l1.68 1.12c.272.176.432.48.432.8v2.4c0 .32-.144.608-.384.768z" />
+                  </svg>
+                </div>
+                {/* Zapier */}
+                <div className="bg-white border border-slate-100 shadow-sm rounded-2xl h-14 w-14 flex items-center justify-center transition hover:scale-105" title="Zapier">
+                  <svg viewBox="0 0 24 24" className="h-7 w-7 text-[#ff4f00] fill-current">
+                    <path d="M12 2c5.522 0 10 4.477 10 10s-4.478 10-10 10S2 17.523 2 12 6.478 2 12 2zm0 3.6c-3.535 0-6.4 2.865-6.4 6.4s2.865 6.4 6.4 6.4 6.4-2.865 6.4-6.4-2.865-6.4-6.4-6.4zm-1.8 3.6h3.6V11H10.2V9.2zm0 3.6h3.6V14.6H10.2v-1.8z" />
+                  </svg>
                 </div>
               </div>
-              <div className="mt-8 grid grid-cols-2 gap-3">
-                {BUILD_FEATURES.map((feature, index) => (
-                  <button
-                    key={feature.label}
-                    type="button"
-                    aria-pressed={activeBuildFeatureIndex === index}
-                    onClick={() => setActiveBuildFeatureIndex(index)}
-                    className={`rounded-2xl border px-4 py-3 text-left text-xs font-black uppercase tracking-widest transition focus:outline-none focus-visible:ring-2 focus-visible:ring-ocean/40 ${
-                      activeBuildFeatureIndex === index ? "border-ocean bg-ocean text-white shadow-lg shadow-blue-500/20" : "border-slate-100 bg-white/80 text-slate-600 hover:border-ocean/25 hover:text-ocean"
-                  }`}>
-                    {feature.label}
-                  </button>
-                ))}
-              </div>
-            </article>
-          </Reveal>
-
-          <Reveal delay={0.16} className="lg:col-span-4">
-            <article className="relative flex min-h-[370px] flex-col items-center justify-center overflow-hidden rounded-[2rem] border border-slate-100 bg-porcelain p-8 text-center shadow-premium transition-all duration-500 hover:shadow-2xl">
-              <div className="absolute inset-0 text-slate-300/40 [font-family:monospace] text-sm leading-8">
-                {Array.from({ length: 11 }).map((_, row) => (
-                  <div key={row} className="whitespace-nowrap">
-                    {"01 capture route update CRM booking email partner ".slice(row, row + 42)}
-                  </div>
-                ))}
-              </div>
-              <div className="relative z-10 mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-ocean text-white shadow-2xl shadow-blue-500/25">
-                <Workflow className="h-9 w-9" />
-              </div>
-              <h3 className="relative z-10 text-3xl font-extrabold tracking-tight text-ink">Booking workflow hub</h3>
-              <p className="relative z-10 mt-4 max-w-xs text-sm font-semibold leading-7 text-slate-600">
-                Intake, rules, owner assignment, customer confirmation, and internal status in one operating path.
-              </p>
-              <Link href="/services" className="relative z-10 mt-7 inline-flex h-12 items-center justify-center rounded-xl bg-ink px-6 text-sm font-black text-white transition hover:bg-ocean">
-                Get started
-              </Link>
-            </article>
-          </Reveal>
-
-          <Reveal delay={0.2} className="lg:col-span-3">
-            <article className="relative min-h-[252px] overflow-hidden rounded-[2rem] border border-slate-100 bg-porcelain p-7 text-center shadow-premium transition-all duration-500 hover:shadow-2xl lg:min-h-[390px]">
-              <div className="mx-auto mb-5 grid h-28 w-28 grid-cols-5 gap-1 rounded-2xl bg-white p-3 shadow-lg">
-                {Array.from({ length: 25 }).map((_, index) => (
-                  <span key={index} className={`rounded-[2px] ${index % 3 === 0 || index % 7 === 0 ? "bg-ink" : "bg-transparent"}`} />
-                ))}
-              </div>
-              <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-ocean text-white">
-                <QrCode className="h-6 w-6" />
-              </div>
-              <h3 className="text-xl font-extrabold text-ink">Share with partners</h3>
-              <p className="mt-3 text-sm font-semibold leading-6 text-slate-500">Create clear handoff links for partner teams and internal reviewers.</p>
-            </article>
-          </Reveal>
-
-          <Reveal delay={0.24} className="lg:col-span-8">
-            <article className="relative min-h-[252px] overflow-hidden rounded-[2rem] border border-slate-100 bg-porcelain p-7 shadow-premium transition-all duration-500 hover:shadow-2xl">
-              <div className="absolute -left-8 -top-8 h-24 w-24 rounded-full bg-ocean/10" />
-              <div className="absolute -bottom-8 -right-8 h-24 w-24 rounded-full bg-emerald-500/10" />
-              <h3 className="relative z-10 max-w-xs text-2xl font-extrabold leading-tight text-ink">Integrate with the tools already in your business.</h3>
-              <div className="relative z-10 mt-8 grid grid-cols-4 gap-4">
-                {[
-                  { label: "Form", icon: FileText, className: "rotate-[-12deg] bg-ocean text-white" },
-                  { label: "Email", icon: MailCheck, className: "rotate-[8deg] bg-emerald-100 text-emerald-700" },
-                  { label: "CRM", icon: Database, className: "rotate-[-6deg] bg-slate-900 text-white" },
-                  { label: "API", icon: Puzzle, className: "rotate-[12deg] bg-blue-100 text-ocean" },
-                ].map((item) => (
-                  <span key={item.label} className={`flex aspect-square items-center justify-center rounded-2xl shadow-lg transition group-hover:rotate-0 ${item.className}`}>
-                    <item.icon className="h-6 w-6" />
-                    <span className="sr-only">{item.label}</span>
-                  </span>
-                ))}
-              </div>
-            </article>
-          </Reveal>
-
-          <Reveal delay={0.28} className="lg:col-span-4">
-            <article className="relative flex min-h-[252px] flex-col items-center justify-center overflow-hidden rounded-[2rem] border border-slate-100 bg-porcelain p-7 text-center shadow-premium transition-all duration-500 hover:shadow-2xl lg:min-h-[327px]">
-              <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-ocean text-white shadow-xl shadow-blue-500/20">
-                <Bell className="h-7 w-7" />
-              </div>
-              <h3 className="text-xl font-extrabold text-ink">Instant updates</h3>
-              <p className="mt-3 text-sm font-semibold leading-6 text-slate-500">Notify customers and internal owners when the workflow moves.</p>
             </article>
           </Reveal>
         </div>
@@ -645,7 +852,7 @@ export default function HomePage() {
           <Reveal>
             <div className="text-center">
               <SectionBadge icon={LayoutDashboard}>Delivery Process</SectionBadge>
-              <h2 className="text-4xl md:text-5xl lg:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">
+              <h2 className="section-heading text-ink">
                 From messy workflow <br /><span className="text-ocean">to working system.</span>
               </h2>
             </div>
@@ -762,7 +969,7 @@ export default function HomePage() {
         <div className="text-center mb-20 md:mb-32">
            <Reveal>
               <SectionBadge icon={Workflow}>Company Purpose</SectionBadge>
-              <h2 className="text-4xl md:text-5xl lg:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">
+              <h2 className="section-heading text-ink">
                  Digital infrastructure <br /><span className="text-ocean">that fits real work.</span>
               </h2>
            </Reveal>
@@ -771,7 +978,7 @@ export default function HomePage() {
         <div className="bg-porcelain/50 border border-slate-100 rounded-[4rem] p-12 md:p-20 grid lg:grid-cols-[1.2fr_1fr] gap-20 items-center overflow-hidden relative group">
            <BorderBeam colorFrom="var(--ocean)" colorTo="var(--mint)" duration={8} borderWidth={2} />
            <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
-           
+
            <Reveal className="relative z-10">
               <div className="bg-white rounded-[2.5rem] p-10 border border-slate-100 shadow-premium flex flex-col items-center relative overflow-hidden transition-transform duration-500 hover:scale-[1.02]">
                  <div className="absolute top-0 right-0 w-64 h-64 bg-ocean/5 rounded-full blur-[80px] pointer-events-none" />
@@ -852,7 +1059,7 @@ export default function HomePage() {
         <div className="text-center mb-20 px-4 sm:px-6 max-w-7xl mx-auto relative z-20">
            <Reveal>
               <SectionBadge icon={MessageSquareQuote}>Why teams choose P2C Growth</SectionBadge>
-              <h2 className="text-4xl md:text-5xl lg:text-[5.2rem] font-extrabold text-ink tracking-tight leading-[1] display-heading">Less manual work, <br /><span className="text-ocean">clearer operations.</span></h2>
+              <h2 className="section-heading text-ink">Less manual work, <br /><span className="text-ocean">clearer operations.</span></h2>
            </Reveal>
         </div>
 
@@ -924,7 +1131,7 @@ export default function HomePage() {
 
                   <div className="order-1 lg:order-2">
                     <p className="mb-5 text-[11px] font-black uppercase tracking-[0.24em] text-blue-100">Start the conversation</p>
-                    <h2 className="text-4xl md:text-5xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1] display-heading">
+                    <h2 className="section-heading text-white">
                       Ready to improve <br />your digital workflow?
                     </h2>
                     <p className="mt-8 text-lg md:text-xl text-blue-100 max-w-xl font-medium">
@@ -979,11 +1186,11 @@ export default function HomePage() {
         <div className="text-center mb-16">
            <Reveal>
               <SectionBadge icon={MessageSquareQuote}>FAQ</SectionBadge>
-              <h2 className="text-4xl md:text-5xl font-extrabold text-ink tracking-tight leading-[1.1] display-heading mb-4">Frequently Asked <span className="text-ocean">Questions.</span></h2>
+              <h2 className="section-heading text-ink mb-4">Frequently Asked <span className="text-ocean">Questions.</span></h2>
               <p className="text-lg font-medium text-slate-500 mb-10 max-w-2xl mx-auto">Clear answers to common questions about our platform, features, and support.</p>
            </Reveal>
         </div>
-        
+
         <FaqAccordion items={FAQ_ITEMS} />
       </section>
 

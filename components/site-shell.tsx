@@ -185,7 +185,7 @@ export function SectionHeading({
   return (
     <div className="max-w-3xl">
       <SectionBadge icon={icon}>{eyebrow}</SectionBadge>
-      <h2 className="text-4xl md:text-5xl font-extrabold text-ink tracking-tight leading-[1.1] display-heading">{title}</h2>
+      <h2 className="section-heading text-ink">{title}</h2>
       {description ? <p className="mt-6 text-lg font-medium leading-relaxed text-slate-600">{description}</p> : null}
     </div>
   );

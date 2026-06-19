@@ -50,7 +50,7 @@ export default function ContactPage() {
       <section className="relative pt-32 pb-10 md:pt-40 md:pb-12 text-center px-4 sm:px-6 max-w-4xl mx-auto z-20">
         <Reveal>
           <SectionBadge className="bg-white">Contact us</SectionBadge>
-          <h1 className="text-4xl md:text-6xl font-extrabold text-ink tracking-tight leading-[1.05] display-heading mb-6">
+          <h1 className="page-heading text-ink mb-6">
             Get in touch with our team
           </h1>
           <p className="text-lg font-medium leading-relaxed text-slate-500 mb-10">
@@ -167,7 +167,7 @@ export default function ContactPage() {
       <section className="px-4 sm:px-6 max-w-3xl mx-auto mb-32">
         <Reveal>
           <div className="text-center mb-10">
-             <h2 className="text-3xl font-extrabold text-ink tracking-tight display-heading">Send an enquiry</h2>
+             <h2 className="text-3xl font-extrabold text-ink tracking-tight">Send an enquiry</h2>
              <p className="text-base font-medium text-slate-500 mt-4">Prefer to write? Fill out the form below and we&apos;ll get back to you.</p>
           </div>
           <BentoCard className="p-8 md:p-10 shadow-soft-xl border-slate-200">
@@ -181,7 +181,7 @@ export default function ContactPage() {
         <div className="text-center mb-16">
           <Reveal>
             <SectionBadge>FAQ</SectionBadge>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-ink tracking-tight leading-[1.1] display-heading mb-4">Frequently Asked Questions</h2>
+            <h2 className="section-heading text-ink mb-4">Frequently Asked Questions</h2>
             <p className="text-lg font-medium text-slate-500 mb-10 max-w-2xl mx-auto">Clear answers to common questions about our platform, features, and support.</p>
           </Reveal>
         </div>
@@ -245,7 +245,7 @@ export default function ContactPage() {
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-md mb-8 shadow-2xl border border-white/20">
             <svg className="h-8 w-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           </div>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-6 display-heading">
+          <h2 className="section-heading text-white mb-6">
             We&apos;re ready to scale when you are
           </h2>
           <p className="text-lg font-medium text-blue-100 mb-10 max-w-xl mx-auto">

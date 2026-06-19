@@ -57,7 +57,7 @@ export default function ServicesPage() {
             <SectionBadge icon={LayoutDashboard}>Our Services</SectionBadge>
           </Reveal>
           <Reveal delay={0.1}>
-            <h1 className="text-4xl md:text-7xl font-extrabold text-ink tracking-tight leading-[1.05] display-heading mb-6">
+            <h1 className="page-heading text-ink mb-6">
               Technology services for <br /><span className="text-ocean">service businesses.</span>
             </h1>
           </Reveal>
