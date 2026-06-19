@@ -16,7 +16,7 @@ export default function ComingSoonPage() {
             <Rocket className="h-10 w-10" />
           </div>
           <p className="text-[11px] font-black uppercase tracking-[0.24em] text-ocean mb-4">Under Construction</p>
-          <h1 className="text-4xl md:text-6xl font-extrabold text-ink tracking-tight leading-[1.05] display-heading mb-6">
+          <h1 className="page-heading text-ink mb-6">
             Coming Soon
           </h1>
           <p className="text-lg font-medium leading-relaxed text-slate-500 mb-10">
