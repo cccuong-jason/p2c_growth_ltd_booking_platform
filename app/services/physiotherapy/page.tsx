@@ -22,7 +22,7 @@ export default function PhysiotherapyPage() {
         <div className="relative z-10 w-full px-4 sm:px-6 max-w-5xl mx-auto text-center">
           <Reveal>
             <SectionBadge icon={Activity}>P2C Health</SectionBadge>
-            <h1 className="text-4xl md:text-6xl font-extrabold text-ink tracking-tight leading-[1.05] display-heading mb-6 mt-4">
+            <h1 className="page-heading text-ink mb-6 mt-4">
               Book medical expert <span className="text-ocean">support.</span>
             </h1>
             <p className="text-lg font-semibold leading-relaxed text-slate-600 max-w-3xl mx-auto">
