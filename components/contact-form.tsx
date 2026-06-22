@@ -5,11 +5,16 @@ import { useFormStatus } from "react-dom";
 import { Loader2, Send } from "lucide-react";
 
 import { submitEnquiry, type ActionState } from "@/lib/actions";
+import { useLocale } from "@/components/providers/locale-provider";
+import { getDictionary } from "@/lib/i18n/dictionary";
 
 const initialState: ActionState = { ok: false, message: "" };
 
 function SubmitButton() {
   const { pending } = useFormStatus();
+  const { locale } = useLocale();
+  const d = getDictionary(locale);
+  const f = d.contact.form;
 
   return (
     <button 
@@ -17,19 +22,22 @@ function SubmitButton() {
       disabled={pending}
     >
       {pending ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : <Send className="h-4 w-4" aria-hidden />}
-      {pending ? "Sending..." : "Send enquiry"}
+      {pending ? f.sending : f.btn}
     </button>
   );
 }
 
 export function ContactForm() {
   const [state, action] = useActionState(submitEnquiry, initialState);
+  const { locale } = useLocale();
+  const d = getDictionary(locale);
+  const f = d.contact.form;
 
   return (
     <form action={action} className="grid gap-5">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <label className="block">
-          <span className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Full Name</span>
+          <span className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">{f.name}</span>
           <input 
             className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-ink placeholder-slate-400 transition-colors focus:border-ocean focus:outline-none focus:ring-4 focus:ring-ocean/10" 
             name="name" 
@@ -38,7 +46,7 @@ export function ContactForm() {
           />
         </label>
         <label className="block">
-          <span className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Work Email</span>
+          <span className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">{f.email}</span>
           <input 
             className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-ink placeholder-slate-400 transition-colors focus:border-ocean focus:outline-none focus:ring-4 focus:ring-ocean/10" 
             name="email" 
@@ -49,7 +57,7 @@ export function ContactForm() {
         </label>
       </div>
       <label className="block">
-        <span className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Company Name (Optional)</span>
+        <span className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">{f.company}</span>
         <input 
           className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-ink placeholder-slate-400 transition-colors focus:border-ocean focus:outline-none focus:ring-4 focus:ring-ocean/10" 
           name="company" 
@@ -57,11 +65,11 @@ export function ContactForm() {
         />
       </label>
       <label className="block">
-        <span className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">How can we help?</span>
+        <span className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">{f.help}</span>
         <textarea 
           className="w-full min-h-[160px] resize-none rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-ink placeholder-slate-400 transition-colors focus:border-ocean focus:outline-none focus:ring-4 focus:ring-ocean/10" 
           name="message" 
-          placeholder="Tell us about your current workflow, the problems you are facing, and what you are looking to build."
+          placeholder={f.helpPlaceholder}
           required 
         />
       </label>

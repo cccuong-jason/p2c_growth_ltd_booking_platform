@@ -7,46 +7,20 @@ import { BorderBeam } from "@/components/ui/border-beam";
 import { ProgressiveBlur } from "@/components/magicui/progressive-blur";
 import { SectionBadge } from "@/components/ui/section-badge";
 import { BentoCard } from "@/components/ui/bento-card";
+import { useLocale } from "@/components/providers/locale-provider";
+import { getDictionary } from "@/lib/i18n/dictionary";
 
-const services = [
-  {
-    title: "P2C Health",
-    body: "A guided booking and referral workflow for patients, legal cases, insurers, and expert follow-up.",
-    href: "/services/physiotherapy",
-    icon: Activity,
-    isPrimary: true,
-  },
-  {
-    title: "Website Development",
-    body: "Premium conversion-focused websites for UK service businesses.",
-    href: "/coming-soon",
-    icon: Monitor,
-    isPrimary: false,
-  },
-  {
-    title: "Booking System & Email Automation",
-    body: "Forms, workflows, confirmations, notifications, and operational handoff.",
-    href: "/coming-soon",
-    icon: Workflow,
-    isPrimary: false,
-  },
-  {
-    title: "Mini CRM",
-    body: "Lightweight dashboards for teams managing high-trust customer relationships.",
-    href: "/coming-soon",
-    icon: LayoutDashboard,
-    isPrimary: false,
-  },
-  {
-    title: "Customer-Partner Platform",
-    body: "A reusable coordination layer between customers, internal teams, and professional partners.",
-    href: "/coming-soon",
-    icon: UserCheck,
-    isPrimary: false,
-  }
+const SUITE_ICONS = [
+  Workflow,        // Booking System & Email Automation
+  LayoutDashboard, // Mini CRM
+  UserCheck        // Customer-Partner Platform
 ];
 
 export default function ServicesPage() {
+  const { locale } = useLocale();
+  const d = getDictionary(locale);
+  const t = d.servicesPage;
+
   return (
     <main className="relative bg-white overflow-hidden selection:bg-blue-100 selection:text-blue-900 font-sans pb-24">
       {/* Hero Section */}
@@ -54,16 +28,16 @@ export default function ServicesPage() {
         <div className="absolute inset-0 tech-grid opacity-50" />
         <div className="relative z-10 flex flex-col items-center text-center px-4 sm:px-6 max-w-5xl mx-auto">
           <Reveal>
-            <SectionBadge icon={LayoutDashboard}>Our Services</SectionBadge>
+            <SectionBadge icon={LayoutDashboard}>{t.eyebrow}</SectionBadge>
           </Reveal>
           <Reveal delay={0.1}>
             <h1 className="page-heading text-ink mb-6">
-              Technology services for <br /><span className="text-ocean">service businesses.</span>
+              {t.title}
             </h1>
           </Reveal>
           <Reveal delay={0.2}>
             <p className="max-w-2xl text-lg font-semibold leading-relaxed text-slate-600 md:text-xl">
-              P2C Growth LTD builds practical digital systems: websites, booking workflows, CRM tools, and partner coordination platforms.
+              {t.subtitle}
             </p>
           </Reveal>
         </div>
@@ -83,20 +57,21 @@ export default function ServicesPage() {
                 <Activity className="h-8 w-8" />
               </div>
               <div className="relative z-10">
-                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-ocean mb-3">Core Product</p>
-                <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4">{services[0].title}</h2>
+                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-ocean mb-3">{t.primaryCard.tag}</p>
+                <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-ink mb-4">{t.primaryCard.title}</h2>
                 <p className="max-w-md text-base font-semibold leading-relaxed text-slate-500 mb-8">
-                  {services[0].body}
+                  {t.primaryCard.body}
                 </p>
               </div>
               <div className="relative z-10 mt-auto">
-                <Link href={services[0].href!} className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-ocean px-6 text-sm font-black text-white shadow-md transition-all hover:bg-blue-600 hover:scale-[1.02] active:scale-[0.98]">
-                  Start booking
+                <Link href="/services/physiotherapy" className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-ocean px-6 text-sm font-black text-white shadow-md transition-all hover:bg-blue-600 hover:scale-[1.02] active:scale-[0.98]">
+                  {t.primaryCard.cta}
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
             </BentoCard>
           </Reveal>
+          
           {/* Website Development */}
           <Reveal delay={0.4} className="lg:col-span-1">
             <BentoCard className="group h-full flex flex-col p-8 bg-white border border-slate-200">
@@ -104,17 +79,15 @@ export default function ServicesPage() {
               <div className="relative z-10 mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-slate-50 border border-slate-200 text-ocean shadow-sm">
                 <Monitor className="h-5 w-5" />
               </div>
-              <h3 className="relative z-10 text-xl font-extrabold tracking-tight text-ink mb-3">{services[1].title}</h3>
+              <h3 className="relative z-10 text-xl font-extrabold tracking-tight text-ink mb-3">{t.webDevCard.title}</h3>
               <p className="relative z-10 text-sm font-semibold leading-relaxed text-slate-500 mb-6">
-                {services[1].body}
+                {t.webDevCard.body}
               </p>
-              {services[1].href && (
-                <div className="relative z-10 mt-auto">
-                   <Link href={services[1].href} className="inline-flex items-center gap-2 text-sm font-black text-ocean transition-colors hover:text-blue-700">
-                      View details <ArrowRight className="h-4 w-4" />
-                   </Link>
-                </div>
-              )}
+              <div className="relative z-10 mt-auto">
+                 <Link href="/coming-soon" className="inline-flex items-center gap-2 text-sm font-black text-ocean transition-colors hover:text-blue-700">
+                    {t.webDevCard.cta} <ArrowRight className="h-4 w-4" />
+                 </Link>
+              </div>
             </BentoCard>
           </Reveal>
 
@@ -124,27 +97,25 @@ export default function ServicesPage() {
               <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
               
               <div className="relative z-10 mb-8">
-                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-ocean mb-2">Operational Suite</p>
-                <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-ink">Integrated Business Systems</h2>
+                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-ocean mb-2">{t.suite.tag}</p>
+                <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-ink">{t.suite.title}</h2>
               </div>
 
               <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8 mt-8 pt-8 border-t border-slate-100">
-                {services.slice(2).map((service) => {
-                  const Icon = service.icon;
+                {t.suite.items.map((item, index) => {
+                  const Icon = SUITE_ICONS[index] || Workflow;
                   return (
-                    <div key={service.title} className="flex flex-col h-full">
+                    <div key={item.title} className="flex flex-col h-full">
                       <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 border border-slate-200 text-ocean shadow-sm">
                         <Icon className="h-5 w-5" />
                       </div>
-                      <h3 className="text-lg font-extrabold tracking-tight text-ink mb-2">{service.title}</h3>
+                      <h3 className="text-lg font-extrabold tracking-tight text-ink mb-2">{item.title}</h3>
                       <p className="text-xs font-semibold leading-relaxed text-slate-500 mb-4 flex-1">
-                        {service.body}
+                        {item.body}
                       </p>
-                      {service.href && (
-                        <Link href={service.href} className="inline-flex items-center gap-1.5 text-xs font-black text-ocean transition-colors hover:text-blue-700 mt-auto">
-                          View details <ArrowRight className="h-3 w-3" />
-                        </Link>
-                      )}
+                      <Link href="/coming-soon" className="inline-flex items-center gap-1.5 text-xs font-black text-ocean transition-colors hover:text-blue-700 mt-auto">
+                        {t.suite.cta} <ArrowRight className="h-3 w-3" />
+                      </Link>
                     </div>
                   );
                 })}

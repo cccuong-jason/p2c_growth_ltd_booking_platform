@@ -21,7 +21,8 @@ import { BookingWizard } from "@/components/booking/booking-wizard";
 import { Reveal } from "@/components/home/motion-primitives";
 import { SectionBadge } from "@/components/ui/section-badge";
 import { FaqAccordion } from "@/components/ui/faq-accordion";
-import { getDictionary, Locale } from "@/lib/i18n/dictionary";
+import { getDictionary } from "@/lib/i18n/dictionary";
+import { useLocale } from "@/components/providers/locale-provider";
 
 // Map audience card index to a Lucide icon for rich visuals
 const AUDIENCE_ICONS = [
@@ -34,7 +35,7 @@ const AUDIENCE_ICONS = [
 ];
 
 export default function PhysiotherapyPage() {
-  const [locale, setLocale] = useState<Locale>("en");
+  const { locale, setLocale } = useLocale();
   const [activeTabId, setActiveTabId] = useState<string>("elderly");
 
   const d = getDictionary(locale);

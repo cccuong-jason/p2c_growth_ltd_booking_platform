@@ -1,5 +1,5 @@
-// Shared home page translation strings to avoid duplication and maintain type safety
-const homeShared = {
+// English home page translation strings
+const homeEn = {
   eyebrow: "UK technology and software company",
   title: "Booking infrastructure for high-trust service teams.",
   subtitle:
@@ -158,6 +158,166 @@ const homeShared = {
   }
 };
 
+// Vietnamese home page translation strings
+const homeVi = {
+  eyebrow: "Công ty công nghệ và phần mềm tại UK",
+  title: "Hạ tầng đặt lịch cho các đội ngũ dịch vụ uy tín cao.",
+  subtitle:
+    "Website, quy trình đặt lịch, tự động hóa, CRM và nền tảng kết nối đối tác cho các công ty dịch vụ tại UK.",
+  heroTitle: "Hệ thống phần mềm cho các doanh nghiệp dịch vụ hiện đại tại UK.",
+  heroSubtitle:
+    "Giải pháp công nghệ giúp vận hành số hóa rõ ràng.",
+  heroLead:
+    "Tối ưu hóa quy trình tiếp nhận và phân phối cho các đội ngũ uy tín.",
+  primaryCta: "Khám phá dịch vụ",
+  secondaryCta: "Khám phá hệ thống",
+  socialProof: {
+    value: "Quy trình",
+    label: "đặt lịch đến điều phối 4 làn",
+    body: "Được thiết kế cho việc tiếp nhận bằng phần mềm, tự động hóa quy trình, quản lý khách hàng và điều phối đối tác."
+  },
+  brandStrip: [
+    "Nhận diện thương hiệu",
+    "Trang Landing",
+    "Công cụ đặt lịch",
+    "Email tự động",
+    "Bảng điều khiển Admin",
+    "Mini CRM"
+  ],
+  proofChips: [
+    "HCPC/CSP sẵn sàng hiển thị uy tín",
+    "Hỗ trợ Tiếng Anh / Tiếng Trung / Tiếng Việt",
+    "Logic kiểm tra postcode cho Home Visit",
+    "Email xác nhận tự động"
+  ],
+  heroMetrics: [
+    { value: "42s", label: "tiếp nhận hướng dẫn" },
+    { value: "5", label: "kiểm tra độ tin cậy" },
+    { value: "4", label: "làn quy trình" }
+  ],
+  productMockup: {
+    label: "Hệ điều hành P2C Growth",
+    title: "Khoang lái điều phối trực tiếp",
+    rows: [
+      { step: "Đặt lịch", title: "Khả năng vận động người cao tuổi", meta: "Khám tại nhà · SW1A", status: "Mới" },
+      { step: "Đồng ý", title: "Đã chấp nhận từ chối trách nhiệm", meta: "Xác nhận liên hệ + trường hợp khẩn cấp", status: "Đạt" },
+      { step: "Email", title: "Đã xếp hàng gửi email xác nhận", meta: "Resend-sẵn sàng", status: "Đã gửi" },
+      { step: "Admin", title: "Xem xét chỉ định đối tác", meta: "Hiển thị trên Mini CRM", status: "Chờ xử lý" }
+    ],
+    sideCards: [
+      { icon: "languages", title: "Sẵn sàng ngôn ngữ", body: "Tiếng Anh, Tiếng Trung, Tiếng Việt" },
+      { icon: "shield", title: "Tuân thủ quy định", body: "Lưu mốc thời gian đồng ý + nội dung UK GDPR" },
+      { icon: "map", title: "Điều phối tại nhà", body: "Yêu cầu cung cấp postcode và địa chỉ cụ thể" }
+    ]
+  },
+  orbitLabels: ["Landing", "Đặt lịch", "Đồng ý", "Điều phối", "Email"],
+  featureCards: [
+    {
+      icon: "calendar",
+      title: "Hệ thống đặt lịch",
+      body: "Thu nhập yêu cầu nhanh chóng với thẻ dịch vụ, logic khám tại nhà, chấp thuận pháp lý và chuyển giao vận hành.",
+      span: "wide"
+    },
+    {
+      icon: "workflow",
+      title: "Tự động hóa quy trình",
+      body: "Email xác nhận và trạng thái theo dõi nội bộ giúp giảm thiểu công việc thủ công.",
+      span: ""
+    },
+    {
+      icon: "network",
+      title: "Nền tảng đối tác",
+      body: "Lớp điều phối được kiểm soát chặt chẽ giữa khách hàng và các chuyên gia đã được xác minh.",
+      span: ""
+    },
+    {
+      icon: "shield",
+      title: "Tuân thủ pháp lý rõ ràng",
+      body: "Giao diện ưu tiên từ chối trách nhiệm, hướng dẫn khẩn cấp, hồ sơ đồng ý và ngôn ngữ bảo mật.",
+      span: ""
+    },
+    {
+      icon: "sparkles",
+      title: "Giao diện web cao cấp",
+      body: "Nhận diện thương hiệu, kiểu chữ chuyên biệt, giao diện uy tín và thiết kế bóng bẩy như SaaS cao cấp.",
+      span: "wide"
+    }
+  ],
+  systemSteps: [
+    { number: "01", title: "Landing", body: "Hiển thị thông tin uy tín, ngôn ngữ hỗ trợ và phạm vi đặt lịch trước khi bắt đầu." },
+    { number: "02", title: "Yêu cầu", body: "Thu thập thông tin liên hệ, loại dịch vụ, thời gian, ngôn ngữ và tùy chọn khám tại nhà." },
+    { number: "03", title: "Xác thực", body: "Áp dụng các quy tắc về địa chỉ Home Visit và sự đồng ý để bảo vệ quy trình làm việc." },
+    { number: "04", title: "Điều phối", body: "Hàng đợi Admin giúp quá trình theo dõi và phân công công việc luôn hiển thị rõ ràng." }
+  ],
+  showcasePanels: [
+    {
+      title: "Tiếp nhận đặt lịch",
+      body: "Thẻ dịch vụ, thông tin liên hệ, ngôn ngữ và thời gian mong muốn trong một luồng hướng dẫn.",
+      meta: "Phía khách hàng"
+    },
+    {
+      title: "Điều phối khám tại nhà",
+      body: "Các trường địa chỉ chỉ xuất hiện khi chọn Home Visit.",
+      meta: "Logic có điều kiện"
+    },
+    {
+      title: "Điều phối nội bộ",
+      body: "Thông tin đặt lịch, yêu cầu hỗ trợ, trạng thái và ngữ cảnh Mini CRM trong một chế độ xem vận hành.",
+      meta: "Quy trình Admin"
+    }
+  ],
+  statsBand: [
+    { value: "03-04", label: "tuần bàn giao dự án" },
+    { value: "50/50", label: "điều khoản thanh toán linh hoạt" },
+    { value: "3 tháng", label: "hỗ trợ bảo trì lỗi sau bàn giao" }
+  ],
+  testimonials: [
+    {
+      quote: "Giao diện giống như một sản phẩm thực tế, chứ không chỉ là một biểu mẫu liên hệ được trang trí.",
+      name: "Đánh giá vận hành",
+      role: "Quy trình kết nối chuyên gia y tế"
+    },
+    {
+      quote: "Thông tin đồng ý, ngôn ngữ và postcode được thu thập đồng thời trước khi theo dõi.",
+      name: "Góc nhìn đối tác",
+      role: "Sự sẵn sàng cho Home Visit"
+    },
+    {
+      quote: "Luồng tiếp nhận hướng dẫn gia đình đầy đủ thông tin mà không làm yêu cầu trở nên nặng nề.",
+      name: "Xem xét trải nghiệm khách hàng",
+      role: "Tiếp nhận đa ngôn ngữ"
+    }
+  ],
+  faq: [
+    {
+      question: "Đây có phải là lịch hẹn đã được xác nhận không?",
+      answer: "Không. Giai đoạn 1 chỉ thu thập yêu cầu và giúp đội ngũ điều phối kết nối với đối tác chuyên môn phù hợp."
+    },
+    {
+      question: "Tại sao dịch vụ khám tại nhà (Home Visit) yêu cầu cung cấp postcode và địa chỉ?",
+      answer: "Các trường thông tin này chỉ bắt buộc khi chọn khám tại nhà để đội ngũ kiểm tra khu vực hỗ trợ trước khi phản hồi."
+    },
+    {
+      question: "P2C có cung cấp dịch vụ điều trị lâm sàng không?",
+      answer: "Không. P2C Growth chỉ cung cấp nền tảng đặt lịch và điều phối; việc chăm sóc lâm sàng do các chuyên gia đủ điều kiện đảm nhận."
+    },
+    {
+      question: "Hệ thống có thể hỗ trợ nhiều ngôn ngữ hơn sau này không?",
+      answer: "Có. Tiếng Anh được triển khai trước và cấu trúc nội dung đã sẵn sàng để tích hợp thêm Tiếng Trung và Tiếng Việt."
+    }
+  ],
+  trustSignals: [
+    { title: "HCPC / CSP", body: "Giao diện uy tín sẵn sàng hiển thị chứng nhận do khách hàng cung cấp." },
+    { title: "UK GDPR", body: "Bảo mật ngôn ngữ và quyền truy cập Admin được bảo vệ là một phần của tiêu chuẩn Giai đoạn 1." },
+    { title: "UAT → Go-live", body: "Kế hoạch theo dõi kiểm thử UAT, tinh chỉnh, bàn giao và các bước kiểm tra phụ thuộc thông tin xác thực." }
+  ],
+  finalCta: {
+    eyebrow: "Phase 1 MVP",
+    title: "Khởi chạy công cụ tiếp nhận yêu cầu, sau đó kết nối hệ thống backend.",
+    body: "Giao diện người dùng đã sẵn sàng để xem xét; thông tin xác thực Supabase và Resend có thể được kết nối khi bạn cung cấp."
+  }
+};
+
 export const dictionary = {
   en: {
     nav: {
@@ -168,7 +328,124 @@ export const dictionary = {
       contact: "Contact",
       admin: "Admin"
     },
-    home: homeShared,
+    layout: {
+      footerDesc: "Building websites, booking systems, automation, CRM tools, and customer-partner platforms for UK service companies.",
+      privacy: "Privacy Policy",
+      terms: "Terms & Conditions",
+      footerCta: "Start a medical expert request",
+      rights: "ALL RIGHTS RESERVED."
+    },
+    home: homeEn,
+    about: {
+      eyebrow: "About P2C Growth",
+      title: "Connecting businesses, partners, and customers.",
+      subtitle: "P2C Growth LTD is a UK-based technology and software company that designs and builds practical digital systems to help businesses, partners, and customers connect more easily.",
+      sectionTitle: "Partner to Customer (P2C) Journey",
+      sectionLead: "We don't replace professional service providers. Instead, we develop workflow tools and coordination platforms to make business execution simpler, faster, and more reliable.",
+      exploreCta: "Explore services",
+      clinicalModel: "Clinical model",
+      techOperations: "Tech operations",
+      cards: [
+        {
+          title: "Workflow Automation",
+          body: "Booking systems, email automation, status tracking, and mini CRM tools that keep operations moving without manual chasing."
+        },
+        {
+          title: "Partner Connection",
+          body: "Dedicated platforms that connect end-customers directly and securely with suitable professional partners and internal teams."
+        },
+        {
+          title: "Focus on Execution",
+          body: "Clean data capture, consent stop checks, and structured intake pipelines that minimize administrative work."
+        }
+      ]
+    },
+    servicesPage: {
+      eyebrow: "Our Services",
+      title: "Technology services for service businesses.",
+      subtitle: "P2C Growth LTD builds practical digital systems: websites, booking workflows, CRM tools, and partner coordination platforms.",
+      primaryCard: {
+        tag: "Core Product",
+        title: "P2C Health",
+        body: "A guided booking and referral workflow for patients, legal cases, insurers, and expert follow-up.",
+        cta: "Start booking"
+      },
+      webDevCard: {
+        title: "Website Development",
+        body: "Premium conversion-focused websites for UK service businesses.",
+        cta: "View details"
+      },
+      suite: {
+        tag: "Operational Suite",
+        title: "Integrated Business Systems",
+        items: [
+          { title: "Booking System & Email Automation", body: "Forms, workflows, confirmations, notifications, and operational handoff." },
+          { title: "Mini CRM", body: "Lightweight dashboards for teams managing high-trust customer relationships." },
+          { title: "Customer-Partner Platform", body: "A reusable coordination layer between customers, internal teams, and professional partners." }
+        ],
+        cta: "View details"
+      }
+    },
+    contact: {
+      eyebrow: "Contact us",
+      title: "Get in touch with our team",
+      subtitle: "We have the team and know-how to help you scale your operations 10x faster.",
+      formTitle: "Send an enquiry",
+      formSubtitle: "Prefer to write? Fill out the form below and we'll get back to you.",
+      faqTitle: "Frequently Asked Questions",
+      faqSubtitle: "Clear answers to common questions about our platform, features, and support.",
+      faqCtaTitle: "Still have questions?",
+      faqCtaSubtitle: "Can't find the answer you're looking for? Please chat to our friendly team.",
+      faqDocBtn: "Documentation",
+      faqContactBtn: "Get in touch",
+      bannerTitle: "We're ready to scale when you are",
+      bannerSubtitle: "Join other service businesses already growing with P2C Growth workflows and automations.",
+      bannerContactBtn: "Contact Sales",
+      bannerDemoBtn: "View demo",
+      cards: {
+        sales: { title: "Chat to sales", desc: "Speak to our friendly team.", btn: "sales@p2cgrowth.com" },
+        support: { title: "Chat to support", desc: "We're here to help.", btn: "support@p2cgrowth.com" },
+        visit: { title: "Visit us", desc: "Visit our office HQ.", btn: "View on Google Maps" },
+        call: { title: "Call us", desc: "Mon-Fri from 8am to 5pm.", btn: "+44 (0) 20 1234 5678" }
+      },
+      form: {
+        name: "Full Name",
+        email: "Work Email",
+        company: "Company Name (Optional)",
+        help: "How can we help?",
+        helpPlaceholder: "Tell us about your current workflow, the problems you are facing, and what you are looking to build.",
+        btn: "Send enquiry",
+        sending: "Sending..."
+      },
+      faqs: [
+        { question: "Is there a free trial available?", answer: "Yes, you can try us for free for 30 days. If you want, we'll provide you with a free 30-minute onboarding call to get you up and running." },
+        { question: "Can I change my plan later?", answer: "Of course you can! Our pricing scales with your company. Chat to our friendly team to find a solution that works for you as you grow." },
+        { question: "What is your cancellation policy?", answer: "We understand that things change. You can cancel your plan at any time and we'll refund you the difference already paid." },
+        { question: "Can other info be added to an invoice?", answer: "At the moment, the only way to add additional information to invoices is to add the information to the workspace's name manually." },
+        { question: "How does billing work?", answer: "Plans are per workspace, not per account. You can upgrade one workspace, and still have any number of free workspaces." },
+        { question: "How do I change my account email?", answer: "You can change the email address associated with your account by going to account settings from a laptop or desktop." }
+      ]
+    },
+    comingSoon: {
+      tag: "Under Construction",
+      title: "Coming Soon",
+      desc: "We are currently building this service module. Our primary focus right now is the Medical Experts Booking MVP. Check back later for updates on this feature.",
+      btn: "Return Home"
+    },
+    privacy: {
+      tag: "Privacy",
+      title: "Privacy Policy",
+      subtitle: "P2C Growth stores booking and enquiry data only to coordinate requested services and business follow-up.",
+      p1: "Health inquiry data may be shared with appropriate professional partners for coordination purposes. P2C Growth does not sell personal data and does not provide medical diagnosis or treatment.",
+      p2: "Data access is limited to internal administrators and configured service providers needed to operate the platform, including Supabase and email delivery services."
+    },
+    terms: {
+      tag: "Terms",
+      title: "Terms & Conditions",
+      subtitle: "P2C Growth is a technology and coordination platform. Bookings are requests, not confirmed appointments or clinical advice.",
+      p1: "No online payment is collected in Phase 1. Any clinical service, pricing, appointment confirmation, or treatment plan is handled by the relevant professional partner.",
+      p2: "Users must provide accurate contact and visit information. Emergency or urgent medical situations should be directed to 999, NHS 111, or urgent care."
+    },
     physiotherapy: {
       hero: {
         eyebrow: "P2C Health",
@@ -314,6 +591,7 @@ export const dictionary = {
       }
     }
   },
+
   vi: {
     nav: {
       home: "Trang chủ",
@@ -323,7 +601,124 @@ export const dictionary = {
       contact: "Liên hệ",
       admin: "Quản trị"
     },
-    home: homeShared,
+    layout: {
+      footerDesc: "Xây dựng website, hệ thống đặt lịch, tự động hóa, công cụ CRM và nền tảng điều phối đối tác cho các doanh nghiệp dịch vụ tại UK.",
+      privacy: "Chính sách bảo mật",
+      terms: "Điều khoản & Điều kiện",
+      footerCta: "Bắt đầu yêu cầu vật lý trị liệu",
+      rights: "BẢO LƯU MỌI QUYỀN."
+    },
+    home: homeVi,
+    about: {
+      eyebrow: "Về P2C Growth",
+      title: "Kết nối doanh nghiệp, đối tác và khách hàng.",
+      subtitle: "P2C Growth LTD là một công ty công nghệ và phần mềm có trụ sở tại UK chuyên thiết kế và xây dựng các hệ thống kỹ thuật số thực tế để giúp các doanh nghiệp, đối tác và khách hàng kết nối dễ dàng hơn.",
+      sectionTitle: "Hành trình kết nối Đối tác tới Khách hàng (P2C)",
+      sectionLead: "Chúng tôi không thay thế các nhà cung cấp dịch vụ chuyên môn. Thay vào đó, chúng tôi phát triển các công cụ quy trình làm việc và nền tảng điều phối để giúp vận hành doanh nghiệp đơn giản hơn, nhanh hơn và đáng tin cậy hơn.",
+      exploreCta: "Khám phá dịch vụ",
+      clinicalModel: "Mô hình lâm sàng",
+      techOperations: "Vận hành công nghệ",
+      cards: [
+        {
+          title: "Tự động hóa quy trình",
+          body: "Hệ thống đặt lịch, tự động hóa email, theo dõi trạng thái và các công cụ mini CRM giúp vận hành trôi chảy mà không cần xử lý thủ công."
+        },
+        {
+          title: "Kết nối đối tác",
+          body: "Các nền tảng chuyên biệt giúp kết nối trực tiếp và an toàn giữa khách hàng cuối với các đối tác chuyên môn phù hợp và đội ngũ nội bộ."
+        },
+        {
+          title: "Tập trung vận hành",
+          body: "Thu nhập dữ liệu sạch, kiểm tra chấp thuận pháp lý và các đường ống tiếp nhận cấu trúc giúp giảm thiểu công việc hành chính."
+        }
+      ]
+    },
+    servicesPage: {
+      eyebrow: "Dịch vụ của chúng tôi",
+      title: "Dịch vụ công nghệ cho các doanh nghiệp dịch vụ.",
+      subtitle: "P2C Growth LTD xây dựng các hệ thống kỹ thuật số thực tế: website, quy trình đặt lịch, công cụ CRM và nền tảng điều phối đối tác.",
+      primaryCard: {
+        tag: "Sản phẩm cốt lõi",
+        title: "P2C Health",
+        body: "Một quy trình đặt lịch và giới thiệu có hướng dẫn dành cho bệnh nhân, các trường hợp pháp lý, bảo hiểm và theo dõi chuyên gia.",
+        cta: "Bắt đầu đặt lịch"
+      },
+      webDevCard: {
+        title: "Thiết kế Website",
+        body: "Các trang web cao cấp tập trung vào chuyển đổi cho các doanh nghiệp dịch vụ tại UK.",
+        cta: "Xem chi tiết"
+      },
+      suite: {
+        tag: "Bộ giải pháp vận hành",
+        title: "Hệ thống kinh doanh tích hợp",
+        items: [
+          { title: "Hệ thống đặt lịch & Tự động hóa email", body: "Biểu mẫu, quy trình làm việc, xác nhận, thông báo và bàn giao vận hành." },
+          { title: "Mini CRM", body: "Bảng điều khiển nhẹ nhàng cho các đội ngũ quản lý mối quan hệ khách hàng uy tín cao." },
+          { title: "Nền tảng Khách hàng - Đối tác", body: "Một lớp điều phối có thể tái sử dụng giữa khách hàng, đội ngũ nội bộ và các đối tác chuyên môn." }
+        ],
+        cta: "Xem chi tiết"
+      }
+    },
+    contact: {
+      eyebrow: "Liên hệ với chúng tôi",
+      title: "Liên hệ với đội ngũ của chúng tôi",
+      subtitle: "Chúng tôi có đội ngũ và bí quyết công nghệ để giúp bạn mở rộng quy trình vận hành nhanh hơn gấp 10 lần.",
+      formTitle: "Gửi yêu cầu hỗ trợ",
+      formSubtitle: "Bạn muốn gửi tin nhắn? Điền vào biểu mẫu bên dưới và chúng tôi sẽ phản hồi.",
+      faqTitle: "Câu hỏi thường gặp",
+      faqSubtitle: "Câu trả lời rõ ràng cho các câu hỏi phổ biến về nền tảng, tính năng và hỗ trợ của chúng tôi.",
+      faqCtaTitle: "Bạn vẫn còn câu hỏi?",
+      faqCtaSubtitle: "Không tìm thấy câu trả lời bạn đang tìm kiếm? Vui lòng trò chuyện với đội ngũ thân thiện của chúng tôi.",
+      faqDocBtn: "Tài liệu hướng dẫn",
+      faqContactBtn: "Liên hệ ngay",
+      bannerTitle: "Chúng tôi sẵn sàng bứt phá cùng bạn",
+      bannerSubtitle: "Đồng hành cùng các doanh nghiệp dịch vụ khác đang phát triển với quy trình và tự động hóa từ P2C Growth.",
+      bannerContactBtn: "Liên hệ Sales",
+      bannerDemoBtn: "Xem demo",
+      cards: {
+        sales: { title: "Trò chuyện với Sales", desc: "Trao đổi với đội ngũ thân thiện của chúng tôi.", btn: "sales@p2cgrowth.com" },
+        support: { title: "Trò chuyện với hỗ trợ", desc: "Chúng tôi ở đây để giúp đỡ bạn.", btn: "support@p2cgrowth.com" },
+        visit: { title: "Gặp gỡ chúng tôi", desc: "Ghé thăm văn phòng trụ sở chính.", btn: "Xem trên Google Maps" },
+        call: { title: "Gọi cho chúng tôi", desc: "Thứ Hai - Thứ Sáu, từ 8 giờ sáng đến 5 giờ chiều.", btn: "+44 (0) 20 1234 5678" }
+      },
+      form: {
+        name: "Họ và tên",
+        email: "Email công việc",
+        company: "Tên công ty (Tùy chọn)",
+        help: "Chúng tôi có thể giúp gì cho bạn?",
+        helpPlaceholder: "Hãy cho chúng tôi biết về quy trình hiện tại của bạn, những khó khăn bạn đang gặp phải, và sản phẩm bạn muốn thiết kế.",
+        btn: "Gửi yêu cầu",
+        sending: "Đang gửi..."
+      },
+      faqs: [
+        { question: "Có bản dùng thử miễn phí không?", answer: "Có, bạn có thể dùng thử miễn phí trong 30 ngày. Chúng tôi sẽ cung cấp cuộc gọi hỗ trợ 30 phút miễn phí để giúp bạn bắt đầu." },
+        { question: "Tôi có thể đổi gói dịch vụ sau này không?", answer: "Dĩ nhiên là được! Bảng giá của chúng tôi mở rộng cùng công ty của bạn. Trò chuyện với đội ngũ để tìm giải pháp phù hợp khi bạn phát triển." },
+        { question: "Chính sách hủy dịch vụ là gì?", answer: "Chúng tôi hiểu rằng kế hoạch có thể thay đổi. Bạn có thể hủy gói bất kỳ lúc nào và chúng tôi sẽ hoàn trả phần chênh lệch đã thanh toán." },
+        { question: "Có thể thêm thông tin khác vào hóa đơn không?", answer: "Hiện tại, cách duy nhất để thêm thông tin bổ sung vào hóa đơn là thêm thông tin vào tên workspace một cách thủ công." },
+        { question: "Cơ chế thanh toán hoạt động như thế nào?", answer: "Các gói dịch vụ được tính theo workspace, không phải theo tài khoản. Bạn có thể nâng cấp một workspace và vẫn có số lượng workspace miễn phí không giới hạn." },
+        { question: "Làm cách nào để thay đổi email tài khoản?", answer: "Bạn có thể thay đổi địa chỉ email được liên kết với tài khoản bằng cách đi tới phần cài đặt tài khoản từ máy tính." }
+      ]
+    },
+    comingSoon: {
+      tag: "Đang Thiết Kế",
+      title: "Sắp Ra Mắt",
+      desc: "Chúng tôi đang xây dựng phân hệ dịch vụ này. Trọng tâm chính hiện tại của chúng tôi là sản phẩm thử nghiệm Đặt Lịch Hẹn Với Chuyên Gia Y Tế. Vui lòng quay lại sau để cập nhật thông tin về tính năng này.",
+      btn: "Quay lại Trang Chủ"
+    },
+    privacy: {
+      tag: "Bảo mật",
+      title: "Chính sách bảo mật",
+      subtitle: "P2C Growth lưu trữ dữ liệu đặt lịch và yêu cầu hỗ trợ chỉ nhằm mục đích điều phối các dịch vụ được yêu cầu và theo dõi công việc.",
+      p1: "Dữ liệu yêu cầu hỗ trợ sức khỏe có thể được chia sẻ với các đối tác chuyên môn phù hợp cho mục đích điều phối. P2C Growth không bán dữ liệu cá nhân và không trực tiếp chẩn đoán hoặc điều trị y tế.",
+      p2: "Quyền truy cập dữ liệu được giới hạn cho các quản trị viên nội bộ và các nhà cung cấp dịch vụ được cấu hình cần thiết để vận hành nền tảng, bao gồm Supabase và dịch vụ gửi email."
+    },
+    terms: {
+      tag: "Điều khoản",
+      title: "Điều khoản & Điều kiện",
+      subtitle: "P2C Growth là một nền tảng công nghệ và điều phối. Các lượt đặt lịch là yêu cầu, không phải là lịch hẹn đã được xác nhận hoặc tư vấn lâm sàng.",
+      p1: "Không thu thập bất kỳ khoản thanh toán trực tuyến nào trong Giai đoạn 1. Mọi dịch vụ lâm sàng, giá cả, xác nhận lịch hẹn hoặc kế hoạch điều trị đều do đối tác chuyên môn có liên quan xử lý.",
+      p2: "Người dùng phải cung cấp thông tin liên hệ và địa chỉ khám chính xác. Các tình huống cấp cứu hoặc khẩn cấp y tế nên được chuyển trực tiếp đến số 999, NHS 111 hoặc cơ sở y tế khẩn cấp."
+    },
     physiotherapy: {
       hero: {
         eyebrow: "P2C Health",

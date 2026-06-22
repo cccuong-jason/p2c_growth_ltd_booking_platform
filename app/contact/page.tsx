@@ -10,6 +10,8 @@ import { SectionBadge } from "@/components/ui/section-badge";
 import { BentoCard } from "@/components/ui/bento-card";
 import { DottedMap, type Marker } from "@/components/ui/dotted-map";
 import { FaqAccordion } from "@/components/ui/faq-accordion";
+import { useLocale } from "@/components/providers/locale-provider";
+import { getDictionary } from "@/lib/i18n/dictionary";
 
 type MyMarker = Marker & {
   overlay: {
@@ -42,6 +44,9 @@ const markers: MyMarker[] = [
 
 export default function ContactPage() {
   const id = React.useId();
+  const { locale } = useLocale();
+  const d = getDictionary(locale);
+  const t = d.contact;
 
   return (
     <main className="relative bg-white overflow-hidden selection:bg-blue-100 selection:text-blue-900 font-sans">
@@ -49,12 +54,12 @@ export default function ContactPage() {
       {/* Hero Section */}
       <section className="relative pt-32 pb-10 md:pt-40 md:pb-12 text-center px-4 sm:px-6 max-w-4xl mx-auto z-20">
         <Reveal>
-          <SectionBadge className="bg-white">Contact us</SectionBadge>
+          <SectionBadge className="bg-white">{t.eyebrow}</SectionBadge>
           <h1 className="page-heading text-ink mb-6">
-            Get in touch with our team
+            {t.title}
           </h1>
           <p className="text-lg font-medium leading-relaxed text-slate-500 mb-10">
-            We have the team and know-how to help you scale your operations 10x faster.
+            {t.subtitle}
           </p>
         </Reveal>
       </section>
@@ -74,12 +79,6 @@ export default function ContactPage() {
 
                 const clipId = `${id}-flag-clip-${index}`.replace(/:/g, "-");
                 const imgR = r * 1.5;
-
-                const fontSize = r * 1.8;
-                const pillH = r * 3;
-                const pillW = label.length * (fontSize * 0.62) + r * 2.8;
-                const pillX = x + r + r * 1.2;
-                const pillY = y - pillH / 2;
 
                 return (
                   <g style={{ pointerEvents: "auto", cursor: "pointer" }} onClick={() => console.log(`Clicked ${label}`)}>
@@ -114,10 +113,10 @@ export default function ContactPage() {
               <div className="h-10 w-10 rounded-xl border border-slate-100 flex items-center justify-center mb-8 bg-slate-50">
                 <MessageCircle className="h-5 w-5 text-slate-600" />
               </div>
-              <h3 className="text-lg font-bold text-ink mb-2">Chat to sales</h3>
-              <p className="text-sm font-medium text-slate-500 mb-8">Speak to our friendly team.</p>
-              <a href="mailto:sales@p2cgrowth.com" className="mt-auto w-full inline-flex items-center justify-center h-11 rounded-xl bg-ocean text-white text-sm font-bold shadow-sm transition hover:bg-blue-600 hover:scale-[1.02] active:scale-[0.98]">
-                sales@p2cgrowth.com
+              <h3 className="text-lg font-bold text-ink mb-2">{t.cards.sales.title}</h3>
+              <p className="text-sm font-medium text-slate-500 mb-8">{t.cards.sales.desc}</p>
+              <a href={`mailto:${t.cards.sales.btn}`} className="mt-auto w-full inline-flex items-center justify-center h-11 rounded-xl bg-ocean text-white text-sm font-bold shadow-sm transition hover:bg-blue-600 hover:scale-[1.02] active:scale-[0.98]">
+                {t.cards.sales.btn}
               </a>
             </div>
           </Reveal>
@@ -127,10 +126,10 @@ export default function ContactPage() {
               <div className="h-10 w-10 rounded-xl border border-slate-100 flex items-center justify-center mb-8 bg-slate-50">
                 <MessageSquare className="h-5 w-5 text-slate-600" />
               </div>
-              <h3 className="text-lg font-bold text-ink mb-2">Chat to support</h3>
-              <p className="text-sm font-medium text-slate-500 mb-8">We&apos;re here to help.</p>
-              <a href="mailto:support@p2cgrowth.com" className="mt-auto w-full inline-flex items-center justify-center h-11 rounded-xl bg-white border border-slate-200 text-slate-700 text-sm font-bold shadow-sm transition hover:bg-slate-50 hover:text-ink active:scale-[0.98]">
-                support@p2cgrowth.com
+              <h3 className="text-lg font-bold text-ink mb-2">{t.cards.support.title}</h3>
+              <p className="text-sm font-medium text-slate-500 mb-8">{t.cards.support.desc}</p>
+              <a href={`mailto:${t.cards.support.btn}`} className="mt-auto w-full inline-flex items-center justify-center h-11 rounded-xl bg-white border border-slate-200 text-slate-700 text-sm font-bold shadow-sm transition hover:bg-slate-50 hover:text-ink active:scale-[0.98]">
+                {t.cards.support.btn}
               </a>
             </div>
           </Reveal>
@@ -140,10 +139,10 @@ export default function ContactPage() {
               <div className="h-10 w-10 rounded-xl border border-slate-100 flex items-center justify-center mb-8 bg-slate-50">
                 <MapPin className="h-5 w-5 text-slate-600" />
               </div>
-              <h3 className="text-lg font-bold text-ink mb-2">Visit us</h3>
-              <p className="text-sm font-medium text-slate-500 mb-8">Visit our office HQ.</p>
+              <h3 className="text-lg font-bold text-ink mb-2">{t.cards.visit.title}</h3>
+              <p className="text-sm font-medium text-slate-500 mb-8">{t.cards.visit.desc}</p>
               <a href="#" className="mt-auto w-full inline-flex items-center justify-center h-11 gap-2 rounded-xl bg-white border border-slate-200 text-slate-700 text-sm font-bold shadow-sm transition hover:bg-slate-50 hover:text-ink active:scale-[0.98]">
-                View on Google Maps
+                {t.cards.visit.btn}
               </a>
             </div>
           </Reveal>
@@ -153,10 +152,10 @@ export default function ContactPage() {
               <div className="h-10 w-10 rounded-xl border border-slate-100 flex items-center justify-center mb-8 bg-slate-50">
                 <Phone className="h-5 w-5 text-slate-600" />
               </div>
-              <h3 className="text-lg font-bold text-ink mb-2">Call us</h3>
-              <p className="text-sm font-medium text-slate-500 mb-8">Mon-Fri from 8am to 5pm.</p>
-              <a href="tel:+442012345678" className="mt-auto w-full inline-flex items-center justify-center h-11 gap-2 rounded-xl bg-white border border-slate-200 text-slate-700 text-sm font-bold shadow-sm transition hover:bg-slate-50 hover:text-ink active:scale-[0.98]">
-                +44 (0) 20 1234 5678
+              <h3 className="text-lg font-bold text-ink mb-2">{t.cards.call.title}</h3>
+              <p className="text-sm font-medium text-slate-500 mb-8">{t.cards.call.desc}</p>
+              <a href={`tel:${t.cards.call.btn.replace(/\s+/g, "")}`} className="mt-auto w-full inline-flex items-center justify-center h-11 gap-2 rounded-xl bg-white border border-slate-200 text-slate-700 text-sm font-bold shadow-sm transition hover:bg-slate-50 hover:text-ink active:scale-[0.98]">
+                {t.cards.call.btn}
               </a>
             </div>
           </Reveal>
@@ -167,8 +166,8 @@ export default function ContactPage() {
       <section className="px-4 sm:px-6 max-w-3xl mx-auto mb-32">
         <Reveal>
           <div className="text-center mb-10">
-             <h2 className="text-3xl font-extrabold text-ink tracking-tight">Send an enquiry</h2>
-             <p className="text-base font-medium text-slate-500 mt-4">Prefer to write? Fill out the form below and we&apos;ll get back to you.</p>
+             <h2 className="text-3xl font-extrabold text-ink tracking-tight">{t.formTitle}</h2>
+             <p className="text-base font-medium text-slate-500 mt-4">{t.formSubtitle}</p>
           </div>
           <BentoCard className="p-8 md:p-10 shadow-soft-xl border-slate-200">
              <ContactForm />
@@ -181,37 +180,12 @@ export default function ContactPage() {
         <div className="text-center mb-16">
           <Reveal>
             <SectionBadge>FAQ</SectionBadge>
-            <h2 className="section-heading text-ink mb-4">Frequently Asked Questions</h2>
-            <p className="text-lg font-medium text-slate-500 mb-10 max-w-2xl mx-auto">Clear answers to common questions about our platform, features, and support.</p>
+            <h2 className="section-heading text-ink mb-4">{t.faqTitle}</h2>
+            <p className="text-lg font-medium text-slate-500 mb-10 max-w-2xl mx-auto">{t.faqSubtitle}</p>
           </Reveal>
         </div>
         
-        <FaqAccordion items={[
-          {
-            question: "Is there a free trial available?",
-            answer: "Yes, you can try us for free for 30 days. If you want, we'll provide you with a free 30-minute onboarding call to get you up and running."
-          },
-          {
-            question: "Can I change my plan later?",
-            answer: "Of course you can! Our pricing scales with your company. Chat to our friendly team to find a solution that works for you as you grow."
-          },
-          {
-            question: "What is your cancellation policy?",
-            answer: "We understand that things change. You can cancel your plan at any time and we'll refund you the difference already paid."
-          },
-          {
-            question: "Can other info be added to an invoice?",
-            answer: "At the moment, the only way to add additional information to invoices is to add the information to the workspace's name manually."
-          },
-          {
-            question: "How does billing work?",
-            answer: "Plans are per workspace, not per account. You can upgrade one workspace, and still have any number of free workspaces."
-          },
-          {
-            question: "How do I change my account email?",
-            answer: "You can change the email address associated with your account by going to account settings from a laptop or desktop."
-          }
-        ]} />
+        <FaqAccordion items={t.faqs} />
 
         <Reveal delay={0.3}>
           <div className="mt-16 bg-slate-50 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 border border-slate-100">
@@ -220,16 +194,16 @@ export default function ContactPage() {
                  <Image className="w-12 h-12 rounded-full border-2 border-white object-cover shadow-sm" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80" alt="Support" width={48} height={48} />
                </div>
                <div>
-                  <h4 className="text-base font-bold text-ink">Still have questions?</h4>
-                  <p className="text-sm font-medium text-slate-500 mt-1">Can&apos;t find the answer you&apos;re looking for? Please chat to our friendly team.</p>
+                  <h4 className="text-base font-bold text-ink">{t.faqCtaTitle}</h4>
+                  <p className="text-sm font-medium text-slate-500 mt-1">{t.faqCtaSubtitle}</p>
                </div>
             </div>
             <div className="flex items-center gap-3 shrink-0 w-full md:w-auto">
                <button className="flex-1 md:flex-none h-11 px-5 rounded-xl border border-slate-200 bg-white text-sm font-bold text-slate-700 hover:bg-slate-50 transition shadow-sm">
-                 Documentation
+                 {t.faqDocBtn}
                </button>
                <button className="flex-1 md:flex-none h-11 px-5 rounded-xl bg-ocean text-sm font-bold text-white hover:bg-blue-600 transition shadow-sm">
-                 Get in touch
+                 {t.faqContactBtn}
                </button>
             </div>
           </div>
@@ -246,17 +220,17 @@ export default function ContactPage() {
             <svg className="h-8 w-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           </div>
           <h2 className="section-heading text-white mb-6">
-            We&apos;re ready to scale when you are
+            {t.bannerTitle}
           </h2>
           <p className="text-lg font-medium text-blue-100 mb-10 max-w-xl mx-auto">
-            Join other service businesses already growing with P2C Growth workflows and automations.
+            {t.bannerSubtitle}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button className="w-full sm:w-auto h-12 px-8 rounded-xl bg-white text-ocean text-sm font-black shadow-xl hover:scale-105 transition-all active:scale-95">
-              Contact Sales
+              {t.bannerContactBtn}
             </button>
             <button className="w-full sm:w-auto h-12 px-8 rounded-xl bg-blue-500/20 border border-white/20 text-white text-sm font-bold backdrop-blur hover:bg-blue-500/30 transition-all">
-              View demo
+              {t.bannerDemoBtn}
             </button>
           </div>
         </Reveal>
