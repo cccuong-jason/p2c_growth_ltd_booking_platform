@@ -39,3 +39,9 @@
 - **Status:** Done
 - **Update (2026-05-30):** Added a dedicated trust stats section with `@magicui/number-ticker`.
 - **Description:** "Use `@magicui/number-ticker` to animate the counting of statistics (e.g., Active Users, Satisfaction rate) in the trust section."
+
+## [SCRUM-57] [UI] Enhance P2C Physiotherapy Booking Page with translation support and content from PDF
+- **Status:** In Progress
+- **Update (2026-06-23):** Initializing layout enhancement and bilingual dictionary setup.
+- **Description:** "Extend the physiotherapy booking page layout to include 9 key informational sections based on customer feedback, and add EN/VI translation support using local page state and i18n dictionaries."
+
