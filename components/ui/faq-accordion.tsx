@@ -14,7 +14,7 @@ export function FaqAccordion({ items }: { items: readonly { question: string; an
 
         return (
           <Reveal key={i} delay={0.1 * i}>
-            <div className={`bg-white border rounded-3xl transition-colors group ${isOpen ? "border-ocean/30 shadow-sm" : "border-slate-100 hover:border-ocean/30"}`}>
+            <div className={`bg-white border rounded-3xl transition-colors group ${isOpen ? "border-ocean/30 shadow-md" : "border-slate-200 hover:border-ocean/30 shadow-sm"}`}>
               <button
                 type="button"
                 aria-expanded={isOpen}
@@ -25,11 +25,11 @@ export function FaqAccordion({ items }: { items: readonly { question: string; an
                   <p className="text-base md:text-lg font-bold text-ink">{item.question}</p>
                   <div className={`grid transition-[grid-template-rows,opacity] duration-300 ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
                     <div className="overflow-hidden">
-                      <p className="mt-3 text-sm font-semibold leading-relaxed text-slate-500">{item.answer}</p>
+                      <p className="mt-3 text-sm font-medium leading-relaxed text-slate-600">{item.answer}</p>
                     </div>
                   </div>
                 </div>
-                <div className={`mt-0.5 md:mt-0 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-all ${isOpen ? "border-ocean bg-ocean text-white" : "border-slate-100 group-hover:bg-ocean group-hover:text-white"}`}>
+                <div className={`mt-0.5 md:mt-0 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-all ${isOpen ? "border-ocean bg-ocean text-white" : "border-slate-200 group-hover:bg-ocean group-hover:text-white"}`}>
                   <Plus className={`h-4 w-4 transition-transform ${isOpen ? "rotate-45" : ""}`} />
                 </div>
               </button>
