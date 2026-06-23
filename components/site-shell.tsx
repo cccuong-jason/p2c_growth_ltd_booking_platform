@@ -1,10 +1,13 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
-import { Activity, ArrowRight, CalendarPlus, ChevronDown, Globe2, Menu, X } from "lucide-react";
+import { Activity, ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { SectionBadge } from "@/components/ui/section-badge";
 import { Logo } from "@/components/ui/logo";
+import { useLocale } from "@/components/providers/locale-provider";
 
 const navItems = [
   { href: "/", label: "home" },
@@ -23,14 +26,15 @@ const serviceItems = [
 
 const languages = [
   { code: "EN", label: "English", flag: "🇬🇧" },
-  { code: "ZH-T", label: "Traditional Chinese", flag: "🇭🇰" },
-  { code: "ZH-S", label: "Simplified Chinese", flag: "🇨🇳" },
-  { code: "VI", label: "Vietnamese", flag: "🇻🇳" },
+  { code: "VI", label: "Vietnamese", flag: "🇻🇳" }
 ] as const;
 
 export function SiteHeader() {
-  const copy = getDictionary();
+  const { locale, setLocale } = useLocale();
+  const copy = getDictionary(locale);
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+
+  const currentLang = languages.find((l) => l.code.toLowerCase() === locale) || languages[0];
 
   return (
     <header className="fixed inset-x-0 top-4 z-50 px-4 md:px-6">
@@ -99,8 +103,8 @@ export function SiteHeader() {
               className="inline-flex h-11 items-center gap-2 rounded-xl border border-slate-200 bg-white/70 px-3 text-sm font-black text-ink transition hover:border-ocean hover:text-ocean active:scale-95 sm:px-4"
               aria-haspopup="true"
             >
-              <span aria-hidden>{languages[0].flag}</span>
-              <span className="hidden sm:inline">{languages[0].code}</span>
+              <span aria-hidden>{currentLang.flag}</span>
+              <span className="hidden sm:inline">{currentLang.code}</span>
               <ChevronDown className="h-3.5 w-3.5" aria-hidden />
             </button>
             <div className="invisible absolute right-0 top-full z-50 w-56 pt-3 opacity-0 transition group-hover:visible group-hover:opacity-100">
@@ -109,8 +113,9 @@ export function SiteHeader() {
                   <button
                     key={language.code}
                     type="button"
+                    onClick={() => setLocale(language.code.toLowerCase() as any)}
                     className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-bold transition hover:bg-blue-50 hover:text-ocean ${
-                      language.code === "EN" ? "bg-ocean/10 text-ocean" : "text-slate-700"
+                      language.code.toLowerCase() === locale ? "bg-ocean/10 text-ocean" : "text-slate-700"
                     }`}
                     aria-label={`Switch language to ${language.label}`}
                   >
@@ -129,6 +134,9 @@ export function SiteHeader() {
 }
 
 export function SiteFooter() {
+  const { locale } = useLocale();
+  const copy = getDictionary(locale);
+
   return (
     <footer className="border-t border-blue-400/20 bg-ocean text-blue-100">
       <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 text-sm md:grid-cols-[2fr_1fr_1fr]">
@@ -140,17 +148,17 @@ export function SiteFooter() {
             P2C Growth
           </Link>
           <p className="max-w-xs leading-relaxed font-semibold text-blue-50">
-            Building websites, booking systems, automation, CRM tools, and customer-partner platforms for UK service companies.
+            {copy.layout.footerDesc}
           </p>
         </div>
         <div>
           <h4 className="font-black text-white mb-6 uppercase tracking-widest text-[10px]">Legal</h4>
           <div className="flex flex-col gap-4 font-bold">
             <Link href="/privacy" className="hover:text-white transition-colors text-blue-100">
-              Privacy Policy
+              {copy.layout.privacy}
             </Link>
             <Link href="/terms" className="hover:text-white transition-colors text-blue-100">
-              Terms & Conditions
+              {copy.layout.terms}
             </Link>
           </div>
         </div>
@@ -160,12 +168,12 @@ export function SiteFooter() {
             href="/services/physiotherapy"
             className="inline-flex items-center gap-2 font-bold text-white hover:gap-3 transition-all underline underline-offset-4 decoration-blue-200/50 hover:decoration-white"
           >
-            Start a medical expert request <ArrowRight className="h-4 w-4" aria-hidden />
+            {copy.layout.footerCta} <ArrowRight className="h-4 w-4" aria-hidden />
           </Link>
         </div>
       </div>
       <div className="border-t border-blue-400/20 py-8 text-center text-[10px] font-bold text-blue-200/60 uppercase tracking-[0.2em]">
-        © {new Date().getFullYear()} P2C Growth LTD. ALL RIGHTS RESERVED.
+        © {new Date().getFullYear()} P2C Growth LTD. {copy.layout.rights}
       </div>
     </footer>
   );

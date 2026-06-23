@@ -49,6 +49,8 @@ import { BorderBeam } from "@/components/ui/border-beam";
 import { AnimatedCircularProgressBar } from "@/components/ui/animated-circular-progress-bar";
 import { Iphone } from "@/registry/magicui/iphone";
 import { getDictionary } from "@/lib/i18n/dictionary";
+import { useLocale } from "@/components/providers/locale-provider";
+
 
 // --- SUB-COMPONENTS FOR MOCKUPS ---
 
@@ -244,7 +246,8 @@ const FAQ_ITEMS = [
 ] as const;
 
 export default function HomePage() {
-  const { home } = getDictionary();
+  const { locale } = useLocale();
+  const { home } = getDictionary(locale);
   const servicesScrollRef = useRef<HTMLDivElement>(null);
 
   const scrollServices = (direction: "left" | "right") => {
