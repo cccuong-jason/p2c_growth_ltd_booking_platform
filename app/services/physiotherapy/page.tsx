@@ -53,7 +53,7 @@ export default function PhysiotherapyPage() {
   return (
     <main className="relative bg-white overflow-hidden selection:bg-blue-100 selection:text-blue-900 font-sans pb-24 md:pb-32">
       {/* Floating Language Toggle & Navigation Subbar */}
-      <div className="sticky top-20 z-40 bg-white/80 backdrop-blur-md border-b border-slate-100 py-3 shadow-sm">
+      <div className="sticky top-20 z-40 bg-white/85 backdrop-blur-md border-b border-slate-200 py-3 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center gap-4">
           <div className="flex items-center gap-6 overflow-x-auto scrollbar-none py-1">
             <button 
@@ -156,22 +156,22 @@ export default function PhysiotherapyPage() {
       {/* Important Notice Callout Banner */}
       <section className="relative z-20 px-4 sm:px-6 max-w-5xl mx-auto mt-12">
         <Reveal>
-          <div className="rounded-3xl border border-amber-200/80 bg-amber-50/50 p-6 md:p-8 shadow-sm flex flex-col md:flex-row items-start gap-5">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-800">
+          <div className="rounded-3xl border border-amber-300 bg-amber-50 p-6 md:p-8 shadow-sm flex flex-col md:flex-row items-start gap-5">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-800 border border-amber-200">
               <AlertTriangle className="h-5 w-5" aria-hidden="true" />
             </div>
             <div className="space-y-3">
-              <h3 className="text-sm font-black uppercase tracking-widest text-amber-900">{t.notice.title}</h3>
-              <p className="text-xs font-semibold leading-relaxed text-slate-600">
+              <h3 className="text-xs font-black uppercase tracking-widest text-amber-955">{t.notice.title}</h3>
+              <p className="text-xs font-bold leading-relaxed text-slate-700">
                 {t.notice.body1}
               </p>
-              <p className="text-xs font-semibold leading-relaxed text-slate-600">
+              <p className="text-xs font-bold leading-relaxed text-slate-700">
                 {t.notice.body2}
               </p>
-              <p className="text-xs font-semibold leading-relaxed text-slate-600">
+              <p className="text-xs font-bold leading-relaxed text-slate-700">
                 {t.notice.body3}
               </p>
-              <div className="pt-2 border-t border-amber-200/60 text-xs font-black text-rose-700">
+              <div className="pt-2 border-t border-amber-200 text-xs font-black text-rose-800">
                 🚨 {t.notice.emergency}
               </div>
             </div>
@@ -198,14 +198,14 @@ export default function PhysiotherapyPage() {
             const Icon = AUDIENCE_ICONS[idx] || HeartPulse;
             return (
               <Reveal key={idx} delay={0.05 * idx}>
-                <div className="rounded-3xl border border-slate-100 bg-white p-6 md:p-8 shadow-sm hover:border-ocean/20 transition-all group duration-300 h-full flex flex-col">
-                  <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-ocean/5 text-ocean transition-colors group-hover:bg-ocean group-hover:text-white shadow-sm">
+                <div className="rounded-3xl border border-slate-200 bg-white p-6 md:p-8 shadow-premium hover:border-ocean/30 transition-all group duration-300 h-full flex flex-col">
+                  <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-ocean/5 text-ocean transition-colors group-hover:bg-ocean group-hover:text-white shadow-sm border border-ocean/10">
                     <Icon className="h-5 w-5" aria-hidden="true" />
                   </div>
                   <h3 className="text-base font-extrabold tracking-tight text-ink mb-3 uppercase tracking-wide">
                     {item.title}
                   </h3>
-                  <p className="text-xs font-semibold leading-relaxed text-slate-500 flex-grow">
+                  <p className="text-xs font-bold leading-relaxed text-slate-600 flex-grow">
                     {item.body}
                   </p>
                 </div>
@@ -216,42 +216,42 @@ export default function PhysiotherapyPage() {
       </section>
 
       {/* Why Choose P2C Section */}
-      <section className="relative px-4 sm:px-6 max-w-7xl mx-auto mt-28 bg-slate-50/50 py-16 md:py-24 rounded-[3rem] border border-slate-100">
+      <section className="relative px-4 sm:px-6 max-w-7xl mx-auto mt-28 bg-slate-50 py-16 md:py-24 rounded-[3rem] border border-slate-200">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
           <Reveal>
             <SectionBadge icon={Clock}>{locale === "en" ? "CARE BRIDGING" : "CẦU NỐI Y TẾ"}</SectionBadge>
             <h2 className="text-2xl md:text-4xl font-extrabold tracking-tight text-ink mt-4 mb-6 leading-tight">
               {t.why.title}
             </h2>
-            <p className="text-sm md:text-base font-semibold leading-relaxed text-slate-600 mb-8">
+            <p className="text-sm md:text-base font-bold leading-relaxed text-slate-700 mb-8">
               {t.why.intro}
             </p>
             <div className="space-y-3 mb-8">
               {t.why.problems.map((prob, idx) => (
                 <div key={idx} className="flex items-start gap-3">
-                  <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-rose-50 text-rose-600 mt-0.5">
-                    <span className="text-[10px] font-bold">✕</span>
+                  <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-rose-100 text-rose-800 mt-0.5 border border-rose-200">
+                    <span className="text-[10px] font-black">✕</span>
                   </div>
-                  <span className="text-xs font-bold text-slate-600">{prob}</span>
+                  <span className="text-xs font-bold text-slate-700">{prob}</span>
                 </div>
               ))}
             </div>
-            <p className="text-xs font-semibold leading-relaxed text-slate-500">
+            <p className="text-xs font-bold leading-relaxed text-slate-600">
               {t.why.summary}
             </p>
           </Reveal>
 
           <Reveal delay={0.2}>
-            <div className="relative rounded-3xl border border-slate-100 bg-white p-8 md:p-10 shadow-md">
+            <div className="relative rounded-3xl border border-slate-200 bg-white p-8 md:p-10 shadow-premium">
               <div className="absolute top-6 left-6 text-7xl font-serif text-ocean/10 leading-none pointer-events-none select-none">“</div>
               <blockquote className="relative z-10 text-base md:text-lg font-bold italic leading-relaxed text-ink/80 pt-6">
                 {t.why.quote}
               </blockquote>
-              <div className="mt-6 flex items-center gap-3 pt-6 border-t border-slate-100">
-                <div className="h-8 w-8 rounded-full bg-ocean/10 flex items-center justify-center text-ocean font-extrabold text-xs">P2C</div>
+              <div className="mt-6 flex items-center gap-3 pt-6 border-t border-slate-200">
+                <div className="h-8 w-8 rounded-full bg-ocean/10 flex items-center justify-center text-ocean font-extrabold text-xs border border-ocean/20">P2C</div>
                 <div>
                   <h4 className="text-xs font-bold text-ink uppercase tracking-wider">P2C Growth Health Support</h4>
-                  <p className="text-[10px] font-semibold text-slate-400">UK Booking & Referral Network</p>
+                  <p className="text-[10px] font-bold text-slate-500">UK Booking & Referral Network</p>
                 </div>
               </div>
             </div>
@@ -283,7 +283,7 @@ export default function PhysiotherapyPage() {
                 className={`px-4 py-2.5 text-xs font-extrabold rounded-xl transition-all duration-200 whitespace-nowrap uppercase tracking-wider ${
                   activeTabId === tab.id
                     ? "bg-ocean text-white shadow-md shadow-blue-500/10 border border-ocean"
-                    : "text-slate-500 hover:text-slate-800 bg-slate-50 hover:bg-slate-100 border border-slate-200/60"
+                    : "text-slate-600 hover:text-slate-900 bg-slate-50 hover:bg-slate-100 border border-slate-300"
                 }`}
               >
                 {tab.name}
@@ -295,21 +295,21 @@ export default function PhysiotherapyPage() {
         {/* Tab Content Area */}
         <div className="max-w-4xl mx-auto">
           <Reveal key={activeTabId}>
-            <div className="rounded-3xl border border-slate-100 bg-white p-8 md:p-10 shadow-sm">
+            <div className="rounded-3xl border border-slate-200 bg-white p-8 md:p-10 shadow-premium">
               <h3 className="text-lg md:text-xl font-extrabold text-ink mb-2 uppercase tracking-wide">
                 {activeTab.name}
               </h3>
-              <p className="text-xs font-semibold leading-relaxed text-slate-500 mb-8 border-b border-slate-100 pb-4">
+              <p className="text-xs font-bold leading-relaxed text-slate-600 mb-8 border-b border-slate-200 pb-4">
                 {activeTab.desc}
               </p>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {activeTab.items.map((subService, idx) => (
-                  <div key={idx} className="flex items-center gap-3 bg-slate-50/50 p-4 rounded-2xl border border-slate-100/60 hover:border-ocean/10 transition-colors">
-                    <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-ocean/5 text-ocean shadow-sm">
+                  <div key={idx} className="flex items-center gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-200 hover:border-ocean/30 transition-colors">
+                    <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-ocean/10 text-ocean shadow-sm border border-ocean/5">
                       <Check className="h-3 w-3" />
                     </div>
-                    <span className="text-xs font-bold text-slate-700">{subService}</span>
+                    <span className="text-xs font-extrabold text-slate-700">{subService}</span>
                   </div>
                 ))}
               </div>
@@ -319,7 +319,7 @@ export default function PhysiotherapyPage() {
       </section>
 
       {/* Operational Steps Timeline */}
-      <section className="relative px-4 sm:px-6 max-w-7xl mx-auto mt-28 bg-porcelain/60 py-20 rounded-[3rem] border border-slate-100">
+      <section className="relative px-4 sm:px-6 max-w-7xl mx-auto mt-28 bg-slate-50 py-20 rounded-[3rem] border border-slate-200">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <Reveal>
             <SectionBadge icon={UserCheck}>{locale === "en" ? "WORKFLOW" : "QUY TRÌNH"}</SectionBadge>
@@ -332,14 +332,14 @@ export default function PhysiotherapyPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto relative">
           {t.steps.items.map((step, idx) => (
             <Reveal key={idx} delay={0.1 * idx}>
-              <div className="relative rounded-3xl border border-slate-100 bg-white p-6 md:p-8 shadow-sm flex flex-col items-center text-center h-full">
+              <div className="relative rounded-3xl border border-slate-200 bg-white p-6 md:p-8 shadow-premium flex flex-col items-center text-center h-full">
                 <div className="absolute -top-4 bg-ocean text-white font-black text-xs px-3 py-1 rounded-full shadow-md">
                   {step.number}
                 </div>
                 <h3 className="text-sm font-black text-ink mt-4 mb-3 uppercase tracking-wider">
                   {step.name}
                 </h3>
-                <p className="text-[11px] font-semibold leading-relaxed text-slate-500">
+                <p className="text-[11px] font-bold leading-relaxed text-slate-600">
                   {step.desc}
                 </p>
               </div>
@@ -365,18 +365,18 @@ export default function PhysiotherapyPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {/* Home Visit Pricing */}
           <Reveal>
-            <div className="rounded-3xl border border-slate-100 bg-white p-8 md:p-10 shadow-sm hover:border-ocean/20 transition-all duration-300 h-full flex flex-col">
-              <h3 className="text-base font-extrabold tracking-wide text-ink mb-6 uppercase border-b border-slate-100 pb-4">
+            <div className="rounded-3xl border border-slate-200 bg-white p-8 md:p-10 shadow-premium hover:border-ocean/30 transition-all duration-300 h-full flex flex-col">
+              <h3 className="text-base font-extrabold tracking-wide text-ink mb-6 uppercase border-b border-slate-200 pb-4">
                 🏡 {t.pricing.homeTitle}
               </h3>
               <div className="space-y-4 flex-grow">
                 {t.pricing.homeItems.map((item, idx) => (
-                  <div key={idx} className="flex justify-between items-center gap-4 py-3 border-b border-slate-50 last:border-0">
+                  <div key={idx} className="flex justify-between items-center gap-4 py-3 border-b border-slate-100 last:border-0">
                     <div>
                       <h4 className="text-xs font-bold text-slate-700">{item.name}</h4>
-                      <p className="text-[10px] text-slate-400 font-semibold mt-0.5">{item.duration}</p>
+                      <p className="text-[10px] text-slate-500 font-bold mt-0.5">{item.duration}</p>
                     </div>
-                    <span className="text-sm font-black text-ocean bg-ocean/5 px-3 py-1.5 rounded-lg shrink-0">
+                    <span className="text-sm font-black text-ocean bg-ocean/5 px-3 py-1.5 rounded-lg shrink-0 border border-ocean/10">
                       {item.price}
                     </span>
                   </div>
@@ -387,16 +387,16 @@ export default function PhysiotherapyPage() {
 
           {/* Online Assessment Pricing */}
           <Reveal delay={0.1}>
-            <div className="rounded-3xl border border-slate-100 bg-white p-8 md:p-10 shadow-sm hover:border-ocean/20 transition-all duration-300 h-full flex flex-col">
-              <h3 className="text-base font-extrabold tracking-wide text-ink mb-6 uppercase border-b border-slate-100 pb-4">
+            <div className="rounded-3xl border border-slate-200 bg-white p-8 md:p-10 shadow-premium hover:border-ocean/30 transition-all duration-300 h-full flex flex-col">
+              <h3 className="text-base font-extrabold tracking-wide text-ink mb-6 uppercase border-b border-slate-200 pb-4">
                 💻 {t.pricing.onlineTitle}
               </h3>
               <div className="space-y-4 flex-grow">
                 {t.pricing.onlineItems.map((item, idx) => (
-                  <div key={idx} className="flex justify-between items-center gap-4 py-3 border-b border-slate-50 last:border-0">
+                  <div key={idx} className="flex justify-between items-center gap-4 py-3 border-b border-slate-100 last:border-0">
                     <div>
                       <h4 className="text-xs font-bold text-slate-700">{item.name}</h4>
-                      <p className="text-[10px] text-slate-400 font-semibold mt-0.5">{item.duration}</p>
+                      <p className="text-[10px] text-slate-500 font-bold mt-0.5">{item.duration}</p>
                     </div>
                     <span className="text-sm font-black text-ocean bg-ocean/5 px-3 py-1.5 rounded-lg shrink-0">
                       {item.price}
@@ -417,7 +417,7 @@ export default function PhysiotherapyPage() {
 
       {/* Main Intake Form Section (BookingWizard) */}
       <section id="booking-section" className="relative px-4 sm:px-6 max-w-7xl mx-auto mt-28">
-        <div className="max-w-4xl mx-auto bg-slate-50/40 rounded-[3rem] border border-slate-100 p-6 md:p-12 shadow-sm">
+        <div className="max-w-4xl mx-auto bg-slate-50 rounded-[3rem] border border-slate-200 p-6 md:p-12 shadow-premium">
           <div className="text-center max-w-3xl mx-auto mb-10">
             <Reveal>
               <SectionBadge icon={Activity}>{locale === "en" ? "REQUEST SYSTEM" : "HỆ THỐNG GỬI YÊU CẦU"}</SectionBadge>
