@@ -15,7 +15,11 @@ import {
   Award, 
   Check, 
   ChevronRight, 
-  HeartPulse 
+  HeartPulse,
+  Home,
+  Video,
+  Info,
+  X
 } from "lucide-react";
 import { BookingWizard } from "@/components/booking/booking-wizard";
 import { Reveal } from "@/components/home/motion-primitives";
@@ -52,66 +56,7 @@ export default function PhysiotherapyPage() {
 
   return (
     <main className="relative bg-white overflow-hidden selection:bg-blue-100 selection:text-blue-900 font-sans pb-24 md:pb-32">
-      {/* Floating Language Toggle & Navigation Subbar */}
-      <div className="sticky top-20 z-40 bg-white/85 backdrop-blur-md border-b border-slate-200 py-3 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center gap-4">
-          <div className="flex items-center gap-6 overflow-x-auto scrollbar-none py-1">
-            <button 
-              onClick={() => scrollToSection("audience-section")}
-              className="text-xs font-bold text-slate-500 hover:text-ocean whitespace-nowrap"
-            >
-              {locale === "en" ? "Who is it for" : "Đối tượng"}
-            </button>
-            <button 
-              onClick={() => scrollToSection("services-section")}
-              className="text-xs font-bold text-slate-500 hover:text-ocean whitespace-nowrap"
-            >
-              {locale === "en" ? "Services" : "Dịch vụ"}
-            </button>
-            <button 
-              onClick={() => scrollToSection("pricing-section")}
-              className="text-xs font-bold text-slate-500 hover:text-ocean whitespace-nowrap"
-            >
-              {locale === "en" ? "Pricing" : "Bảng giá"}
-            </button>
-            <button 
-              onClick={() => scrollToSection("booking-section")}
-              className="text-xs font-bold text-slate-500 hover:text-ocean whitespace-nowrap"
-            >
-              {locale === "en" ? "Book Now" : "Đặt lịch"}
-            </button>
-            <button 
-              onClick={() => scrollToSection("faq-section")}
-              className="text-xs font-bold text-slate-500 hover:text-ocean whitespace-nowrap"
-            >
-              FAQ
-            </button>
-          </div>
-          
-          <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200/60 p-1 rounded-xl shrink-0">
-            <button
-              onClick={() => setLocale("en")}
-              className={`px-3 py-1.5 text-xs font-black rounded-lg transition ${
-                locale === "en"
-                  ? "bg-white text-ocean shadow-sm border border-slate-100"
-                  : "text-slate-500 hover:text-slate-800"
-              }`}
-            >
-              EN
-            </button>
-            <button
-              onClick={() => setLocale("vi")}
-              className={`px-3 py-1.5 text-xs font-black rounded-lg transition ${
-                locale === "vi"
-                  ? "bg-white text-ocean shadow-sm border border-slate-100"
-                  : "text-slate-500 hover:text-slate-800"
-              }`}
-            >
-              VI
-            </button>
-          </div>
-        </div>
-      </div>
+
 
       {/* Hero Header Section */}
       <section className="relative pt-24 pb-16 md:pt-36 bg-porcelain overflow-hidden flex items-center justify-center min-h-[420px]">
@@ -171,8 +116,9 @@ export default function PhysiotherapyPage() {
               <p className="text-xs font-bold leading-relaxed text-slate-700">
                 {t.notice.body3}
               </p>
-              <div className="pt-2 border-t border-amber-200 text-xs font-black text-rose-800">
-                🚨 {t.notice.emergency}
+              <div className="pt-3 border-t border-amber-200 text-xs font-black text-rose-800 flex items-start gap-2">
+                <AlertTriangle className="h-4 w-4 shrink-0 text-rose-800 mt-0.5" />
+                <span>{t.notice.emergency}</span>
               </div>
             </div>
           </div>
@@ -229,8 +175,8 @@ export default function PhysiotherapyPage() {
             <div className="space-y-3 mb-8">
               {t.why.problems.map((prob, idx) => (
                 <div key={idx} className="flex items-start gap-3">
-                  <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-rose-100 text-rose-800 mt-0.5 border border-rose-200">
-                    <span className="text-[10px] font-black">✕</span>
+                  <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-rose-100 text-rose-800 mt-0.5 border border-rose-200 shadow-sm">
+                    <X className="h-3 w-3" />
                   </div>
                   <span className="text-xs font-bold text-slate-700">{prob}</span>
                 </div>
@@ -366,8 +312,9 @@ export default function PhysiotherapyPage() {
           {/* Home Visit Pricing */}
           <Reveal>
             <div className="rounded-3xl border border-slate-200 bg-white p-8 md:p-10 shadow-premium hover:border-ocean/30 transition-all duration-300 h-full flex flex-col">
-              <h3 className="text-base font-extrabold tracking-wide text-ink mb-6 uppercase border-b border-slate-200 pb-4">
-                🏡 {t.pricing.homeTitle}
+              <h3 className="text-base font-extrabold tracking-wide text-ink mb-6 uppercase border-b border-slate-200 pb-4 flex items-center gap-2">
+                <Home className="h-5 w-5 text-ocean" />
+                {t.pricing.homeTitle}
               </h3>
               <div className="space-y-4 flex-grow">
                 {t.pricing.homeItems.map((item, idx) => (
@@ -388,8 +335,9 @@ export default function PhysiotherapyPage() {
           {/* Online Assessment Pricing */}
           <Reveal delay={0.1}>
             <div className="rounded-3xl border border-slate-200 bg-white p-8 md:p-10 shadow-premium hover:border-ocean/30 transition-all duration-300 h-full flex flex-col">
-              <h3 className="text-base font-extrabold tracking-wide text-ink mb-6 uppercase border-b border-slate-200 pb-4">
-                💻 {t.pricing.onlineTitle}
+              <h3 className="text-base font-extrabold tracking-wide text-ink mb-6 uppercase border-b border-slate-200 pb-4 flex items-center gap-2">
+                <Video className="h-5 w-5 text-ocean" />
+                {t.pricing.onlineTitle}
               </h3>
               <div className="space-y-4 flex-grow">
                 {t.pricing.onlineItems.map((item, idx) => (
@@ -409,15 +357,16 @@ export default function PhysiotherapyPage() {
         </div>
 
         <Reveal>
-          <p className="text-center text-[10px] font-bold text-slate-400 max-w-xl mx-auto uppercase tracking-wide mt-8">
-            📢 {t.pricing.note}
+          <p className="text-center text-[10px] font-bold text-slate-500 max-w-xl mx-auto uppercase tracking-wide mt-8 flex items-center justify-center gap-2">
+            <Info className="h-4 w-4 text-slate-400 shrink-0" />
+            <span>{t.pricing.note}</span>
           </p>
         </Reveal>
       </section>
 
       {/* Main Intake Form Section (BookingWizard) */}
       <section id="booking-section" className="relative px-4 sm:px-6 max-w-7xl mx-auto mt-28">
-        <div className="max-w-4xl mx-auto bg-slate-50 rounded-[3rem] border border-slate-200 p-6 md:p-12 shadow-premium">
+        <div className="max-w-6xl mx-auto bg-slate-50 rounded-[3rem] border border-slate-200 p-6 md:p-12 shadow-premium">
           <div className="text-center max-w-3xl mx-auto mb-10">
             <Reveal>
               <SectionBadge icon={Activity}>{locale === "en" ? "REQUEST SYSTEM" : "HỆ THỐNG GỬI YÊU CẦU"}</SectionBadge>

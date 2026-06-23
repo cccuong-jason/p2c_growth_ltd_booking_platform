@@ -636,13 +636,14 @@ export default function HomePage() {
       </section>
 
       {/* --- WHAT WE BUILD (Simplified Grid) --- */}
-      <section className="py-24 md:py-32 px-4 sm:px-6 max-w-7xl mx-auto">
-        <div className="text-center mb-20 md:mb-24">
-          <Reveal>
-             <SectionBadge icon={LayoutDashboard}>What We Build</SectionBadge>
-             <h2 className="section-heading text-ink">
-                Practical systems <br className="hidden md:inline" /><span className="text-ocean">for service teams.</span>
-             </h2>
+      <section className="bg-ink text-white py-24 md:py-32 relative overflow-hidden border-y border-slate-900">
+        <div className="px-4 sm:px-6 max-w-7xl mx-auto">
+          <div className="text-center mb-20 md:mb-24">
+            <Reveal>
+               <SectionBadge icon={LayoutDashboard} className="!bg-white/10 !border-white/20 !text-blue-300">What We Build</SectionBadge>
+               <h2 className="section-heading text-white">
+                  Practical systems <br className="hidden md:inline" /><span className="text-blue-400">for service teams.</span>
+               </h2>
           </Reveal>
         </div>
 
@@ -843,6 +844,7 @@ export default function HomePage() {
               </div>
             </article>
           </Reveal>
+        </div>
         </div>
       </section>
 
