@@ -287,7 +287,7 @@ export default function HomePage() {
     <main className="relative bg-white overflow-hidden selection:bg-blue-100 selection:text-blue-900 font-sans">
 
       {/* --- HERO SECTION WITH GLOBE --- */}
-      <section className="relative min-h-[95vh] flex flex-col items-center justify-center pt-32 pb-20 md:pt-48 md:pb-40 bg-porcelain overflow-hidden">
+      <section className="relative min-h-[95vh] flex flex-col items-center justify-center pt-32 pb-20 md:pt-48 md:pb-40 bg-white overflow-hidden">
         <div className="pointer-events-none absolute left-1/2 top-[47%] z-0 w-[760px] max-w-[132vw] -translate-x-1/2 -translate-y-1/2 opacity-55 md:w-[980px]">
           <Globe config={HERO_GLOBE_CONFIG} className="mx-auto" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_33%,rgba(247,251,255,0.92)_0%,rgba(247,251,255,0.72)_30%,rgba(247,251,255,0.22)_56%),radial-gradient(circle_at_50%_74%,rgba(247,251,255,0.18)_20%,rgba(247,251,255,0.94)_68%)]" />
@@ -336,11 +336,11 @@ export default function HomePage() {
       </section>
 
       {/* --- SERVICES CAROUSEL --- */}
-      <section className="bg-white px-4 py-24 sm:px-6 md:py-32 overflow-hidden relative">
+      <section className="bg-[#f0f7ff] px-4 py-24 sm:px-6 md:py-32 overflow-hidden relative border-y border-blue-100/50">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-12">
+          <div className="mb-6">
             <Reveal>
-              <SectionBadge icon={LayoutDashboard}>Our services</SectionBadge>
+              <SectionBadge icon={LayoutDashboard} size="lg">Our services</SectionBadge>
             </Reveal>
           </div>
 
@@ -358,14 +358,17 @@ export default function HomePage() {
                 </p>
                 <div className="flex items-center gap-3">
                   <Link
-                    href="/services/physiotherapy"
-                    className="inline-flex h-12 items-center gap-2 rounded-xl bg-ocean px-6 text-sm font-black text-white shadow-lg shadow-blue-500/20 transition-all hover:scale-105 hover:bg-blue-600 active:scale-95"
+                    href="/services/physiotherapy/booking"
+                    className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-ocean px-6 text-sm font-black text-white shadow-lg shadow-blue-500/20 transition-all hover:scale-105 hover:bg-blue-600 active:scale-95"
                   >
                     Book expert <ArrowRight className="h-4 w-4" aria-hidden />
                   </Link>
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white border border-slate-200 text-ocean shadow-sm hover:bg-slate-50 transition active:scale-95 cursor-pointer">
-                    <Activity className="h-5 w-5" />
-                  </div>
+                  <Link
+                    href="/services/physiotherapy"
+                    className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-6 text-sm font-black text-slate-600 shadow-sm transition-all hover:bg-slate-50 active:scale-95"
+                  >
+                    Learn more
+                  </Link>
                 </div>
               </div>
               <div className="relative w-full md:w-[48%] h-[200px] md:h-[280px] rounded-2xl overflow-hidden border border-slate-100 shadow-sm z-10 flex-shrink-0">
@@ -606,25 +609,34 @@ export default function HomePage() {
                       />
                     </div>
 
-                    <div className="relative z-10 mt-auto flex justify-between items-center">
-                      <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-50 border border-slate-200 text-ocean shadow-sm">
-                        <Icon className="h-5 w-5" />
-                      </div>
-
+                    <div className="relative z-10 mt-auto flex flex-col gap-2 w-full">
                       {isP2CHealth ? (
-                        <Link
-                          href="/services/physiotherapy"
-                          className="inline-flex h-11 items-center gap-1.5 rounded-xl bg-ocean px-5 text-xs font-black text-white shadow-lg shadow-blue-500/20"
-                        >
-                          Book expert <ArrowRight className="h-3.5 w-3.5" />
-                        </Link>
+                        <div className="flex gap-2 w-full">
+                          <Link
+                            href="/services/physiotherapy/booking"
+                            className="flex-grow inline-flex h-11 items-center justify-center gap-1.5 rounded-xl bg-ocean px-3 text-xs font-black text-white shadow-lg shadow-blue-500/20"
+                          >
+                            Book expert
+                          </Link>
+                          <Link
+                            href="/services/physiotherapy"
+                            className="flex-grow inline-flex h-11 items-center justify-center gap-1.5 rounded-xl bg-white border border-slate-200 px-3 text-xs font-bold text-slate-600 shadow-sm"
+                          >
+                            Learn more
+                          </Link>
+                        </div>
                       ) : (
-                        <Link
-                          href={service.href}
-                          className="inline-flex h-11 items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-5 text-xs font-bold text-slate-600 shadow-sm"
-                        >
-                          {service.title === "Tailored Solutions" ? "Contact Us" : "View More"} <ArrowRight className="h-3 w-3" />
-                        </Link>
+                        <div className="flex justify-between items-center w-full">
+                          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-50 border border-slate-200 text-ocean shadow-sm">
+                            <Icon className="h-5 w-5" />
+                          </div>
+                          <Link
+                            href={service.href}
+                            className="inline-flex h-11 items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-5 text-xs font-bold text-slate-600 shadow-sm"
+                          >
+                            {service.title === "Tailored Solutions" ? "Contact Us" : "View More"} <ArrowRight className="h-3 w-3" />
+                          </Link>
+                        </div>
                       )}
                     </div>
                   </article>
@@ -636,16 +648,13 @@ export default function HomePage() {
       </section>
 
       {/* --- WHAT WE BUILD (Simplified Grid) --- */}
-      <section className="bg-ink text-white py-24 md:py-32 relative overflow-hidden border-y border-slate-900">
+      <section className="bg-white text-ink py-24 md:py-32 relative overflow-hidden border-b border-slate-100">
         <div className="px-4 sm:px-6 max-w-7xl mx-auto">
-          <div className="text-center mb-20 md:mb-24">
+          <div className="text-center mb-10 md:mb-12">
             <Reveal>
-               <SectionBadge icon={LayoutDashboard} className="!bg-white/10 !border-white/20 !text-blue-300">What We Build</SectionBadge>
-               <h2 className="section-heading text-white">
-                  Practical systems <br className="hidden md:inline" /><span className="text-blue-400">for service teams.</span>
-               </h2>
-          </Reveal>
-        </div>
+               <SectionBadge icon={LayoutDashboard} size="lg">What We Build</SectionBadge>
+            </Reveal>
+          </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           {/* Left Card: Website Development */}
@@ -849,17 +858,14 @@ export default function HomePage() {
       </section>
 
       {/* --- DELIVERY PROCESS (Reference Phone Orbit) --- */}
-      <section className="relative overflow-hidden bg-porcelain px-4 py-24 text-ink sm:px-6 md:py-32">
+      <section className="relative overflow-hidden bg-[#f0f7ff] px-4 py-24 text-ink sm:px-6 md:py-32 border-y border-blue-100/50">
         <div className="absolute inset-0 tech-grid opacity-70" />
         <div className="absolute left-1/2 top-1/2 h-[720px] w-[720px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-ocean/10 blur-[120px]" />
 
         <div className="relative z-10 mx-auto max-w-7xl">
           <Reveal>
-            <div className="text-center">
-              <SectionBadge icon={LayoutDashboard}>Delivery Process</SectionBadge>
-              <h2 className="section-heading text-ink">
-                From messy workflow <br /><span className="text-ocean">to working system.</span>
-              </h2>
+            <div className="text-center mb-10 md:mb-12">
+              <SectionBadge icon={LayoutDashboard} size="lg">Delivery Process</SectionBadge>
             </div>
           </Reveal>
 
@@ -970,17 +976,15 @@ export default function HomePage() {
       </section>
 
       {/* --- PURPOSE (Detailed Section) --- */}
-      <section className="py-24 md:py-48 px-4 sm:px-6 max-w-7xl mx-auto">
-        <div className="text-center mb-20 md:mb-32">
-           <Reveal>
-              <SectionBadge icon={Workflow}>Company Purpose</SectionBadge>
-              <h2 className="section-heading text-ink">
-                 Digital infrastructure <br /><span className="text-ocean">that fits real work.</span>
-              </h2>
-           </Reveal>
-        </div>
+      <section className="bg-white border-y border-slate-100 py-24 md:py-32">
+        <div className="px-4 sm:px-6 max-w-7xl mx-auto">
+          <div className="text-center mb-10 md:mb-12">
+             <Reveal>
+                <SectionBadge icon={Workflow} size="lg">Company Purpose</SectionBadge>
+             </Reveal>
+          </div>
 
-        <div className="bg-porcelain/50 border border-slate-100 rounded-[4rem] p-12 md:p-20 grid lg:grid-cols-[1.2fr_1fr] gap-20 items-center overflow-hidden relative group">
+          <div className="bg-porcelain/50 border border-slate-100 rounded-[4rem] p-12 md:p-20 grid lg:grid-cols-[1.2fr_1fr] gap-20 items-center overflow-hidden relative group">
            <BorderBeam colorFrom="var(--ocean)" colorTo="var(--mint)" duration={8} borderWidth={2} />
            <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
 
@@ -1055,16 +1059,16 @@ export default function HomePage() {
                     ))}
                  </div>
               </Reveal>
-           </div>
+            </div>
+         </div>
         </div>
       </section>
 
       {/* --- WHY TEAMS CHOOSE P2C GROWTH --- */}
-      <section className="py-24 md:py-32 overflow-hidden bg-white relative">
-        <div className="text-center mb-20 px-4 sm:px-6 max-w-7xl mx-auto relative z-20">
+      <section className="py-24 md:py-32 overflow-hidden bg-[#f0f7ff] relative border-y border-blue-100/50">
+        <div className="text-center mb-10 px-4 sm:px-6 max-w-7xl mx-auto relative z-20">
            <Reveal>
-              <SectionBadge icon={MessageSquareQuote}>Why teams choose P2C Growth</SectionBadge>
-              <h2 className="section-heading text-ink">Less manual work, <br /><span className="text-ocean">clearer operations.</span></h2>
+              <SectionBadge icon={MessageSquareQuote} size="lg">Why teams choose P2C Growth</SectionBadge>
            </Reveal>
         </div>
 
@@ -1105,19 +1109,19 @@ export default function HomePage() {
         <ParallaxStage>
           {({ scale, ySlow, yFast, rotate, opacity }) => (
             <MotionDiv style={{ scale }} className="origin-center">
-              <div className="relative overflow-hidden rounded-[4rem] bg-ocean p-8 text-center shadow-2xl shadow-blue-500/30 md:p-12 lg:p-14">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_18%,rgba(255,255,255,0.26),transparent_28%),radial-gradient(circle_at_80%_30%,rgba(0,194,255,0.28),transparent_32%)]" />
+              <div className="relative overflow-hidden rounded-[4rem] bg-[#f0f7ff] border border-blue-100 p-8 text-center shadow-premium md:p-12 lg:p-14">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_18%,rgba(255,255,255,0.6),transparent_40%),radial-gradient(circle_at_80%_30%,rgba(59,130,246,0.08),transparent_40%)]" />
                 <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
 
                 <div className="relative z-10 grid gap-8 lg:grid-cols-[0.86fr_1fr_0.86fr] lg:items-center">
                   <MotionDiv style={{ y: yFast, rotate, opacity }} className="order-2 lg:order-1">
-                    <div className="rounded-[2rem] border border-white/20 bg-white/15 p-4 text-left text-white shadow-2xl backdrop-blur-xl">
+                    <div className="rounded-[2rem] border border-slate-200 bg-white p-4 text-left text-slate-800 shadow-xl">
                       <div className="mb-5 flex items-center justify-between">
                         <div>
-                          <p className="text-[10px] font-black uppercase tracking-[0.24em] text-blue-100">Website enquiry</p>
-                          <p className="mt-1 text-xl font-black">Request captured</p>
+                          <p className="text-[10px] font-black uppercase tracking-[0.24em] text-slate-400">Website enquiry</p>
+                          <p className="mt-1 text-xl font-black text-ink">Request captured</p>
                         </div>
-                        <span className="rounded-full bg-white px-3 py-1 text-[10px] font-black uppercase tracking-widest text-ocean">Live</span>
+                        <span className="rounded-full bg-blue-50 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-ocean">Live</span>
                       </div>
                       <div className="space-y-3">
                         {[
@@ -1125,9 +1129,9 @@ export default function HomePage() {
                           ["Source", "Website form"],
                           ["Next step", "Discovery call"],
                         ].map(([label, value]) => (
-                          <div key={label} className="rounded-2xl border border-white/15 bg-white/15 p-4">
-                            <p className="text-[10px] font-black uppercase tracking-widest text-blue-100">{label}</p>
-                            <p className="mt-1 text-sm font-black">{value}</p>
+                          <div key={label} className="rounded-2xl border border-slate-100 bg-slate-50/70 p-4">
+                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">{label}</p>
+                            <p className="mt-1 text-sm font-black text-ink">{value}</p>
                           </div>
                         ))}
                       </div>
@@ -1135,16 +1139,16 @@ export default function HomePage() {
                   </MotionDiv>
 
                   <div className="order-1 lg:order-2">
-                    <p className="mb-5 text-[11px] font-black uppercase tracking-[0.24em] text-blue-100">Start the conversation</p>
-                    <h2 className="section-heading text-white">
+                    <p className="mb-5 text-[11px] font-black uppercase tracking-[0.24em] text-ocean">Start the conversation</p>
+                    <h2 className="section-heading text-ink">
                       Ready to improve <br />your digital workflow?
                     </h2>
-                    <p className="mt-8 text-lg md:text-xl text-blue-100 max-w-xl font-medium">
+                    <p className="mt-8 text-base md:text-lg text-slate-600 max-w-xl font-medium mx-auto">
                       Talk to P2C Growth about your website, booking workflow, automation, CRM system, or customer-partner platform.
                     </p>
-                    <div className="mt-10 flex flex-col gap-4 sm:flex-row lg:justify-start">
+                    <div className="mt-10 flex flex-col gap-4 sm:flex-row justify-center">
                       <Magnetic>
-                        <Link href="/contact" className="inline-flex h-16 items-center justify-center gap-3 rounded-full bg-white px-12 text-base font-extrabold text-ocean shadow-xl transition-all hover:scale-105 active:scale-95">
+                        <Link href="/contact" className="inline-flex h-16 items-center justify-center gap-3 rounded-full bg-ocean px-12 text-base font-extrabold text-white shadow-lg shadow-blue-500/20 transition-all hover:scale-105 hover:bg-blue-650 active:scale-95">
                           Contact P2C Growth
                           <ArrowRight className="h-5 w-5" />
                         </Link>
@@ -1187,16 +1191,17 @@ export default function HomePage() {
       </section>
 
       {/* --- FAQ SECTION --- */}
-      <section className="py-24 md:py-32 px-4 sm:px-6 max-w-5xl mx-auto">
-        <div className="text-center mb-16">
-           <Reveal>
-              <SectionBadge icon={MessageSquareQuote}>FAQ</SectionBadge>
-              <h2 className="section-heading text-ink mb-4">Frequently Asked <span className="text-ocean">Questions.</span></h2>
-              <p className="text-lg font-medium text-slate-500 mb-10 max-w-2xl mx-auto">Clear answers to common questions about our platform, features, and support.</p>
-           </Reveal>
-        </div>
+      <section className="py-24 md:py-32 bg-[#f0f7ff] border-t border-blue-100/50">
+        <div className="px-4 sm:px-6 max-w-5xl mx-auto">
+          <div className="text-center mb-10">
+             <Reveal>
+                <SectionBadge icon={MessageSquareQuote} size="lg">FAQ</SectionBadge>
+                <p className="text-base font-semibold text-slate-500 max-w-2xl mx-auto mt-2">Clear answers to common questions about our platform, features, and support.</p>
+             </Reveal>
+          </div>
 
-        <FaqAccordion items={FAQ_ITEMS} />
+          <FaqAccordion items={FAQ_ITEMS} />
+        </div>
       </section>
 
     </main>

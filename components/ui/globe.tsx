@@ -48,6 +48,7 @@ export function Globe({
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [isSupported, setIsSupported] = useState(true)
+  const [isInViewport, setIsInViewport] = useState(true)
   const phiRef = useRef(config.phi)
   const widthRef = useRef(0)
   const pointerInteracting = useRef<number | null>(null)
@@ -75,12 +76,31 @@ export function Globe({
     }
   }
 
+  // Viewport Observer
+  useEffect(() => {
+    if (!canvasRef.current) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInViewport(entry.isIntersecting)
+      },
+      { threshold: 0 }
+    )
+
+    observer.observe(canvasRef.current)
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+
+  // Globe Setup
   useEffect(() => {
     const supportsCanvas = typeof HTMLCanvasElement !== "undefined" &&
       Boolean(document.createElement("canvas").getContext("2d"))
     setIsSupported(supportsCanvas)
 
-    if (!supportsCanvas) return
+    if (!supportsCanvas || !isInViewport) return
 
     const onResize = () => {
       if (canvasRef.current) {
@@ -103,12 +123,17 @@ export function Globe({
       },
     })
 
-    setTimeout(() => (canvasRef.current!.style.opacity = "1"), 0)
+    setTimeout(() => {
+      if (canvasRef.current) {
+        canvasRef.current.style.opacity = "1"
+      }
+    }, 0)
+
     return () => {
       globe.destroy()
       window.removeEventListener("resize", onResize)
     }
-  }, [rs, config])
+  }, [rs, config, isInViewport])
 
   return (
     <div

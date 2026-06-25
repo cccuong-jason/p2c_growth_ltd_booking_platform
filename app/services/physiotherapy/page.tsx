@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { 
   AlertTriangle, 
   CheckCircle2, 
@@ -21,7 +22,6 @@ import {
   Info,
   X
 } from "lucide-react";
-import { BookingWizard } from "@/components/booking/booking-wizard";
 import { Reveal } from "@/components/home/motion-primitives";
 import { SectionBadge } from "@/components/ui/section-badge";
 import { FaqAccordion } from "@/components/ui/faq-accordion";
@@ -77,13 +77,13 @@ export default function PhysiotherapyPage() {
               {t.hero.subtitle}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <button 
-                onClick={() => scrollToSection("booking-section")}
+              <Link 
+                href="/services/physiotherapy/booking"
                 className="w-full sm:w-auto inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-ocean px-6 text-sm font-black text-white shadow-md transition-all hover:bg-blue-600 hover:scale-[1.02] active:scale-[0.98]"
               >
                 {t.hero.primaryCta}
                 <ChevronRight className="h-4 w-4" />
-              </button>
+              </Link>
               <button 
                 onClick={() => scrollToSection("pricing-section")}
                 className="w-full sm:w-auto inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-6 text-sm font-black text-slate-600 shadow-sm transition-all hover:bg-slate-50 hover:scale-[1.02] active:scale-[0.98]"
@@ -101,22 +101,22 @@ export default function PhysiotherapyPage() {
       {/* Important Notice Callout Banner */}
       <section className="relative z-20 px-4 sm:px-6 max-w-5xl mx-auto mt-12">
         <Reveal>
-          <div className="rounded-3xl border border-amber-300 bg-amber-50 p-6 md:p-8 shadow-sm flex flex-col md:flex-row items-start gap-5">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-800 border border-amber-200">
-              <AlertTriangle className="h-5 w-5" aria-hidden="true" />
+          <div className="rounded-3xl border border-blue-100 bg-[#f0f7ff]/70 p-6 md:p-8 shadow-sm flex flex-col md:flex-row items-start gap-5">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-800 border border-blue-200">
+              <ShieldCheck className="h-5 w-5" aria-hidden="true" />
             </div>
             <div className="space-y-3">
-              <h3 className="text-xs font-black uppercase tracking-widest text-amber-955">{t.notice.title}</h3>
-              <p className="text-xs font-bold leading-relaxed text-slate-700">
+              <h3 className="text-xs font-black uppercase tracking-widest text-blue-900">{t.notice.title}</h3>
+              <p className="text-xs font-bold leading-relaxed text-slate-600">
                 {t.notice.body1}
               </p>
-              <p className="text-xs font-bold leading-relaxed text-slate-700">
+              <p className="text-xs font-bold leading-relaxed text-slate-600">
                 {t.notice.body2}
               </p>
-              <p className="text-xs font-bold leading-relaxed text-slate-700">
+              <p className="text-xs font-bold leading-relaxed text-slate-600">
                 {t.notice.body3}
               </p>
-              <div className="pt-3 border-t border-amber-200 text-xs font-black text-rose-800 flex items-start gap-2">
+              <div className="pt-3 border-t border-blue-200/40 text-xs font-black text-rose-800 flex items-start gap-2">
                 <AlertTriangle className="h-4 w-4 shrink-0 text-rose-800 mt-0.5" />
                 <span>{t.notice.emergency}</span>
               </div>
@@ -364,22 +364,7 @@ export default function PhysiotherapyPage() {
         </Reveal>
       </section>
 
-      {/* Main Intake Form Section (BookingWizard) */}
-      <section id="booking-section" className="relative px-4 sm:px-6 max-w-7xl mx-auto mt-28">
-        <div className="max-w-6xl mx-auto bg-slate-50 rounded-[3rem] border border-slate-200 p-6 md:p-12 shadow-premium">
-          <div className="text-center max-w-3xl mx-auto mb-10">
-            <Reveal>
-              <SectionBadge icon={Activity}>{locale === "en" ? "REQUEST SYSTEM" : "HỆ THỐNG GỬI YÊU CẦU"}</SectionBadge>
-              <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-ink mt-4 mb-4">
-                {locale === "en" ? "Submit Physio Request" : "Gửi Yêu Cầu Physio Booking"}
-              </h2>
-            </Reveal>
-          </div>
-          <div className="relative z-30">
-            <BookingWizard />
-          </div>
-        </div>
-      </section>
+
 
       {/* Frequently Asked Questions (FaqAccordion) */}
       <section id="faq-section" className="relative px-4 sm:px-6 max-w-7xl mx-auto mt-28">
@@ -407,13 +392,13 @@ export default function PhysiotherapyPage() {
           <p className="text-xs md:text-sm text-slate-400 font-semibold leading-relaxed max-w-2xl mx-auto mb-8">
             {t.footer.desc}
           </p>
-          <button 
-            onClick={() => scrollToSection("booking-section")}
+          <Link 
+            href="/services/physiotherapy/booking"
             className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-ocean px-8 text-sm font-black text-white shadow-lg transition-all hover:bg-blue-600 hover:scale-[1.02] active:scale-[0.98]"
           >
             {t.footer.button}
             <ChevronRight className="h-4 w-4" />
-          </button>
+          </Link>
           <p className="mt-8 text-[9px] font-bold text-slate-500 max-w-2xl mx-auto uppercase tracking-wide leading-relaxed border-t border-slate-800/80 pt-6">
             {t.footer.disclaimer}
           </p>

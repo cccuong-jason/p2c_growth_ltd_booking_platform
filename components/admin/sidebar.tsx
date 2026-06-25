@@ -91,24 +91,24 @@ export function AdminSidebar() {
             <LayoutDashboard className="h-5 w-5 shrink-0" />
             {!isCollapsed && <span className="text-sm whitespace-nowrap">Overview</span>}
           </Link>
-          <Link
-            href="/admin/physio"
-            className={cn(
-              "flex items-center rounded-xl py-2.5 font-bold transition-all",
-              isCollapsed ? "justify-center px-0" : "gap-3 px-4",
-              isActive("/admin/physio") ? "bg-blue-50 text-blue-700" : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
-            )}
-            title={isCollapsed ? "Physio Booking" : undefined}
-          >
-            <CalendarCheck className="h-5 w-5 shrink-0" />
-            {!isCollapsed && <span className="text-sm whitespace-nowrap">Physio Booking</span>}
-          </Link>
         </nav>
 
         {/* B2B Services */}
         <div className="space-y-2">
           {!isCollapsed && <p className="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-400 whitespace-nowrap">Solutions</p>}
           <nav className="space-y-1">
+            <Link
+              href="/admin/physio"
+              className={cn(
+                "flex items-center rounded-xl py-2.5 font-bold transition-all",
+                isCollapsed ? "justify-center px-0" : "gap-3 px-4",
+                isActive("/admin/physio") ? "bg-blue-50 text-blue-700" : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+              )}
+              title={isCollapsed ? "P2C Health" : undefined}
+            >
+              <CalendarCheck className="h-5 w-5 shrink-0" />
+              {!isCollapsed && <span className="text-sm whitespace-nowrap">P2C Health</span>}
+            </Link>
             <Link
               href="/admin/automation"
               className={cn(

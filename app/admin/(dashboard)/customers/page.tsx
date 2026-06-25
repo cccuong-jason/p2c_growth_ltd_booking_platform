@@ -10,20 +10,29 @@ export default async function CrmPage() {
     ? await supabase.from("bookings").select("*").order("created_at", { ascending: false })
     : { data: [] };
 
-  // Aggregate bookings into unique customers based on email
+  const { data: projects } = supabase
+    ? await supabase.from("b2b_projects").select("*").order("created_at", { ascending: false })
+    : { data: [] };
+
+  // Aggregate bookings and projects into unique customers based on email
   const customerMap = new Map<string, any>();
   
   (bookings || []).forEach((booking) => {
-    const email = booking.patient_email;
+    const email = booking.patient_email?.trim().toLowerCase();
+    if (!email) return;
+    
     if (!customerMap.has(email)) {
       customerMap.set(email, {
         id: booking.id, // using first booking id as a ref
         name: booking.customer_name || booking.patient_name,
-        email: email,
+        email: booking.patient_email,
         phone: booking.patient_phone,
         requests: 1,
         lastActive: booking.created_at,
-        status: booking.status === "completed" ? "Inactive" : "Active"
+        status: booking.status === "completed" ? "Inactive" : "Active",
+        solutions: ["P2C Health"],
+        bookings: [booking],
+        projects: []
       });
     } else {
       const existing = customerMap.get(email);
@@ -31,8 +40,53 @@ export default async function CrmPage() {
       if (new Date(booking.created_at) > new Date(existing.lastActive)) {
         existing.lastActive = booking.created_at;
       }
-      if (booking.status !== "completed" && booking.status !== "cancelled") {
+      if (booking.status !== "completed" && booking.status !== "cancelled" && booking.status !== "no_show") {
         existing.status = "Active";
+      }
+      if (!existing.solutions.includes("P2C Health")) {
+        existing.solutions.push("P2C Health");
+      }
+      existing.bookings.push(booking);
+      customerMap.set(email, existing);
+    }
+  });
+
+  (projects || []).forEach((project) => {
+    const email = project.contact_email?.trim().toLowerCase();
+    if (!email) return;
+    
+    const solutionName = project.service_type === "automation" ? "Automation" : "Website Dev";
+    const projectStatus = project.status === "completed" || project.status === "cancelled" ? "Inactive" : "Active";
+
+    if (!customerMap.has(email)) {
+      customerMap.set(email, {
+        id: project.id,
+        name: project.client_name,
+        email: project.contact_email,
+        phone: "-",
+        requests: 1,
+        lastActive: project.created_at,
+        status: projectStatus,
+        solutions: [solutionName],
+        bookings: [],
+        projects: [project]
+      });
+    } else {
+      const existing = customerMap.get(email);
+      existing.requests += 1;
+      if (new Date(project.created_at) > new Date(existing.lastActive)) {
+        existing.lastActive = project.created_at;
+      }
+      if (projectStatus === "Active") {
+        existing.status = "Active";
+      }
+      if (!existing.solutions.includes(solutionName)) {
+        existing.solutions.push(solutionName);
+      }
+      existing.projects.push(project);
+      // Update name or phone if it was empty
+      if (existing.phone === "-" && project.contact_email) {
+        // keep phone if we find it later, B2B has no phone
       }
       customerMap.set(email, existing);
     }

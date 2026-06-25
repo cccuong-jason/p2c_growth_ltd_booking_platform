@@ -41,7 +41,18 @@
 - **Description:** "Use `@magicui/number-ticker` to animate the counting of statistics (e.g., Active Users, Satisfaction rate) in the trust section."
 
 ## [SCRUM-57] [UI] Enhance P2C Physiotherapy Booking Page with translation support and content from PDF
-- **Status:** In Progress
+- **Status:** Done
 - **Update (2026-06-23):** Initializing layout enhancement and bilingual dictionary setup.
 - **Description:** "Extend the physiotherapy booking page layout to include 9 key informational sections based on customer feedback, and add EN/VI translation support using local page state and i18n dictionaries."
+
+## [SCRUM-58] [CRM/UI] Finalize Customers CRM and solutions filtering
+- **Status:** Done
+- **Update (2026-06-25):** Fully consolidated bookings and projects data, implemented solutions filtering, detail drawer with request/project timelines, direct Resend email communications, and customer deletion.
+- **Description:** "Finalize customer directory with complete data integration across all products (P2C Health, Automation, Website Dev). Add filtering by Solution type and CRM status. Build Customer Details Side Drawer with request timelines, custom email follow-up form, and simulated deletion actions."
+
+## [SCRUM-59] [UI/PERF] Homepage polish, layout expansions, notice banner redesign, and WebGL optimization
+- **Status:** Done
+- **Update (2026-06-25):** Configured consistent White <-> Pale Blue alternating background sections, redesigned notice banner using professional ShieldCheck and blue styles, light-themed final CTA card with dark slate typography, expanded booking page container width to max-w-7xl, and integrated IntersectionObserver to dynamically mount/destroy WebGL Globe on viewport exit/entrance to eliminate scroll lag.
+- **Description:** "Execute premium visual polish: alternate section backgrounds, redesign medical disclaimer notice, light-theme the intensive dark blue CTA, expand booking page width, and optimize 3D Globe loading performance by viewport lazy-loading WebGL canvases."
+
 
