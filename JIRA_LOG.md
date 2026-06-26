@@ -60,5 +60,12 @@
 - **Update (2026-06-26):** Converted the static medical liability banner into a collapsible accordion-style card with a clean header toggle, bilingual support, and smooth expansion animations. Adjusted SectionBadge sizing logic so the larger pill size is applied consistently across all sections of the site.
 - **Description:** "Convert the physiotherapy page's medical liability notice banner into an accordion and make SectionBadge pill size consistent across the site."
 
+## [SCRUM-61] [UI] Homepage Carousel shadow clipping and Physiotherapy Landing CTA light-theming
+- **Status:** Done
+- **Update (2026-06-26):** Fixed homepage carousel shadow clipping by adjusting layout offsets to 32px vertical and 40px horizontal. Adjusted navigation arrow positioning (`left-4 xl:-left-8`) to prevent vertical clipping on medium viewport screen edges. Fully light-themed the physiotherapy landing page CTA banner. Build and Lint verified.
+- **Description:** "Resolve homepage carousel layout clipping issues by introducing proper padding offset parameters (py-8 -my-8 px-10 -mx-10) and responsive nav control margins. Transition the physiotherapy bottom CTA banner completely to light-theme matching the platform's color palette."
 
-
+## [SCRUM-62] [UI/PERF] Fix Services Carousel card height mismatch and optimize WebGL Globe performance
+- **Status:** In Progress
+- **Update (2026-06-26):** Initializing fixes for services card sizes and performance optimization of WebGL Canvas Globe.
+- **Description:** "Fix the height mismatch of the 5 services carousel cards by applying the h-full class, and optimize WebGL Globe rendering load by reducing mapSamples and devicePixelRatio."

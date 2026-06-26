@@ -16,17 +16,10 @@ const navItems = [
   { href: "/contact", label: "contact" }
 ] as const;
 
-const serviceItems = [
-  { href: "/services/physiotherapy", label: "P2C Health", body: "End-to-end booking, vetting, and coordination" },
-  { href: "/services", label: "Website Development", body: "High-converting websites for service businesses" },
-  { href: "/services", label: "Booking System & Email Automation", body: "Forms, notifications, and operational handoff" },
-  { href: "/services", label: "Customer Management / Mini CRM", body: "Lightweight customer and status tracking" },
-  { href: "/services", label: "Customer-Partner Platform", body: "Coordination layer between customers and experts" }
-] as const;
-
 const languages = [
   { code: "EN", label: "English", flag: "🇬🇧" },
-  { code: "VI", label: "Vietnamese", flag: "🇻🇳" }
+  { code: "VI", label: "Vietnamese", flag: "🇻🇳" },
+  { code: "HK", label: "Hong Kong (繁體)", flag: "🇭🇰" }
 ] as const;
 
 export function SiteHeader() {
@@ -35,6 +28,34 @@ export function SiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
   const currentLang = languages.find((l) => l.code.toLowerCase() === locale) || languages[0];
+
+  const localizedServiceItems = [
+    {
+      href: "/services/physiotherapy",
+      label: copy.servicesPage.primaryCard.title,
+      body: copy.servicesPage.primaryCard.body
+    },
+    {
+      href: "/services",
+      label: copy.servicesPage.webDevCard.title,
+      body: copy.servicesPage.webDevCard.body
+    },
+    {
+      href: "/services",
+      label: copy.servicesPage.suite.items[0].title,
+      body: copy.servicesPage.suite.items[0].body
+    },
+    {
+      href: "/services",
+      label: copy.servicesPage.suite.items[1].title,
+      body: copy.servicesPage.suite.items[1].body
+    },
+    {
+      href: "/services",
+      label: copy.servicesPage.suite.items[2].title,
+      body: copy.servicesPage.suite.items[2].body
+    }
+  ];
 
   return (
     <header className="fixed inset-x-0 top-4 z-50 px-4 md:px-6">
@@ -79,7 +100,7 @@ export function SiteHeader() {
                 </Link>
                 <div className="invisible absolute left-1/2 top-full z-50 w-[480px] -translate-x-1/2 pt-3 opacity-0 transition group-hover:visible group-hover:opacity-100">
                   <div className="grid gap-2 rounded-2xl border border-slate-100 bg-white p-3 shadow-2xl shadow-blue-500/10">
-                    {serviceItems.map((service) => (
+                    {localizedServiceItems.map((service) => (
                       <Link key={service.label} href={service.href} className="rounded-xl p-3 transition hover:bg-blue-50">
                         <span className="block text-sm font-black text-ink">{service.label}</span>
                         <span className="mt-1 block text-xs font-semibold leading-5 text-slate-600">{service.body}</span>

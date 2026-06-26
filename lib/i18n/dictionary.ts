@@ -155,6 +155,89 @@ const homeEn = {
     eyebrow: "Phase 1 MVP",
     title: "Launch the request engine, then connect the live backend.",
     body: "The UI is ready for review now; Supabase and Resend credentials can be connected when you provide them."
+  },
+  extras: {
+    whatWeBuild: "What We Build",
+    webDevTitle: "A sharper digital front door for your business.",
+    webDevBody: "Clear service pages, enquiry capture, and conversion-focused journeys built for service businesses.",
+    webDevBtn: "View website builds",
+    workflowHubTitle: "Booking Workflow Hub",
+    workflowHubBody: "Manage intake, routing, confirmation, and internal handoff in one simple flow.",
+    sharePartnersTitle: "Share with partners",
+    sharePartnersBody: "Send structured updates and handoff links to partner teams and reviewers.",
+    instantUpdatesTitle: "Instant updates",
+    instantUpdatesBody: "Notify customers and internal owners when a workflow changes.",
+    integrationsEyebrow: "Integrations",
+    integrationsTitle: "Works with tools you already use.",
+    integrationsBody: "Connect your website and workflow to the platforms your team already uses.",
+    integrationsBtn: "See integrations",
+    deliveryProcess: "Delivery Process",
+    iphone: {
+      projectFlow: "Project flow",
+      activeStep: "Active step",
+      processSteps: "Process steps",
+      currentStep: "Current step",
+      reviewLaunchPath: "Review launch path",
+      live: "Live",
+      selected: "Selected",
+      auto: "Auto"
+    },
+    companyPurpose: "Company Purpose",
+    operatingLoop: "Operating loop",
+    serviceStack: "Service stack",
+    coreWorkflow: "Core workflow",
+    public: "Public",
+    enquiry: "Enquiry",
+    internal: "Internal",
+    action: "Action",
+    operatingSteps: ["Capture", "Qualify", "Route", "Update"],
+    purposeEyebrow: "Practical digital infrastructure",
+    purposeTitle: "Build the tools your service business actually needs.",
+    purposeBody: "P2C Growth focuses on the practical systems behind a UK service business: a clear website, a reliable enquiry path, useful automation, visible customer records, and partner handoff where needed.",
+    purposeList: [
+      "Centralise enquiries that would otherwise arrive through calls, email, forms, and messaging.",
+      "Give teams a simple status view so every request has an owner and next step.",
+      "Automate useful customer and internal updates without hiding the human service experience.",
+      "Prepare the platform for future CRM and partner-routing workflows without overbuilding early."
+    ],
+    whyTeamsChoose: "Why teams choose P2C Growth",
+    whyCards: [
+      {
+        title: "One clear digital front door",
+        body: "Bring service pages, enquiry capture, booking requests, and contact routes into a website customers can understand quickly."
+      },
+      {
+        title: "Workflow before software",
+        body: "Start with how the team actually works, then build screens and automation around the real operating path."
+      },
+      {
+        title: "Simple systems teams can run",
+        body: "Keep customer records, ownership, status, and partner context visible without forcing a heavy enterprise tool too early."
+      }
+    ],
+    ctaEyebrow: "Start the conversation",
+    ctaTitle: "Ready to improve your digital workflow?",
+    ctaBody: "Talk to P2C Growth about your website, booking workflow, automation, CRM system, or customer-partner platform.",
+    ctaBtn: "Contact P2C Growth",
+    widgets: {
+      websiteEnquiry: "Website enquiry",
+      requestCaptured: "Request captured",
+      source: "Source",
+      websiteForm: "Website form",
+      nextStep: "Next step",
+      discoveryCall: "Discovery call",
+      service: "Service",
+      bookingWorkflow: "Booking workflow",
+      internalView: "Internal view",
+      workflowBoard: "Workflow board",
+      active: "Active",
+      newEnquiry: "New enquiry",
+      ownerAssigned: "Owner assigned",
+      customerUpdated: "Customer updated",
+      completed: "Completed",
+      serviceWorkflow: "Service workflow"
+    },
+    faqDescription: "Clear answers to common questions about our platform, features, and support."
   }
 };
 
@@ -315,6 +398,332 @@ const homeVi = {
     eyebrow: "Phase 1 MVP",
     title: "Khởi chạy công cụ tiếp nhận yêu cầu, sau đó kết nối hệ thống backend.",
     body: "Giao diện người dùng đã sẵn sàng để xem xét; thông tin xác thực Supabase và Resend có thể được kết nối khi bạn cung cấp."
+  },
+  extras: {
+    whatWeBuild: "Chúng tôi xây dựng những gì",
+    webDevTitle: "Cửa ngõ kỹ thuật số sắc nét hơn cho doanh nghiệp của bạn.",
+    webDevBody: "Các trang dịch vụ rõ ràng, thu thập yêu cầu và hành trình tập trung vào chuyển đổi được xây dựng cho các doanh nghiệp dịch vụ.",
+    webDevBtn: "Xem các trang web đã xây dựng",
+    workflowHubTitle: "Trung tâm quy trình đặt lịch",
+    workflowHubBody: "Quản lý việc tiếp nhận, định tuyến, xác nhận và bàn giao nội bộ trong một luồng đơn giản.",
+    sharePartnersTitle: "Chia sẻ với đối tác",
+    sharePartnersBody: "Gửi các cập nhật có cấu trúc và liên kết bàn giao cho các đội ngũ đối tác và người đánh giá.",
+    instantUpdatesTitle: "Cập nhật tức thì",
+    instantUpdatesBody: "Thông báo cho khách hàng và người sở hữu nội bộ khi quy trình thay đổi.",
+    integrationsEyebrow: "Tích hợp",
+    integrationsTitle: "Hoạt động với các công cụ bạn đã sử dụng.",
+    integrationsBody: "Kết nối trang web và quy trình làm việc của bạn với các nền tảng mà đội ngũ của bạn đã sử dụng.",
+    integrationsBtn: "Xem các tích hợp",
+    deliveryProcess: "Quy trình bàn giao",
+    iphone: {
+      projectFlow: "Quy trình dự án",
+      activeStep: "Bước hoạt động",
+      processSteps: "Các bước quy trình",
+      currentStep: "Bước hiện tại",
+      reviewLaunchPath: "Xem lộ trình ra mắt",
+      live: "Trực tiếp",
+      selected: "Đã chọn",
+      auto: "Tự động"
+    },
+    companyPurpose: "Mục tiêu công ty",
+    operatingLoop: "Vòng lặp vận hành",
+    serviceStack: "Ngăn xếp dịch vụ",
+    coreWorkflow: "Quy trình cốt lõi",
+    public: "Công khai",
+    enquiry: "Yêu cầu hỗ trợ",
+    internal: "Nội bộ",
+    action: "Hành động",
+    operatingSteps: ["Tiếp nhận", "Đánh giá", "Định tuyến", "Cập nhật"],
+    purposeEyebrow: "Hạ tầng kỹ thuật số thực tế",
+    purposeTitle: "Xây dựng các công cụ doanh nghiệp dịch vụ thực sự cần.",
+    purposeBody: "P2C Growth tập trung vào các hệ thống thực tế phía sau doanh nghiệp dịch vụ tại UK: website rõ ràng, luồng yêu cầu đáng tin cậy, tự động hóa hữu ích, hồ sơ khách hàng hiển thị rõ ràng và bàn giao đối tác khi cần.",
+    purposeList: [
+      "Trung tâm hóa các yêu cầu hỗ trợ mà thông thường sẽ đến qua cuộc gọi, email, biểu mẫu và tin nhắn.",
+      "Cung cấp chế độ xem trạng thái đơn giản cho các nhóm để mọi yêu cầu đều có người phụ trách và bước tiếp theo.",
+      "Tự động hóa các cập nhật nội bộ và khách hàng hữu ích mà không làm mất đi trải nghiệm dịch vụ của con người.",
+      "Chuẩn bị nền tảng cho quy trình CRM và định tuyến đối tác trong tương lai mà không cần thiết kế quá mức từ sớm."
+    ],
+    whyTeamsChoose: "Tại sao các đội ngũ chọn P2C Growth",
+    whyCards: [
+      {
+        title: "Một cửa ngõ kỹ thuật số rõ ràng",
+        body: "Đưa các trang dịch vụ, biểu mẫu tiếp nhận yêu cầu, đặt lịch và các kênh liên hệ vào một website mà khách hàng có thể hiểu nhanh chóng."
+      },
+      {
+        title: "Quy trình trước khi làm phần mềm",
+        body: "Bắt đầu với cách thức hoạt động thực tế của đội ngũ, sau đó xây dựng giao diện và tự động hóa xung quanh luồng vận hành thực tế."
+      },
+      {
+        title: "Hệ thống đơn giản dễ vận hành",
+        body: "Giữ thông tin khách hàng, quyền sở hữu, trạng thái và ngữ cảnh đối tác hiển thị rõ ràng mà không bắt buộc dùng các công cụ doanh nghiệp nặng nề quá sớm."
+      }
+    ],
+    ctaEyebrow: "Bắt đầu cuộc trò chuyện",
+    ctaTitle: "Sẵn sàng cải thiện quy trình làm việc kỹ thuật số của bạn?",
+    ctaBody: "Trò chuyện với P2C Growth về trang web, quy trình đặt lịch, tự động hóa, hệ thống CRM hoặc nền tảng đối tác của bạn.",
+    ctaBtn: "Liên hệ P2C Growth",
+    widgets: {
+      websiteEnquiry: "Yêu cầu từ Website",
+      requestCaptured: "Yêu cầu đã ghi nhận",
+      source: "Nguồn",
+      websiteForm: "Biểu mẫu Website",
+      nextStep: "Bước tiếp theo",
+      discoveryCall: "Cuộc gọi tìm hiểu",
+      service: "Dịch vụ",
+      bookingWorkflow: "Quy trình đặt lịch",
+      internalView: "Chế độ xem nội bộ",
+      workflowBoard: "Bảng quy trình",
+      active: "Hoạt động",
+      newEnquiry: "Yêu cầu mới",
+      ownerAssigned: "Đã phân công",
+      customerUpdated: "Đã cập nhật khách hàng",
+      completed: "Hoàn thành",
+      serviceWorkflow: "Quy trình dịch vụ"
+    },
+    faqDescription: "Câu trả lời rõ ràng cho các câu hỏi phổ biến về nền tảng, tính năng và hỗ trợ của chúng tôi."
+  }
+};
+
+// Hong Kong home page translation strings (Traditional Chinese)
+const homeHk = {
+  eyebrow: "英國技術與軟件公司",
+  title: "為高信任度服務團隊提供預約基礎設施。",
+  subtitle:
+    "為英國服務型公司提供網站建設、預約工作流、自動化流程、CRM工具及客戶與合作夥伴協調平台。",
+  heroTitle: "為現代英國服務型公司提供軟件系統。",
+  heroSubtitle:
+    "提供清晰數字化運營的技術交付。",
+  heroLead:
+    "為高信任度團隊提供優化的接收與路由流程。",
+  primaryCta: "探索服務",
+  secondaryCta: "探索系統",
+  socialProof: {
+    value: "4通道",
+    label: "預約至分派工作流",
+    body: "專為軟件導向的接收、流程自動化、客戶管理和合作夥伴協調而設計。"
+  },
+  brandStrip: [
+    "品牌識別",
+    "登陸頁面",
+    "預約引擎",
+    "自動電子郵件",
+    "管理面版",
+    "微型 CRM"
+  ],
+  proofChips: [
+    "HCPC/CSP 就緒信譽顯示",
+    "英文 / 中文 / 越南文",
+    "上門服務郵編路由邏輯",
+    "自動確認電子郵件"
+  ],
+  heroMetrics: [
+    { value: "42秒", label: "引導式接收" },
+    { value: "5項", label: "信譽檢查" },
+    { value: "4個", label: "流程通道" }
+  ],
+  productMockup: {
+    label: "P2C Growth 系統",
+    title: "實時請求控制台",
+    rows: [
+      { step: "預約", title: "長者活動能力", meta: "上門服務 · SW1A", status: "新增" },
+      { step: "同意", title: "免責聲明已接受", meta: "聯絡 + 緊急確認", status: "通過" },
+      { step: "郵件", title: "確認郵件已排隊", meta: "已對接 Resend", status: "已發送" },
+      { step: "管理", title: "指派審核", meta: "微型 CRM 可見", status: "待處理" }
+    ],
+    sideCards: [
+      { icon: "languages", title: "多語言就緒", body: "英文、中文、越南文" },
+      { icon: "shield", title: "合規狀態", body: "同意時間戳 + 英國 GDPR 文本" },
+      { icon: "map", title: "上門路由", body: "需要郵編與詳細地址" }
+    ]
+  },
+  orbitLabels: ["登陸頁", "預約", "同意書", "分派", "郵件"],
+  featureCards: [
+    {
+      icon: "calendar",
+      title: "預約系統",
+      body: "利用服務卡、拜訪邏輯、同意書和運營對接快速捕獲請求。",
+      span: "wide"
+    },
+    {
+      icon: "workflow",
+      title: "工作流自動化",
+      body: "確認郵件和內部跟進狀態可減少人工催促。",
+      span: ""
+    },
+    {
+      icon: "network",
+      title: "合作夥伴平台",
+      body: "客戶與經過驗證的專業人員之間的受控協調層。",
+      span: ""
+    },
+    {
+      icon: "shield",
+      title: "合規透明度",
+      body: "免責聲明優先、緊急指引、同意記錄和隱私語言。",
+      span: ""
+    },
+    {
+      icon: "sparkles",
+      title: "高端網站展示",
+      body: "品牌識別、醫學排版、信任頁面和高端 SaaS 質感。",
+      span: "wide"
+    }
+  ],
+  systemSteps: [
+    { number: "01", title: "登陸頁", body: "在啟動接收流程前，展示信譽、語言支持和預約範圍。" },
+    { number: "02", title: "請求", body: "捕獲聯絡方式、服務類型、時間、語言和拜訪偏好。" },
+    { number: "03", title: "驗證", body: "同意書和上門服務郵編規則以保護工作流程。" },
+    { number: "04", title: "協調", body: "管理隊列保持跟進與指派清晰可見。" }
+  ],
+  showcasePanels: [
+    {
+      title: "預約接收",
+      body: "服務卡、聯絡詳情、語言和首選時間，全在一個引導流中。",
+      meta: "面向客戶"
+    },
+    {
+      title: "上門拜訪路由",
+      body: "僅在選擇上門服務時才顯示地址欄位。",
+      meta: "條件邏輯"
+    },
+    {
+      title: "內部指派",
+      body: "預約、諮詢、狀態 and 微型 CRM 上下文，全在一個運營視圖中。",
+      meta: "管理工作流"
+    }
+  ],
+  statsBand: [
+    { value: "03-04", label: "周交付計劃" },
+    { value: "50/50", label: "階段性付款條件" },
+    { value: "3個月", label: "上線後系統維護" }
+  ],
+  testimonials: [
+    {
+      quote: "這感覺像是一個真實的產品，而不是簡單的聯絡表單。",
+      name: "運營評審員",
+      role: "醫療專家工作流"
+    },
+    {
+      quote: "同意書、語言和郵編上下文在跟進前會一同送達。",
+      name: "臨床合作夥伴",
+      role: "上門拜訪準備"
+    },
+    {
+      quote: "該流程為家庭提供了足夠的引導，而不會顯得繁重。",
+      name: "客戶旅程評審員",
+      role: "多語言接收"
+    }
+  ],
+  faq: [
+    {
+      question: "這是已確認的預約嗎？",
+      answer: "不是。第一階段僅捕獲請求，以便團隊協調合適的專業合作夥伴進行後續跟進。"
+    },
+    {
+      question: "為什麼上門服務需要填寫郵編和地址？",
+      answer: "這些欄位僅在上門服務時需要，以便團隊在跟進前檢查服務覆蓋範圍和路線。"
+    },
+    {
+      question: "P2C 提供臨床治療嗎？",
+      answer: "不提供。P2C Growth 提供預約和協調平台；臨床護理由符合資格의專業人員處理。"
+    },
+    {
+      question: "此系統以後可以支持更多語言嗎？",
+      answer: "可以。英文版本首先發布，內容結構已準備好集成繁體中文、簡體中文和越南文。"
+    }
+  ],
+  trustSignals: [
+    { title: "HCPC / CSP", body: "信譽顯示區已為客戶提供的證書資產做好準備。" },
+    { title: "UK GDPR", body: "隱私語言與受保護的管理員權限是第一階段基準的一部分。" },
+    { title: "UAT → Go-live", body: "計劃包括 UAT 測試、精細調整、交付以及依賴憑證的檢查。" }
+  ],
+  finalCta: {
+    eyebrow: "Phase 1 MVP",
+    title: "啟動請求引擎，隨後連接實時後端。",
+    body: "用戶界面現已準備好供審查；當您提供時，即可連接 Supabase 和 Resend 憑證。"
+  },
+  extras: {
+    whatWeBuild: "我們開發的系統",
+    webDevTitle: "為您的企業提供更清晰的數字化門戶。",
+    webDevBody: "專為服務型企業構建的清晰服務頁面、諮詢捕獲和以轉化為中心的旅程。",
+    webDevBtn: "查看網站建設案例",
+    workflowHubTitle: "預約工作流中心",
+    workflowHubBody: "在一個簡單的流程中管理接收、路由、確認和內部交接。",
+    sharePartnersTitle: "與合作夥伴分享",
+    sharePartnersBody: "向合作夥伴團隊和評審員發送結構化更新和交接鏈接。",
+    instantUpdatesTitle: "即時更新",
+    instantUpdatesBody: "當工作流更改時通知客戶和內部負責人。",
+    integrationsEyebrow: "系統整合",
+    integrationsTitle: "與您已使用的工具無縫協作。",
+    integrationsBody: "將您的網站 and 工作流連接到您團隊已使用的平台。",
+    integrationsBtn: "查看集成項目",
+    deliveryProcess: "交付流程",
+    iphone: {
+      projectFlow: "項目流程",
+      activeStep: "當前步驟",
+      processSteps: "流程步驟",
+      currentStep: "當前步驟",
+      reviewLaunchPath: "查看上線路徑",
+      live: "實時",
+      selected: "已選擇",
+      auto: "自動"
+    },
+    companyPurpose: "公司宗旨",
+    operatingLoop: "運營閉環",
+    serviceStack: "服務堆棧",
+    coreWorkflow: "核心工作流",
+    public: "公開",
+    enquiry: "客戶諮詢",
+    internal: "內部",
+    action: "執行操作",
+    operatingSteps: ["捕獲", "評估", "路由", "更新"],
+    purposeEyebrow: "實用的數字化基礎設施",
+    purposeTitle: "構建您服務業務真正需要的工具。",
+    purposeBody: "P2C Growth 專注於英國服務型企業背後的實用系統：清晰的網站、可靠的諮詢路徑、實用的自動化、可見的客戶記錄以及必要時的合作夥伴交接。",
+    purposeList: [
+      "集中管理原本通過電話、電子郵件、表單和即時通訊發送的諮詢。",
+      "為團隊提供簡單的狀態視圖，使每個請求都有負責人和下一步行動。",
+      "自動化實用的客戶和內部更新，同時保留人性化的服務體驗。",
+      "為未來的 CRM 和合作夥伴路由工作流做好準備，避免早期過度開發。"
+    ],
+    whyTeamsChoose: "為什麼團隊選擇 P2C Growth",
+    whyCards: [
+      {
+        title: "一個清晰的數字門戶",
+        body: "將服務頁面、諮詢捕獲、預約申請和聯絡管道整合到客戶能快速理解的網站中。"
+      },
+      {
+        title: "工作流先於軟件開發",
+        body: "從團隊的實際工作方式開始，然後圍繞真實的運營路徑構建界面和自動化。"
+      },
+      {
+        title: "團隊能輕鬆運行的簡單系統",
+        body: "保持客戶記錄、所有權、狀態和合作夥伴上下文可見，避免過早引入繁重的企業級工具。"
+      }
+    ],
+    ctaEyebrow: "開始對話",
+    ctaTitle: "準備好改進您的數字工作流了嗎？",
+    ctaBody: "與 P2C Growth 探討您的網站、預約工作流、自動化、CRM 系統或客戶與合作夥伴平台。",
+    ctaBtn: "聯絡 P2C Growth",
+    widgets: {
+      websiteEnquiry: "網站諮詢",
+      requestCaptured: "請求已捕獲",
+      source: "來源",
+      websiteForm: "網站表單",
+      nextStep: "下一步",
+      discoveryCall: "電話諮詢",
+      service: "服務項目",
+      bookingWorkflow: "預約工作流",
+      internalView: "內部視圖",
+      workflowBoard: "工作流看板",
+      active: "活動中",
+      newEnquiry: "新諮詢",
+      ownerAssigned: "負責人已分配",
+      customerUpdated: "客戶已更新",
+      completed: "已完成",
+      serviceWorkflow: "服務工作流"
+    },
+    faqDescription: "關於我們平台、功能和支持的清晰解答。"
   }
 };
 
@@ -861,6 +1270,279 @@ export const dictionary = {
         desc: "Gửi yêu cầu cho P2C. Chúng tôi sẽ xem xét thông tin và hỗ trợ điều phối với physiotherapist hoặc provider phù hợp nếu có sẵn.",
         button: "Gửi yêu cầu Physio Booking",
         disclaimer: "P2C Growth LTD không phải phòng khám, không phải đơn vị cung cấp dịch vụ y tế và không phải dịch vụ cấp cứu. Chúng tôi không chẩn đoán, không trực tiếp điều trị và không đưa ra tư vấn y tế lâm sàng."
+      }
+    }
+  },
+
+  hk: {
+    nav: {
+      home: "首頁",
+      about: "關於我們",
+      services: "服務項目",
+      physiotherapy: "醫療專家預約",
+      contact: "聯絡我們",
+      admin: "系統管理"
+    },
+    layout: {
+      footerDesc: "為英國服務型公司提供網站建設、預約系統、自動化流程、CRM工具及客戶與合作夥伴協調平台。",
+      privacy: "隱私政策",
+      terms: "服務條款",
+      footerCta: "開始醫療專家預約申請",
+      rights: "保留所有權利。"
+    },
+    home: homeHk,
+    about: {
+      eyebrow: "關於 P2C Growth",
+      title: "連接企業、合作夥伴和客戶。",
+      subtitle: "P2C Growth LTD 業是一家總部位於英國的技術與軟件公司，致力於設計和構建實用的數字系統，幫助企業、合作夥伴和客戶更輕鬆地建立聯絡。",
+      sectionTitle: "合作夥伴至客戶 (P2C) 旅程",
+      sectionLead: "我們不取代專業服務提供商。相反，我們開發工作流工具和協調平台，使業務執行更簡單、更快速、更可靠。",
+      exploreCta: "探索服務",
+      clinicalModel: "臨床模式",
+      techOperations: "技術運營",
+      cards: [
+        {
+          title: "工作流自動化",
+          body: "預約系統、自動電子郵件、狀態追踪和微型 CRM 工具，無需人工跟進即可保持業務運轉。"
+        },
+        {
+          title: "合作夥伴連接",
+          body: "專用平台，將終端客戶直接、安全地與合適的專業合作夥伴和內部團隊連接起來。"
+        },
+        {
+          title: "專注於執行",
+          body: "乾淨的數據捕獲、同意終止檢查和結構化的接收管道，最大限度地減少行政工作。"
+        }
+      ]
+    },
+    servicesPage: {
+      eyebrow: "我們的服務",
+      title: "為服務型企業提供的技術服務。",
+      subtitle: "P2C Growth LTD 構建實用的數字系統：網站、預約工作流、CRM工具和合作夥伴協調平台。",
+      primaryCard: {
+        tag: "核心產品",
+        title: "P2C Health",
+        body: "為患者、法律案例、保險公司和專家跟進提供引導式預約和轉介工作流。",
+        cta: "開始預約"
+      },
+      webDevCard: {
+        title: "網站開發",
+        body: "為英國服務型企業提供以轉化為中心的高端網站。",
+        cta: "查看詳情"
+      },
+      suite: {
+        tag: "運營套件",
+        title: "集成業務系統",
+        items: [
+          { title: "預約系統與電子郵件自動化", body: "表單、工作流、確認、通知和運營交接。" },
+          { title: "微型 CRM", body: "為管理高信任度客戶關係的團隊提供輕量級儀表板。" },
+          { title: "客戶與合作夥伴平台", body: "客戶、內部團隊和專業合作夥伴之間的可重用協調層。" }
+        ],
+        cta: "查看詳情"
+      }
+    },
+    contact: {
+      eyebrow: "聯絡我們",
+      title: "與我們的團隊取得聯絡",
+      subtitle: "我們擁有專業的團隊和技術訣竅，幫助您將運營效率提升10倍。",
+      formTitle: "發送諮詢",
+      formSubtitle: "更喜歡寫信？填寫下方表單，我們會盡快與您聯絡。",
+      faqTitle: "常見問題",
+      faqSubtitle: "關於我們平台、功能和支持的清晰解答。",
+      faqCtaTitle: "還有其他問題嗎？",
+      faqCtaSubtitle: "找不到您要的答案？請與我們親切的團隊聯絡。",
+      faqDocBtn: "文件庫",
+      faqContactBtn: "取得聯絡",
+      bannerTitle: "我們隨時準備好與您一同擴展",
+      bannerSubtitle: "加入其他已通過 P2C Growth 工作流和自動化實現增長的服務型企業。",
+      bannerContactBtn: "聯絡銷售",
+      bannerDemoBtn: "查看演示",
+      cards: {
+        sales: { title: "聯絡銷售", desc: "與我們親切的團隊交流。", btn: "sales@p2cgrowth.com" },
+        support: { title: "聯絡支持", desc: "我們隨時為您提供幫助。", btn: "support@p2cgrowth.com" },
+        visit: { title: "拜訪我們", desc: "參觀我們的總部辦公室。", btn: "在 Google 地圖上查看" },
+        call: { title: "致電我們", desc: "週一至週五，上午8點至下午5點。", btn: "+44 (0) 20 1234 5678" }
+      },
+      form: {
+        name: "全名",
+        email: "工作電子郵件",
+        company: "公司名稱（選填）",
+        help: "我們能如何幫助您？",
+        helpPlaceholder: "告訴我們您目前的工作流、面臨的問題以及您希望構建的內容。",
+        btn: "發送諮詢",
+        sending: "正在發送..."
+      },
+      faqs: [
+        { question: "有免費試用嗎？", answer: "是的，您可以免費試用30天。如果您需要，我們將提供免費的30分鐘新手引導通話，幫助您快速上手。" },
+        { question: "我以後可以更改方案嗎？", answer: "當然可以！我們的定價隨您的公司規模擴展。與我們親切的團隊聯絡，為您在成長過程中找到合適的解決方案。" },
+        { question: "你們的取消政策是什麼？", answer: "我們理解計劃會變。您可以隨時取消方案，我們將退還已支付的差額。" },
+        { question: "發票上可以添加其他信息嗎？", answer: "目前，在發票上添加額外信息的唯一方法是手動將信息添加到工作區의名稱中。" },
+        { question: "計費是如何運作的？", answer: "方案是按工作區計算的，而不是按帳戶。您可以升級一個工作區，但仍擁有任意數量的免費工作區。" },
+        { question: "如何更改我的帳戶電子郵件？", answer: "您可以通過從筆記本電腦或台式電腦進入帳戶設置來更改與帳戶相關聯的電子郵件地址。" }
+      ]
+    },
+    comingSoon: {
+      tag: "建設中",
+      title: "即將推出",
+      desc: "我們目前正在構建此服務模塊。我們目前的重點是醫療專家預約 MVP。請稍後查看此功能的更新。",
+      btn: "返回首頁"
+    },
+    privacy: {
+      tag: "隱私",
+      title: "隱私政策",
+      subtitle: "P2C Growth 存儲預約和諮詢數據僅用於協調所請求的服務和業務跟進。",
+      p1: "健康諮詢數據可能會與合適的專業合作夥伴共享，以用於協調目的。P2C Growth 不出售個人數據，亦不提供醫療診斷或治療。",
+      p2: "數據訪問權限僅限於內部管理員及運營平台所需的已配置服務提供商，包括 Supabase 和電子郵件發送服務。"
+    },
+    terms: {
+      tag: "條款",
+      title: "服務條款",
+      subtitle: "P2C Growth 是一個技術和協調平台。預約是申請，而非已確認的預約或臨床建議。",
+      p1: "第一階段不收取任何在線費用。任何臨床服務、價格、預約確認或治療方案均由相關的專業合作夥伴處理。",
+      p2: "用戶必須提供準確的聯絡和拜訪信息。緊急或突發醫療狀況應直接撥打 999、NHS 111 或前往急診中心。"
+    },
+    physiotherapy: {
+      hero: {
+        eyebrow: "P2C Health",
+        title: "為在英亞裔社群提供物理治療預約協調",
+        subtitle: "P2C Growth LTD 支持客戶提交上門物理治療或在線評估申請，並在有合適的物理治療師或服務商時協助建立聯絡。",
+        primaryCta: "提交物理治療預約申請",
+        secondaryCta: "查看參考價格",
+        disclaimer: "P2C Growth LTD 並非診所，亦不直接提供臨床物理治療、診斷、治療或醫療建議。"
+      },
+      notice: {
+        title: "重要通知",
+        body1: "P2C Growth LTD 並非診所、物理治療中心或醫療機構。我們不診斷疾病、不提供臨床治療、不提供醫療建議，亦不提供任何緊急醫療服務。",
+        body2: "P2C 僅作為請求接收、協調和平台提供者，協助客戶在有合適的獨立物理治療師或服務商時進行聯絡。",
+        body3: "預約時間、最終費用、服務覆蓋區域、交通距離以及適用性將在正式預約前予以確認。",
+        emergency: "此服務不適用於緊急醫療狀況。如果您出現嚴重症狀（如劇烈疼痛、胸痛、呼吸困難、突發無力、中風跡象或其他緊急狀況），請立即撥打 999 或聯絡 NHS 111。"
+      },
+      audience: {
+        title: "此服務適合哪些人士？",
+        subtitle: "P2C 協助在英國需要物理治療服務的客戶及家庭，特別是當面臨出行不便、語言障礙、等待時間長或需要上門服務時。",
+        items: [
+          { title: "長者", body: "適合需要改善活動能力、平衡力、肌力、步行能力或預防跌倒的長者。" },
+          { title: "手術後康復者", body: "適合需要進行關節置換（膝/髖）、前交叉韌帶（ACL）手術、脊椎手術或其他骨科手術後康復的人士。" },
+          { title: "中風及神經系統康復者", body: "適合需要重新訓練步行、平衡協調能力及日常生活自理能力的人士。" },
+          { title: "需要上門服務者", body: "適合出行不便、不便前往診所，或希望在所屬區域有合適服務商時接受上門物理治療的人士。" },
+          { title: "在英亞裔社群", body: "適合希望使用更清晰的預約流程、能夠註明語言偏好並獲得協調支持的人士。" },
+          { title: "繁忙的家庭", body: "適合希望為年長父母或親屬尋求物理治療支持，但沒有時間自行聯絡多個機構的子女。" }
+        ]
+      },
+      why: {
+        title: "為什麼需要及早尋求物理治療支持？",
+        intro: "許多人在面對疼痛、肌肉無力、失衡或步行困難時往往等待太久。對於長者、手術後或中風康復者而言，及早開展物理治療康復有助於預防長期的活動受限，並使康復過程更易於管理。",
+        problems: [
+          "NHS 等待時間過長",
+          "語言溝通障礙",
+          "長者出行前往診所困難",
+          "子女工作繁忙，難以抽空陪同就醫或複康運動",
+          "手術後或中風後需要黃金期康復",
+          "亞裔人士往往過度耐痛或延誤就醫",
+          "難以尋找能提供上門服務的合適物理治療師"
+        ],
+        summary: "P2C 通過收集您的具體需求、首選區域、語言偏好和時間安排，並在有合適的物理治療師或服務商時協助建立聯絡，從而簡化流程。",
+        quote: "疼痛並非衰老的必然現象。及早尋求支持有助於保護您的活動能力、自信心和日常生活的獨立性。"
+      },
+      services: {
+        title: "支持協調的物理治療領域",
+        subtitle: "客戶可根據自身的主要狀況提交申請。P2C 將在有合適的服務商時協助進行協調。",
+        tabs: [
+          {
+            id: "elderly",
+            name: "長者複康",
+            desc: "協助長者改善步行、平衡、肌力，降低跌倒風險。",
+            items: ["活動能力支持", "平衡問題", "步行困難", "肌力強化", "跌倒預防", "一般長者複康"]
+          },
+          {
+            id: "stroke",
+            name: "中風及神經複康",
+            desc: "協助中風或神經系統疾病患者改善運動、步行、平衡以及日常生活能力。",
+            items: ["中風復康", "帕金森氏症支持", "活動重新訓練", "步行練習", "平衡與協調", "日常運動支持"]
+          },
+          {
+            id: "surgery",
+            name: "手術後康復",
+            desc: "協助手術後客戶重建肌力、活動範圍和步行信心。",
+            items: ["全膝關節置換", "全髖關節置換", "前交叉韌帶 (ACL) 手術", "脊椎手術", "術後活動能力", "肌力與運動恢復"]
+          },
+          {
+            id: "sports",
+            name: "運動損傷",
+            desc: "協助改善急慢性疼痛、運動損傷、健身拉傷，並預防再次受傷。",
+            items: ["肩部疼痛", "腰部疼痛", "跑步者膝", "健身損傷", "運動損傷", "損傷預防"]
+          },
+          {
+            id: "workers",
+            name: "職業健康",
+            desc: "協助改善因工作引起的腰酸背痛、肩頸痠痛、姿勢不良或肌肉緊張。",
+            items: ["美甲從業者", "餐飲從業者", "辦公室職員", "企業主", "姿勢問題", "腰痛", "肩頸疼痛", "與工作相關的疼痛"]
+          }
+        ]
+      },
+      steps: {
+        title: "運作流程",
+        items: [
+          { number: "01", name: "提交申請", desc: "告知您的具體需求、所在區域、語言偏好和首選時間。" },
+          { number: "02", name: "P2C 評估需求", desc: "P2C 審核您的申請，並確定可能適合您的物理治療類型。" },
+          { number: "03", name: "協調對接", desc: "在有合適的獨立物理治療師或服務商時，P2C 協助為您進行聯絡。" },
+          { number: "04", name: "確認並預約", desc: "預約時間、最終費用、地址及交通距離將在確認後正式完成預約。" }
+        ]
+      },
+      pricing: {
+        title: "物理治療服務參考價格",
+        subtitle: "以下價格僅供參考。最終費用可能因地區、交通距離、時間安排及客戶具體需求而有所不同，將在正式預約前予以確認。",
+        homeTitle: "Home Visit (上門服務)",
+        onlineTitle: "Online Assessment / Training (在線評估與訓練)",
+        note: "請注意：最終價格可能因地區、交通距離、服務商空閒情況和具體需求而有所調整。",
+        homeItems: [
+          { name: "首次評估", duration: "60 分鐘", price: "£120" },
+          { name: "後續跟進", duration: "45 分鐘", price: "£90" },
+          { name: "後續跟進", duration: "30 分鐘", price: "£70" }
+        ],
+        onlineItems: [
+          { name: "在線評估", duration: "30 分鐘", price: "£55" },
+          { name: "在線評估與訓練", duration: "60 分鐘", price: "£95" }
+        ]
+      },
+      faqs: {
+        title: "常見問題",
+        items: [
+          {
+            question: "P2C Growth LTD 是物理治療診所嗎？",
+            answer: "不是。P2C Growth LTD 並非物理治療診所，亦不直接提供臨床物理治療、診斷、治療或醫療建議。P2C 僅提供預約協調平台，在有合適的獨立物理治療師或服務商時協助建立聯絡。"
+          },
+          {
+            question: "我可以申請上門物理治療嗎？",
+            answer: "可以。客戶可以提交上門服務申請。最終能否成行取決於您所在的區域、服務商的空閒情況、交通距離和預約時間。"
+          },
+          {
+            question: "此服務適合什麼人？",
+            answer: "此服務可能適合長者、手術後人士、中風患者、面臨活動障礙人士、腰背疼痛、運動損傷或希望在家中接受物理治療的客戶。"
+          },
+          {
+            question: "我可以要求中文（粵語/國語）或越南語支持嗎？",
+            answer: "客戶可在提交申請時註明語言偏好。最終的語言支持將取決於預約時該區域有空閒的合適服務商。"
+          },
+          {
+            question: "價格是固定的嗎？",
+            answer: "不是。網站上顯示的價格僅供參考。最終費用可能因地區、交通距離、服務商空閒情況、預約時間和您的具體康復需求而有所不同，將在正式預約前予以確認。"
+          },
+          {
+            question: "此服務可用於緊急醫療情況嗎？",
+            answer: "不能。此服務不適用於緊急醫療狀況。如果您遇到緊急醫療情況，請立即撥打 999 或聯絡 NHS 111。"
+          },
+          {
+            question: "P2C 會決定我需要什麼治療嗎？",
+            answer: "不會。P2C 不診斷疾病，亦不制定治療方案。P2C 僅協助收集您的申請並在合適時協調服務商。臨床評估和具體治療方案將完全由合格的服務商獨立負責。"
+          }
+        ]
+      },
+      footer: {
+        title: "需要協助尋找合適的物理治療師嗎？",
+        desc: "提交您的申請給 P2C。我們將審核信息，並在有合適的物理治療師或服務商時協助進行協調。",
+        button: "提交物理治療預約申請",
+        disclaimer: "P2C Growth LTD 並非診所，亦不直接提供臨床物理治療、診斷、治療、醫療建議或任何緊急服務。"
       }
     }
   }

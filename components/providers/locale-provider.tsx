@@ -16,7 +16,7 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
   // Initialize language from localStorage on client-side mount
   useEffect(() => {
     const savedLocale = localStorage.getItem("p2c_locale") as Locale;
-    if (savedLocale === "en" || savedLocale === "vi") {
+    if (savedLocale === "en" || savedLocale === "vi" || savedLocale === "hk") {
       setLocaleState(savedLocale);
     }
   }, []);
