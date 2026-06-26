@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import Link from "next/link";
 import type { COBEOptions } from "cobe";
 import {
@@ -58,12 +58,12 @@ const HERO_GLOBE_CONFIG: COBEOptions = {
   width: 1000,
   height: 1000,
   onRender: () => {},
-  devicePixelRatio: 2,
+  devicePixelRatio: 1.5,
   phi: 6.28,
   theta: 0.5,
   dark: 0.15,
   diffuse: 3,
-  mapSamples: 26000,
+  mapSamples: 12000,
   mapBrightness: 3.5,
   mapBaseBrightness: 0,
   scale: 1.2,
@@ -83,171 +83,166 @@ const HERO_GLOBE_CONFIG: COBEOptions = {
   ],
 };
 
-const HOME_SERVICE_BOXES = [
-  {
-    eyebrow: "Medical",
-    title: "P2C Health",
-    body: "A guided booking and referral workflow for patients, legal cases, insurers, and expert follow-up.",
-    href: "/services/physiotherapy",
-    icon: Activity,
-    image:
-      "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=85",
-  },
-  {
-    eyebrow: "Design",
-    title: "Website Development",
-    body: "Premium websites for UK service companies that need clear offers, trust, and conversion paths.",
-    href: "/coming-soon",
-    icon: Monitor,
-    image:
-      "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=85",
-  },
-  {
-    eyebrow: "Automation",
-    title: "Booking System & Email Automation",
-    body: "Forms, status handoff, confirmation emails, and internal operations without manual chasing.",
-    href: "/coming-soon",
-    icon: Workflow,
-    image:
-      "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1200&q=85",
-  },
-  {
-    eyebrow: "CRM",
-    title: "Customer Management / Mini CRM",
-    body: "Simple customer, enquiry, status, and partner context for teams that need visibility fast.",
-    href: "/coming-soon",
-    icon: LayoutDashboard,
-    image:
-      "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=85",
-  },
-  {
-    eyebrow: "Platform",
-    title: "Customer-Partner Platform",
-    body: "A reusable software layer for routing customers to professional partners and tracking outcomes.",
-    href: "/coming-soon",
-    icon: UserCheck,
-    image:
-      "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=85",
-  },
-  {
-    eyebrow: "Custom",
-    title: "Tailored Solutions",
-    body: "Custom integrations, API links, and specialized databases built around your specific dispatching rules.",
-    href: "/contact",
-    icon: Workflow,
-    image:
-      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=85",
-  },
-];
-
-const ANALYTICS_BEAM_NODES = [
-  {
-    title: "Discover workflow",
-    body: "Map enquiry sources, service types, team responsibilities, customer touchpoints, and the current manual follow-up load.",
-    icon: Command,
-    nodeClassName: "left-4 top-24 md:left-10 md:top-[210px]",
-    side: "left",
-    path: "M150 118 C210 88 244 84 314 132",
-  },
-  {
-    title: "Design interface",
-    body: "Turn the workflow into clear screens for customers, internal teams, and partners before build effort is committed.",
-    icon: Monitor,
-    nodeClassName: "left-4 top-[450px] md:left-8 md:top-[470px]",
-    side: "left",
-    path: "M154 294 C220 316 248 274 318 242",
-  },
-  {
-    title: "Build system",
-    body: "Implement the website, forms, status views, email triggers, and lightweight CRM records around the approved flow.",
-    icon: Filter,
-    nodeClassName: "right-4 top-24 md:right-6 md:top-[210px]",
-    side: "right",
-    path: "M290 118 C230 88 196 84 126 132",
-  },
-  {
-    title: "Launch and iterate",
-    body: "Release the first version, review real usage, and improve the system as the business adds services or partners.",
-    icon: Rocket,
-    nodeClassName: "right-4 top-[450px] md:right-6 md:top-[480px]",
-    side: "right",
-    path: "M286 300 C220 320 190 278 122 242",
-  },
-];
-
-const BUILD_FEATURES = [
-  {
-    label: "Website",
-    title: "Website development",
-    body: "Service pages and enquiry capture shaped around how customers decide.",
-    reportTitle: "Website enquiries are clearer.",
-    reportBody: "Visitors choose the right service path, submit structured details, and land in one owner-ready queue.",
-    focus: "Front door",
-    status: "Captured",
-    progress: "76%",
-    icon: Monitor,
-    accentClassName: "bg-ocean text-white",
-    softClassName: "bg-ocean/10 text-ocean",
-  },
-  {
-    label: "Booking",
-    title: "Booking workflow",
-    body: "Rules, owner assignment, customer confirmation, and status tracking.",
-    reportTitle: "Booking requests are moving.",
-    reportBody: "New requests are routed to the right internal owner with clear next steps and customer updates.",
-    focus: "Scheduling",
-    status: "Queued",
-    progress: "68%",
-    icon: CalendarCheck,
-    accentClassName: "bg-emerald-500 text-white",
-    softClassName: "bg-emerald-50 text-emerald-700",
-  },
-  {
-    label: "Email",
-    title: "Email automation",
-    body: "Useful customer and internal updates without manual chasing.",
-    reportTitle: "Follow-up is automated.",
-    reportBody: "Customers receive confirmation while the team gets the right internal context at each workflow step.",
-    focus: "Updates",
-    status: "Sent",
-    progress: "82%",
-    icon: Send,
-    accentClassName: "bg-amber-400 text-ink",
-    softClassName: "bg-amber-50 text-amber-700",
-  },
-  {
-    label: "CRM",
-    title: "Mini CRM",
-    body: "Simple customer records, ownership, status, and partner context.",
-    reportTitle: "Customer records stay visible.",
-    reportBody: "Every enquiry keeps its owner, status, and handoff history in a lightweight operating view.",
-    focus: "Records",
-    status: "Synced",
-    progress: "71%",
-    icon: Database,
-    accentClassName: "bg-slate-900 text-white",
-    softClassName: "bg-slate-100 text-slate-700",
-  },
-] as const;
-
-const FAQ_ITEMS = [
-  {
-    question: "What does P2C Growth build?",
-    answer: "Websites, booking workflows, email automation, lightweight CRM tools, and customer-partner platforms for UK service businesses.",
-  },
-  {
-    question: "Can you improve an existing workflow?",
-    answer: "Yes. We can map the current enquiry, booking, follow-up, and handoff process, then rebuild the parts that create the most manual work.",
-  },
-  {
-    question: "Is P2C Health the whole business?",
-    answer: "No. It is one service offering. The homepage represents P2C Growth LTD as a broader technology and software company.",
-  },
-] as const;
-
 export default function HomePage() {
   const { locale } = useLocale();
   const { home } = getDictionary(locale);
+
+  const HOME_SERVICE_BOXES = [
+    {
+      eyebrow: locale === "en" ? "Medical" : locale === "vi" ? "Y tế" : "醫療",
+      title: "P2C Health",
+      body: locale === "en" 
+        ? "A guided booking and referral workflow for patients, legal cases, insurers, and expert follow-up." 
+        : locale === "vi" 
+        ? "Một quy trình đặt lịch và giới thiệu có hướng dẫn dành cho bệnh nhân, các trường hợp pháp lý, bảo hiểm và theo dõi chuyên gia." 
+        : "為患者、法律案例、保險公司和專家跟進提供引導式預約和轉介工作流。",
+      href: "/services/physiotherapy",
+      icon: Activity,
+      image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=85",
+    },
+    {
+      eyebrow: locale === "en" ? "Design" : locale === "vi" ? "Thiết kế" : "設計",
+      title: locale === "en" ? "Website Development" : locale === "vi" ? "Thiết kế Website" : "網站開發",
+      body: locale === "en" 
+        ? "Premium websites for UK service companies that need clear offers, trust, and conversion paths." 
+        : locale === "vi" 
+        ? "Các trang web cao cấp tập trung vào chuyển đổi cho các doanh nghiệp dịch vụ tại UK." 
+        : "為英國服務型企業提供以轉化為中心的高端網站。",
+      href: "/coming-soon",
+      icon: Monitor,
+      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=85",
+    },
+    {
+      eyebrow: locale === "en" ? "Automation" : locale === "vi" ? "Tự động hóa" : "自動化",
+      title: locale === "en" ? "Booking System & Email Automation" : locale === "vi" ? "Đặt lịch & Tự động hóa email" : "預約系統與電子郵件自動化",
+      body: locale === "en" 
+        ? "Forms, status handoff, confirmation emails, and internal operations without manual chasing." 
+        : locale === "vi" 
+        ? "Biểu mẫu, bàn giao trạng thái, email xác nhận và vận hành nội bộ không cần xử lý thủ công." 
+        : "表單、工作流、確認、通知和運營交接，無需人工催促。",
+      href: "/coming-soon",
+      icon: Workflow,
+      image: "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1200&q=85",
+    },
+    {
+      eyebrow: locale === "en" ? "CRM" : locale === "vi" ? "CRM" : "CRM",
+      title: locale === "en" ? "Customer Management / Mini CRM" : locale === "vi" ? "Quản lý khách hàng / Mini CRM" : "客戶管理 / 微型 CRM",
+      body: locale === "en" 
+        ? "Simple customer, enquiry, status, and partner context for teams that need visibility fast." 
+        : locale === "vi" 
+        ? "Thông tin khách hàng, yêu cầu hỗ trợ, trạng thái và đối tác đơn giản cho các đội ngũ cần hiển thị nhanh chóng." 
+        : "為管理高信任度客戶關係的團隊提供輕量級儀表板。",
+      href: "/coming-soon",
+      icon: LayoutDashboard,
+      image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=85",
+    },
+    {
+      eyebrow: locale === "en" ? "Platform" : locale === "vi" ? "Nền tảng" : "平台",
+      title: locale === "en" ? "Customer-Partner Platform" : locale === "vi" ? "Nền tảng Khách hàng - Đối tác" : "客戶與合作夥伴平台",
+      body: locale === "en" 
+        ? "A reusable software layer for routing customers to professional partners and tracking outcomes." 
+        : locale === "vi" 
+        ? "Một lớp phần mềm có thể tái sử dụng để định tuyến khách hàng đến các đối tác chuyên môn và theo dõi kết quả." 
+        : "客戶、內部團隊和專業合作夥伴之間的可重用協調層。",
+      href: "/coming-soon",
+      icon: UserCheck,
+      image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=85",
+    },
+    {
+      eyebrow: locale === "en" ? "Custom" : locale === "vi" ? "Tùy chỉnh" : "自訂",
+      title: locale === "en" ? "Tailored Solutions" : locale === "vi" ? "Giải pháp thiết kế riêng" : "定制解決方案",
+      body: locale === "en" 
+        ? "Custom integrations, API links, and specialized databases built around your specific dispatching rules." 
+        : locale === "vi" 
+        ? "Các tích hợp tùy chỉnh, liên kết API và cơ sở dữ liệu chuyên biệt được xây dựng xung quanh các quy tắc vận hành cụ thể của bạn." 
+        : "根據您的特定派發規則構建的自定義集成、API 鏈接和專用數據庫。",
+      href: "/contact",
+      icon: Workflow,
+      image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=85",
+    },
+  ];
+
+  const ANALYTICS_BEAM_NODES = useMemo(() => [
+    {
+      id: "discover",
+      title: locale === "en" ? "Discover workflow" : locale === "vi" ? "Khám phá quy trình" : "探索工作流",
+      body: locale === "en" 
+        ? "Map enquiry sources, service types, team responsibilities, customer touchpoints, and the current manual follow-up load." 
+        : locale === "vi" 
+        ? "Bản đồ nguồn yêu cầu, loại dịch vụ, trách nhiệm của nhóm, điểm tiếp xúc khách hàng và lượng công việc theo dõi thủ công hiện tại." 
+        : "規劃諮詢來源、服務類型、團隊職責、客戶接觸點以及當前的人工跟進工作量。",
+      icon: Command,
+      nodeClassName: "left-4 top-24 md:left-10 md:top-[210px]",
+      side: "left",
+      path: "M150 118 C210 88 244 84 314 132",
+    },
+    {
+      id: "design",
+      title: locale === "en" ? "Design interface" : locale === "vi" ? "Thiết kế giao diện" : "設計界面",
+      body: locale === "en" 
+        ? "Turn the workflow into clear screens for customers, internal teams, and partners before build effort is committed." 
+        : locale === "vi" 
+        ? "Chuyển quy trình làm việc thành màn hình rõ ràng cho khách hàng, đội ngũ nội bộ và đối tác trước khi tiến hành xây dựng." 
+        : "在投入開發工作之前，將工作流轉化為客戶、內部團隊和合作夥伴的清晰界面。",
+      icon: Monitor,
+      nodeClassName: "left-4 top-[450px] md:left-8 md:top-[470px]",
+      side: "left",
+      path: "M154 294 C220 316 248 274 318 242",
+    },
+    {
+      id: "build",
+      title: locale === "en" ? "Build system" : locale === "vi" ? "Xây dựng hệ thống" : "構建系統",
+      body: locale === "en" 
+        ? "Implement the website, forms, status views, email triggers, and lightweight CRM records around the approved flow." 
+        : locale === "vi" 
+        ? "Triển khai trang web, biểu mẫu, chế độ xem trạng thái, trình kích hoạt email và hồ sơ CRM nhẹ xung quanh luồng đã được phê duyệt." 
+        : "圍繞已批准的流程，開發網站、表單、狀態視圖、電子郵件觸發器和輕量級 CRM 記錄。",
+      icon: Filter,
+      nodeClassName: "right-4 top-24 md:right-6 md:top-[210px]",
+      side: "right",
+      path: "M290 118 C230 88 196 84 126 132",
+    },
+    {
+      id: "launch",
+      title: locale === "en" ? "Launch and iterate" : locale === "vi" ? "Ra mắt & Cải tiến" : "上線與迭代",
+      body: locale === "en" 
+        ? "Release the first version, review real usage, and improve the system as the business adds services or partners." 
+        : locale === "vi" 
+        ? "Phát hành phiên bản đầu tiên, đánh giá việc sử dụng thực tế và cải tiến hệ thống khi doanh nghiệp thêm dịch vụ hoặc đối tác." 
+        : "發布首個版本，評估實際使用情況，並在業務增加服務或合作夥伴時改進系統。",
+      icon: Rocket,
+      nodeClassName: "right-4 top-[450px] md:right-6 md:top-[480px]",
+      side: "right",
+      path: "M286 300 C220 320 190 278 122 242",
+    },
+  ], [locale]);
+
+  const FAQ_ITEMS = [
+    {
+      question: locale === "en" ? "What does P2C Growth build?" : locale === "vi" ? "P2C Growth xây dựng những gì?" : "P2C Growth 構建什麼？",
+      answer: locale === "en" 
+        ? "Websites, booking workflows, email automation, lightweight CRM tools, and customer-partner platforms for UK service businesses." 
+        : locale === "vi" 
+        ? "Website, quy trình đặt lịch, tự động hóa email, công cụ CRM gọn nhẹ và nền tảng kết nối khách hàng - đối tác cho các doanh nghiệp dịch vụ tại UK." 
+        : "為英國服務型公司提供網站建設、預約工作流、自動化流程、微型 CRM 工具及客戶與合作夥伴協調平台。",
+    },
+    {
+      question: locale === "en" ? "Can you improve an existing workflow?" : locale === "vi" ? "Bạn có thể cải thiện quy trình hiện có không?" : "你們能改進現有的工作流嗎？",
+      answer: locale === "en" 
+        ? "Yes. We can map the current enquiry, booking, follow-up, and handoff process, then rebuild the parts that create the most manual work." 
+        : locale === "vi" 
+        ? "Có. Chúng tôi có thể lập bản đồ quy trình yêu cầu, đặt lịch, theo dõi và bàn giao hiện tại, sau đó xây dựng lại các phần tạo ra nhiều công việc thủ công nhất." 
+        : "可以。我們可以規劃當前的諮詢、預約、跟進和交接流程，然後重建產生最多人工工作的環節。",
+    },
+    {
+      question: locale === "en" ? "Is P2C Health the whole business?" : locale === "vi" ? "P2C Health có phải là toàn bộ hoạt động kinh doanh không?" : "P2C Health 是全部業務嗎？",
+      answer: locale === "en" 
+        ? "No. It is one service offering. The homepage represents P2C Growth LTD as a broader technology and software company." 
+        : locale === "vi" 
+        ? "Không. Đó là một dịch vụ được cung cấp. Trang chủ đại diện cho P2C Growth LTD như một công ty phần mềm và công nghệ rộng lớn hơn." 
+        : "不是。它只是其中一項服務。首頁代表 P2C Growth LTD 作為一家更廣泛的技術與軟件公司。",
+    },
+  ];
   const servicesScrollRef = useRef<HTMLDivElement>(null);
 
   const scrollServices = (direction: "left" | "right") => {
@@ -260,10 +255,10 @@ export default function HomePage() {
     }
   };
 
-  const [activeAnalyticsNode, setActiveAnalyticsNode] = useState(ANALYTICS_BEAM_NODES[0].title);
+  const [activeAnalyticsNode, setActiveAnalyticsNode] = useState(ANALYTICS_BEAM_NODES[0].id);
   const [hasSelectedAnalyticsNode, setHasSelectedAnalyticsNode] = useState(false);
-  const activeAnalytics = ANALYTICS_BEAM_NODES.find((node) => node.title === activeAnalyticsNode) ?? ANALYTICS_BEAM_NODES[0];
-  const activeAnalyticsIndex = ANALYTICS_BEAM_NODES.findIndex((node) => node.title === activeAnalytics.title);
+  const activeAnalytics = ANALYTICS_BEAM_NODES.find((node) => node.id === activeAnalyticsNode) ?? ANALYTICS_BEAM_NODES[0];
+  const activeAnalyticsIndex = ANALYTICS_BEAM_NODES.findIndex((node) => node.id === activeAnalytics.id);
   const ActiveAnalyticsIcon = activeAnalytics.icon;
 
   useEffect(() => {
@@ -272,16 +267,16 @@ export default function HomePage() {
     }
 
     const rotation = window.setInterval(() => {
-      setActiveAnalyticsNode((currentTitle) => {
-        const currentIndex = ANALYTICS_BEAM_NODES.findIndex((node) => node.title === currentTitle);
+      setActiveAnalyticsNode((currentId) => {
+        const currentIndex = ANALYTICS_BEAM_NODES.findIndex((node) => node.id === currentId);
         const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % ANALYTICS_BEAM_NODES.length;
 
-        return ANALYTICS_BEAM_NODES[nextIndex].title;
+        return ANALYTICS_BEAM_NODES[nextIndex].id;
       });
     }, 3600);
 
     return () => window.clearInterval(rotation);
-  }, [hasSelectedAnalyticsNode]);
+  }, [hasSelectedAnalyticsNode, ANALYTICS_BEAM_NODES]);
 
   return (
     <main className="relative bg-white overflow-hidden selection:bg-blue-100 selection:text-blue-900 font-sans">
@@ -301,30 +296,30 @@ export default function HomePage() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-ocean opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-ocean"></span>
               </span>
-              UK technology and software company
+              {home.eyebrow}
             </div>
           </SpringReveal>
-
+ 
           <div className="max-w-5xl mx-auto min-h-[140px] flex items-center justify-center">
              <TypingAnimation
                 className="text-5xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1.1] justify-center display-heading"
                 duration={50}
              >
-                Software systems for modern UK service companies.
+                {home.heroTitle}
              </TypingAnimation>
           </div>
-
+ 
           <Reveal delay={0.6}>
-            <p className="mt-10 max-w-2xl text-lg font-semibold leading-relaxed text-slate-700 md:text-xl">
-              P2C Growth LTD designs and builds websites, booking workflows, email automation, CRM tools, and customer-partner platforms for businesses that need clean digital operations.
+            <p className="mt-10 max-w-2xl text-lg font-semibold leading-relaxed text-slate-600 md:text-xl">
+              {home.subtitle}
             </p>
           </Reveal>
-
+ 
           <Reveal delay={0.8}>
             <div className="mt-12 flex flex-col sm:flex-row items-center gap-6">
               <Magnetic>
                 <Link href="/services" className="inline-flex h-16 items-center justify-center gap-3 rounded-full bg-ocean px-12 text-base font-extrabold text-white shadow-lg shadow-blue-500/25 transition-all hover:scale-105 hover:bg-blue-600 active:scale-95">
-                  Explore services
+                  {home.primaryCta}
                   <ArrowRight className="h-5 w-5" />
                 </Link>
               </Magnetic>
@@ -340,7 +335,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-6">
             <Reveal>
-              <SectionBadge icon={LayoutDashboard} size="lg">Our services</SectionBadge>
+              <SectionBadge icon={LayoutDashboard} size="lg">{locale === "en" ? "Our services" : locale === "vi" ? "Dịch vụ của chúng tôi" : "我們的服務"}</SectionBadge>
             </Reveal>
           </div>
 
@@ -350,24 +345,24 @@ export default function HomePage() {
               <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
               <div className="relative z-10 flex-1 max-w-xl">
                 <span className="rounded-lg bg-blue-50 text-[10px] font-black uppercase tracking-widest text-ocean px-3 py-1.5 inline-block mb-6">
-                  Medical
+                  {locale === "en" ? "Medical" : locale === "vi" ? "Y tế" : "醫療"}
                 </span>
                 <h3 className="text-3xl md:text-5xl font-black text-ink tracking-tight mb-4 leading-none">P2C Health</h3>
                 <p className="text-sm md:text-base font-semibold leading-relaxed text-slate-500 mb-8">
-                  A guided booking and referral workflow for patients, legal cases, insurers, and expert follow-up.
+                  {HOME_SERVICE_BOXES[0].body}
                 </p>
                 <div className="flex items-center gap-3">
                   <Link
                     href="/services/physiotherapy/booking"
                     className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-ocean px-6 text-sm font-black text-white shadow-lg shadow-blue-500/20 transition-all hover:scale-105 hover:bg-blue-600 active:scale-95"
                   >
-                    Book expert <ArrowRight className="h-4 w-4" aria-hidden />
+                    {locale === "en" ? "Book expert" : locale === "vi" ? "Đặt lịch chuyên gia" : "預約專家"} <ArrowRight className="h-4 w-4" aria-hidden />
                   </Link>
                   <Link
                     href="/services/physiotherapy"
                     className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-6 text-sm font-black text-slate-600 shadow-sm transition-all hover:bg-slate-50 active:scale-95"
                   >
-                    Learn more
+                    {locale === "en" ? "Learn more" : locale === "vi" ? "Tìm hiểu thêm" : "了解更多"}
                   </Link>
                 </div>
               </div>
@@ -382,21 +377,21 @@ export default function HomePage() {
             <div className="relative mt-6">
               <div
                 ref={servicesScrollRef}
-                className="flex gap-8 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar pb-2"
+                className="flex gap-8 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar py-8 -my-8 px-10 -mx-10"
               >
                 <div className="w-full flex-none snap-start">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Website Development */}
-                  <article className="group relative w-full rounded-[2rem] border border-slate-200 bg-white p-6 md:p-8 shadow-premium hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col sm:flex-row justify-between gap-6">
+                  <article className="group relative w-full h-full rounded-[2rem] border border-slate-200 bg-white p-6 md:p-8 shadow-premium hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col sm:flex-row justify-between gap-6">
                     <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
                     <div className="relative z-10 flex-1 flex flex-col justify-between">
                       <div>
                         <span className="rounded-md bg-blue-50 text-[9px] font-black uppercase tracking-widest text-ocean px-2.5 py-1 inline-block mb-4">
-                          Design
+                          {HOME_SERVICE_BOXES[1].eyebrow}
                         </span>
-                        <h3 className="text-xl md:text-2xl font-black text-ink tracking-tight mb-2 leading-tight">Website Development</h3>
+                        <h3 className="text-xl md:text-2xl font-black text-ink tracking-tight mb-2 leading-tight">{HOME_SERVICE_BOXES[1].title}</h3>
                         <p className="text-xs md:text-sm font-semibold leading-relaxed text-slate-500 mb-6">
-                          Premium websites for UK service companies that need clear offers, trust, and conversion paths.
+                          {HOME_SERVICE_BOXES[1].body}
                         </p>
                       </div>
                       <div className="flex items-center justify-between mt-auto">
@@ -407,7 +402,7 @@ export default function HomePage() {
                           href="/coming-soon"
                           className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-4 text-xs font-bold text-slate-600 shadow-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95"
                         >
-                          View More <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+                          {locale === "en" ? "View More" : locale === "vi" ? "Xem thêm" : "查看更多"} <ArrowRight className="h-3.5 w-3.5" aria-hidden />
                         </Link>
                       </div>
                     </div>
@@ -420,16 +415,16 @@ export default function HomePage() {
                   </article>
 
                   {/* Booking System & Email Automation */}
-                  <article className="group relative w-full rounded-[2rem] border border-slate-200 bg-white p-6 md:p-8 shadow-premium hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col sm:flex-row justify-between gap-6">
+                  <article className="group relative w-full h-full rounded-[2rem] border border-slate-200 bg-white p-6 md:p-8 shadow-premium hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col sm:flex-row justify-between gap-6">
                     <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
                     <div className="relative z-10 flex-1 flex flex-col justify-between">
                       <div>
                         <span className="rounded-md bg-blue-50 text-[9px] font-black uppercase tracking-widest text-ocean px-2.5 py-1 inline-block mb-4">
-                          Automation
+                          {HOME_SERVICE_BOXES[2].eyebrow}
                         </span>
-                        <h3 className="text-xl md:text-2xl font-black text-ink tracking-tight mb-2 leading-tight">Booking & Email Automation</h3>
+                        <h3 className="text-xl md:text-2xl font-black text-ink tracking-tight mb-2 leading-tight">{HOME_SERVICE_BOXES[2].title}</h3>
                         <p className="text-xs md:text-sm font-semibold leading-relaxed text-slate-500 mb-6">
-                          Forms, status handoff, confirmation emails, and internal operations without manual chasing.
+                          {HOME_SERVICE_BOXES[2].body}
                         </p>
                       </div>
                       <div className="flex items-center justify-between mt-auto">
@@ -440,7 +435,7 @@ export default function HomePage() {
                           href="/coming-soon"
                           className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-4 text-xs font-bold text-slate-600 shadow-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95"
                         >
-                          View More <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+                          {locale === "en" ? "View More" : locale === "vi" ? "Xem thêm" : "查看更多"} <ArrowRight className="h-3.5 w-3.5" aria-hidden />
                         </Link>
                       </div>
                     </div>
@@ -457,16 +452,16 @@ export default function HomePage() {
                 <div className="w-full flex-none snap-start">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Customer Management / Mini CRM */}
-                  <article className="group relative w-full rounded-[2rem] border border-slate-200 bg-white p-6 md:p-8 shadow-premium hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col sm:flex-row justify-between gap-6">
+                  <article className="group relative w-full h-full rounded-[2rem] border border-slate-200 bg-white p-6 md:p-8 shadow-premium hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col sm:flex-row justify-between gap-6">
                     <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
                     <div className="relative z-10 flex-1 flex flex-col justify-between">
                       <div>
                         <span className="rounded-md bg-blue-50 text-[9px] font-black uppercase tracking-widest text-ocean px-2.5 py-1 inline-block mb-4">
-                          CRM
+                          {HOME_SERVICE_BOXES[3].eyebrow}
                         </span>
-                        <h3 className="text-xl md:text-2xl font-black text-ink tracking-tight mb-2 leading-tight">Customer Management / Mini CRM</h3>
+                        <h3 className="text-xl md:text-2xl font-black text-ink tracking-tight mb-2 leading-tight">{HOME_SERVICE_BOXES[3].title}</h3>
                         <p className="text-xs md:text-sm font-semibold leading-relaxed text-slate-500 mb-6">
-                          Simple customer, enquiry, status, and partner context for teams that need visibility fast.
+                          {HOME_SERVICE_BOXES[3].body}
                         </p>
                       </div>
                       <div className="flex items-center justify-between mt-auto">
@@ -477,7 +472,7 @@ export default function HomePage() {
                           href="/coming-soon"
                           className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-4 text-xs font-bold text-slate-600 shadow-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95"
                         >
-                          View More <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+                          {locale === "en" ? "View More" : locale === "vi" ? "Xem thêm" : "查看更多"} <ArrowRight className="h-3.5 w-3.5" aria-hidden />
                         </Link>
                       </div>
                     </div>
@@ -490,16 +485,16 @@ export default function HomePage() {
                   </article>
 
                   {/* Customer-Partner Platform */}
-                  <article className="group relative w-full rounded-[2rem] border border-slate-200 bg-white p-6 md:p-8 shadow-premium hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col sm:flex-row justify-between gap-6">
+                  <article className="group relative w-full h-full rounded-[2rem] border border-slate-200 bg-white p-6 md:p-8 shadow-premium hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col sm:flex-row justify-between gap-6">
                     <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
                     <div className="relative z-10 flex-1 flex flex-col justify-between">
                       <div>
                         <span className="rounded-md bg-blue-50 text-[9px] font-black uppercase tracking-widest text-ocean px-2.5 py-1 inline-block mb-4">
-                          Platform
+                          {HOME_SERVICE_BOXES[4].eyebrow}
                         </span>
-                        <h3 className="text-xl md:text-2xl font-black text-ink tracking-tight mb-2 leading-tight">Customer-Partner Platform</h3>
+                        <h3 className="text-xl md:text-2xl font-black text-ink tracking-tight mb-2 leading-tight">{HOME_SERVICE_BOXES[4].title}</h3>
                         <p className="text-xs md:text-sm font-semibold leading-relaxed text-slate-500 mb-6">
-                          A reusable software layer for routing customers to professional partners and tracking outcomes.
+                          {HOME_SERVICE_BOXES[4].body}
                         </p>
                       </div>
                       <div className="flex items-center justify-between mt-auto">
@@ -510,7 +505,7 @@ export default function HomePage() {
                           href="/coming-soon"
                           className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-4 text-xs font-bold text-slate-600 shadow-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95"
                         >
-                          View More <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+                          {locale === "en" ? "View More" : locale === "vi" ? "Xem thêm" : "查看更多"} <ArrowRight className="h-3.5 w-3.5" aria-hidden />
                         </Link>
                       </div>
                     </div>
@@ -527,16 +522,16 @@ export default function HomePage() {
                 <div className="w-full flex-none snap-start">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Tailored Solutions */}
-                  <article className="group relative w-full rounded-[2rem] border border-slate-200 bg-white p-6 md:p-8 shadow-premium hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col sm:flex-row justify-between gap-6">
+                  <article className="group relative w-full h-full rounded-[2rem] border border-slate-200 bg-white p-6 md:p-8 shadow-premium hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col sm:flex-row justify-between gap-6">
                     <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
                     <div className="relative z-10 flex-1 flex flex-col justify-between">
                       <div>
                         <span className="rounded-md bg-blue-50 text-[9px] font-black uppercase tracking-widest text-ocean px-2.5 py-1 inline-block mb-4">
-                          Custom
+                          {HOME_SERVICE_BOXES[5].eyebrow}
                         </span>
-                        <h3 className="text-xl md:text-2xl font-black text-ink tracking-tight mb-2 leading-tight">Tailored Solutions</h3>
+                        <h3 className="text-xl md:text-2xl font-black text-ink tracking-tight mb-2 leading-tight">{HOME_SERVICE_BOXES[5].title}</h3>
                         <p className="text-xs md:text-sm font-semibold leading-relaxed text-slate-500 mb-6">
-                          Custom integrations, API links, and specialized databases built around your specific dispatching rules.
+                          {HOME_SERVICE_BOXES[5].body}
                         </p>
                       </div>
                       <div className="flex items-center justify-between mt-auto">
@@ -547,7 +542,7 @@ export default function HomePage() {
                           href="/contact"
                           className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-4 text-xs font-bold text-slate-600 shadow-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95"
                         >
-                          Contact Us <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+                          {locale === "en" ? "Contact Us" : locale === "vi" ? "Liên hệ" : "聯絡我們"} <ArrowRight className="h-3.5 w-3.5" aria-hidden />
                         </Link>
                       </div>
                     </div>
@@ -567,7 +562,7 @@ export default function HomePage() {
                 type="button"
                 onClick={() => scrollServices("left")}
                 aria-label="Scroll left"
-                className="absolute -left-4 lg:-left-7 top-1/2 -translate-y-1/2 h-14 w-14 rounded-full border border-slate-200 bg-white/95 text-slate-800 shadow-xl backdrop-blur-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95 flex items-center justify-center z-40"
+                className="absolute left-4 xl:-left-8 top-1/2 -translate-y-1/2 h-14 w-14 rounded-full border border-slate-200 bg-white/95 text-slate-800 shadow-xl backdrop-blur-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95 flex items-center justify-center z-40"
               >
                 <ChevronLeft className="h-6 w-6" />
               </button>
@@ -575,7 +570,7 @@ export default function HomePage() {
                 type="button"
                 onClick={() => scrollServices("right")}
                 aria-label="Scroll right"
-                className="absolute -right-4 lg:-right-7 top-1/2 -translate-y-1/2 h-14 w-14 rounded-full border border-slate-200 bg-white/95 text-slate-800 shadow-xl backdrop-blur-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95 flex items-center justify-center z-40"
+                className="absolute right-4 xl:-right-8 top-1/2 -translate-y-1/2 h-14 w-14 rounded-full border border-slate-200 bg-white/95 text-slate-800 shadow-xl backdrop-blur-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95 flex items-center justify-center z-40"
               >
                 <ChevronRight className="h-6 w-6" />
               </button>
@@ -652,7 +647,7 @@ export default function HomePage() {
         <div className="px-4 sm:px-6 max-w-7xl mx-auto">
           <div className="text-center mb-10 md:mb-12">
             <Reveal>
-               <SectionBadge icon={LayoutDashboard} size="lg">What We Build</SectionBadge>
+               <SectionBadge icon={LayoutDashboard} size="lg">{home.extras.whatWeBuild}</SectionBadge>
             </Reveal>
           </div>
 
@@ -665,20 +660,20 @@ export default function HomePage() {
                 <div className="md:col-span-7 flex flex-col justify-between h-full">
                   <div>
                     <span className="rounded-md bg-blue-50 text-[9px] font-black uppercase tracking-widest text-ocean px-2.5 py-1 inline-block mb-6 w-max">
-                      Website Development
+                      {getDictionary(locale).servicesPage.webDevCard.title}
                     </span>
                     <h3 className="text-2xl md:text-3xl font-extrabold text-ink tracking-tight leading-tight mb-4">
-                      A sharper digital front door for your business.
+                      {home.extras.webDevTitle}
                     </h3>
                     <p className="text-slate-500 text-sm leading-relaxed mb-8">
-                      Clear service pages, enquiry capture, and conversion-focused journeys built for service businesses.
+                      {home.extras.webDevBody}
                     </p>
                   </div>
                   <Link
                     href="/services"
                     className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-ocean px-6 text-sm font-black text-white shadow-lg shadow-blue-500/20 transition-all hover:scale-105 hover:bg-blue-600 active:scale-95 w-max mt-auto"
                   >
-                    View website builds <ArrowRight className="h-4 w-4" />
+                    {home.extras.webDevBtn} <ArrowRight className="h-4 w-4" />
                   </Link>
                 </div>
 
@@ -725,13 +720,13 @@ export default function HomePage() {
                 <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
                 <div className="relative z-10 flex-grow">
                   <span className="rounded-md bg-blue-50 text-[9px] font-black uppercase tracking-widest text-ocean px-2 py-0.5 inline-block mb-3">
-                    Workflow
+                    {locale === "en" ? "Workflow" : locale === "vi" ? "Quy trình" : "工作流"}
                   </span>
                   <h3 className="text-xl font-extrabold text-ink tracking-tight mb-2 leading-tight">
-                    Booking Workflow Hub
+                    {home.extras.workflowHubTitle}
                   </h3>
                   <p className="text-xs font-semibold leading-relaxed text-slate-500 mb-4">
-                    Manage intake, routing, confirmation, and internal handoff in one simple flow.
+                    {home.extras.workflowHubBody}
                   </p>
                 </div>
                 <div className="relative z-10 mt-auto flex justify-between items-center">
@@ -739,7 +734,7 @@ export default function HomePage() {
                     href="/coming-soon"
                     className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-ocean active:scale-95"
                   >
-                    Get started <ChevronRight className="h-3.5 w-3.5 text-slate-500" />
+                    {locale === "en" ? "Get started" : locale === "vi" ? "Bắt đầu ngay" : "立即開始"} <ChevronRight className="h-3.5 w-3.5 text-slate-500" />
                   </Link>
                 </div>
               </article>
@@ -751,13 +746,13 @@ export default function HomePage() {
                 <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
                 <div className="relative z-10 flex-grow">
                   <span className="rounded-md bg-blue-50 text-[9px] font-black uppercase tracking-widest text-ocean px-2 py-0.5 inline-block mb-3">
-                    Collaboration
+                    {locale === "en" ? "Collaboration" : locale === "vi" ? "Hợp tác" : "協同合作"}
                   </span>
                   <h3 className="text-xl font-extrabold text-ink tracking-tight mb-2 leading-tight">
-                    Share with partners
+                    {home.extras.sharePartnersTitle}
                   </h3>
                   <p className="text-xs font-semibold leading-relaxed text-slate-500 mb-4">
-                    Send structured updates and handoff links to partner teams and reviewers.
+                    {home.extras.sharePartnersBody}
                   </p>
                 </div>
                 <div className="relative z-10 mt-auto flex justify-between items-center">
@@ -765,7 +760,7 @@ export default function HomePage() {
                     href="/coming-soon"
                     className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-ocean active:scale-95"
                   >
-                    Learn more <ChevronRight className="h-3.5 w-3.5 text-slate-500" />
+                    {locale === "en" ? "Learn more" : locale === "vi" ? "Tìm hiểu thêm" : "了解更多"} <ChevronRight className="h-3.5 w-3.5 text-slate-500" />
                   </Link>
                 </div>
               </article>
@@ -777,13 +772,13 @@ export default function HomePage() {
                 <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
                 <div className="relative z-10 flex-grow">
                   <span className="rounded-md bg-blue-50 text-[9px] font-black uppercase tracking-widest text-ocean px-2 py-0.5 inline-block mb-3">
-                    Updates
+                    {locale === "en" ? "Updates" : locale === "vi" ? "Cập nhật" : "即時更新"}
                   </span>
                   <h3 className="text-xl font-extrabold text-ink tracking-tight mb-2 leading-tight">
-                    Instant updates
+                    {home.extras.instantUpdatesTitle}
                   </h3>
                   <p className="text-xs font-semibold leading-relaxed text-slate-500 mb-4">
-                    Notify customers and internal owners when a workflow changes.
+                    {home.extras.instantUpdatesBody}
                   </p>
                 </div>
                 <div className="relative z-10 mt-auto flex justify-between items-center">
@@ -791,7 +786,7 @@ export default function HomePage() {
                     href="/coming-soon"
                     className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-ocean active:scale-95"
                   >
-                    Learn more <ChevronRight className="h-3.5 w-3.5 text-slate-500" />
+                    {locale === "en" ? "Learn more" : locale === "vi" ? "Tìm hiểu thêm" : "了解更多"} <ChevronRight className="h-3.5 w-3.5 text-slate-500" />
                   </Link>
                 </div>
               </article>
@@ -804,19 +799,19 @@ export default function HomePage() {
               <div className="absolute inset-0 tech-grid opacity-20 pointer-events-none" />
               <div className="relative z-10 flex-grow">
                 <span className="rounded-md bg-blue-50 text-[9px] font-black uppercase tracking-widest text-ocean px-2.5 py-1 inline-block mb-4 w-max">
-                  Integrations
+                  {home.extras.integrationsEyebrow}
                 </span>
                 <h3 className="text-2xl font-extrabold text-ink tracking-tight mb-2 leading-tight">
-                  Works with tools you already use.
+                  {home.extras.integrationsTitle}
                 </h3>
                 <p className="text-slate-500 text-xs md:text-sm font-semibold leading-relaxed mb-6 max-w-xl">
-                  Connect your website and workflow to the platforms your team already uses.
+                  {home.extras.integrationsBody}
                 </p>
                 <Link
                   href="/coming-soon"
                   className="inline-flex h-10 items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-5 text-xs font-bold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-ocean"
                 >
-                  See integrations <ArrowRight className="h-3.5 w-3.5" />
+                  {home.extras.integrationsBtn} <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
               </div>
 
@@ -865,7 +860,7 @@ export default function HomePage() {
         <div className="relative z-10 mx-auto max-w-7xl">
           <Reveal>
             <div className="text-center mb-10 md:mb-12">
-              <SectionBadge icon={LayoutDashboard} size="lg">Delivery Process</SectionBadge>
+              <SectionBadge icon={LayoutDashboard} size="lg">{home.extras.deliveryProcess}</SectionBadge>
             </div>
           </Reveal>
 
@@ -888,13 +883,13 @@ export default function HomePage() {
                       <div className="flex h-full flex-col bg-porcelain px-6 pb-8 pt-11 text-ink">
                         <div className="mb-5 flex items-center justify-between text-xs font-bold text-slate-700">
                           <span>9:41</span>
-                          <span className="rounded-full bg-ocean/10 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-ocean">Live</span>
+                          <span className="rounded-full bg-ocean/10 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-ocean">{home.extras.iphone.live}</span>
                         </div>
                         <div className="rounded-[1.6rem] border border-slate-100 bg-white p-5 shadow-premium">
                           <div className="mb-5 flex items-center justify-between">
-                            <p className="text-sm font-black">Project flow</p>
+                            <p className="text-sm font-black">{home.extras.iphone.projectFlow}</p>
                             <span className="rounded-full bg-emerald-50 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-emerald-600">
-                              {hasSelectedAnalyticsNode ? "Selected" : "Auto"}
+                              {hasSelectedAnalyticsNode ? home.extras.iphone.selected : home.extras.iphone.auto}
                             </span>
                           </div>
                           <div className="rounded-2xl border border-ocean/15 bg-ocean/5 p-4">
@@ -903,7 +898,7 @@ export default function HomePage() {
                                 <ActiveAnalyticsIcon className="h-5 w-5" />
                               </span>
                               <div>
-                                <p className="text-[10px] font-black uppercase tracking-widest text-ocean">Active step</p>
+                                <p className="text-[10px] font-black uppercase tracking-widest text-ocean">{home.extras.iphone.activeStep}</p>
                                 <p className="mt-1 text-base font-black leading-tight">{activeAnalytics.title}</p>
                               </div>
                             </div>
@@ -917,13 +912,13 @@ export default function HomePage() {
                           </div>
                           <div className="mt-4 space-y-3">
                             {ANALYTICS_BEAM_NODES.map((node, index) => (
-                              <div key={node.title} className={`rounded-2xl border px-4 py-3 transition ${activeAnalytics.title === node.title ? "border-ocean/20 bg-blue-50" : "border-slate-100 bg-slate-50"}`}>
+                              <div key={node.title} className={`rounded-2xl border px-4 py-3 transition ${activeAnalytics.id === node.id ? "border-ocean/20 bg-blue-50" : "border-slate-100 bg-slate-50"}`}>
                                 <div className="flex items-center justify-between gap-3">
                                   <p className="text-xs font-black text-ink">{node.title}</p>
-                                  <span className={`h-2.5 w-2.5 rounded-full ${activeAnalytics.title === node.title ? "bg-ocean" : "bg-slate-300"}`} />
+                                  <span className={`h-2.5 w-2.5 rounded-full ${activeAnalytics.id === node.id ? "bg-ocean" : "bg-slate-300"}`} />
                                 </div>
                                 <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-slate-500">
-                                  Step {String(index + 1).padStart(2, "0")}
+                                  {locale === "en" ? "Step" : locale === "vi" ? "Bước" : "步驟"} {String(index + 1).padStart(2, "0")}
                                 </p>
                               </div>
                             ))}
@@ -931,16 +926,16 @@ export default function HomePage() {
                           <div className="mt-5 grid grid-cols-2 gap-3">
                             <div className="rounded-2xl bg-ocean/10 p-4">
                               <p className="text-2xl font-black text-ocean">{String(activeAnalyticsIndex + 1).padStart(2, "0")}</p>
-                              <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-slate-700">Current step</p>
+                              <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-slate-700">{home.extras.iphone.currentStep}</p>
                             </div>
                             <div className="rounded-2xl bg-emerald-50 p-4">
                               <p className="text-2xl font-black text-emerald-600">{String(ANALYTICS_BEAM_NODES.length).padStart(2, "0")}</p>
-                              <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-slate-700">Process steps</p>
+                              <p className="mt-1 text-[10px] font-black uppercase tracking-widest text-slate-700">{home.extras.iphone.processSteps}</p>
                             </div>
                           </div>
                         </div>
                         <div className="mt-auto rounded-2xl bg-ocean px-5 py-4 text-center text-sm font-bold text-white shadow-lg shadow-blue-500/20">
-                          Review launch path
+                          {home.extras.iphone.reviewLaunchPath}
                         </div>
                       </div>
                     </Iphone>
@@ -956,12 +951,12 @@ export default function HomePage() {
                   type="button"
                   onClick={() => {
                     setHasSelectedAnalyticsNode(true);
-                    setActiveAnalyticsNode(item.title);
+                    setActiveAnalyticsNode(item.id);
                   }}
-                  aria-pressed={activeAnalyticsNode === item.title}
-                  className={`group flex items-center gap-4 rounded-2xl border p-5 text-left shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-premium focus:outline-none focus-visible:ring-2 focus-visible:ring-ocean/40 md:absolute md:w-80 ${item.side === "left" ? "md:flex-row-reverse md:text-right" : "md:flex-row"} ${item.nodeClassName} ${activeAnalyticsNode === item.title ? "border-ocean/25 bg-white shadow-premium" : "border-slate-100 bg-white/95 shadow-md"}`}
+                  aria-pressed={activeAnalyticsNode === item.id}
+                  className={`group flex items-center gap-4 rounded-2xl border p-5 text-left shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-premium focus:outline-none focus-visible:ring-2 focus-visible:ring-ocean/40 md:absolute md:w-80 ${item.side === "left" ? "md:flex-row-reverse md:text-right" : "md:flex-row"} ${item.nodeClassName} ${activeAnalyticsNode === item.id ? "border-ocean/25 bg-white shadow-premium" : "border-slate-100 bg-white/95 shadow-md"}`}
                 >
-                  <span className={`order-2 flex h-12 w-12 shrink-0 items-center justify-center rounded-full transition md:order-none ${activeAnalyticsNode === item.title ? "bg-ocean text-white" : "bg-ocean/10 text-ocean group-hover:bg-ocean group-hover:text-white"}`}>
+                  <span className={`order-2 flex h-12 w-12 shrink-0 items-center justify-center rounded-full transition md:order-none ${activeAnalyticsNode === item.id ? "bg-ocean text-white" : "bg-ocean/10 text-ocean group-hover:bg-ocean group-hover:text-white"}`}>
                     <item.icon className="h-6 w-6" />
                   </span>
                   <span className="block">
@@ -980,7 +975,7 @@ export default function HomePage() {
         <div className="px-4 sm:px-6 max-w-7xl mx-auto">
           <div className="text-center mb-10 md:mb-12">
              <Reveal>
-                <SectionBadge icon={Workflow} size="lg">Company Purpose</SectionBadge>
+                <SectionBadge icon={Workflow} size="lg">{home.extras.companyPurpose}</SectionBadge>
              </Reveal>
           </div>
 
@@ -992,8 +987,8 @@ export default function HomePage() {
               <div className="bg-white rounded-[2.5rem] p-10 border border-slate-100 shadow-premium flex flex-col items-center relative overflow-hidden transition-transform duration-500 hover:scale-[1.02]">
                  <div className="absolute top-0 right-0 w-64 h-64 bg-ocean/5 rounded-full blur-[80px] pointer-events-none" />
                  <div className="flex justify-between items-center w-full mb-10 relative z-10">
-                    <p className="text-lg font-bold text-ink">Operating loop</p>
-                    <div className="h-8 w-28 bg-slate-50 rounded-lg border border-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-400">Service stack</div>
+                    <p className="text-lg font-bold text-ink">{home.extras.operatingLoop}</p>
+                    <div className="h-8 w-28 bg-slate-50 rounded-lg border border-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-400">{home.extras.serviceStack}</div>
                  </div>
                  <div className="relative z-10 flex h-64 w-64 items-center justify-center">
                     <AnimatedCircularProgressBar
@@ -1005,27 +1000,27 @@ export default function HomePage() {
                       className="size-64 text-4xl font-black text-ink"
                     />
                     <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center pt-14">
-                       <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Core workflow</p>
+                       <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{home.extras.coreWorkflow}</p>
                     </div>
                  </div>
                  <div className="grid grid-cols-2 gap-10 mt-10 w-full relative z-10">
                     <div className="flex items-center gap-3">
                        <div className="h-3 w-3 rounded-full bg-ocean animate-pulse" />
                        <div>
-                          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Public</p>
-                          <p className="text-base font-bold text-ink">Enquiry</p>
+                          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{locale === "en" ? "Public" : locale === "vi" ? "Công khai" : "公開"}</p>
+                          <p className="text-base font-bold text-ink">{home.extras.enquiry}</p>
                        </div>
                     </div>
                     <div className="flex items-center gap-3">
                        <div className="h-3 w-3 rounded-full bg-emerald-500 animate-pulse" style={{ animationDelay: '1s' }} />
                        <div>
-                          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Internal</p>
-                          <p className="text-base font-bold text-ink">Action</p>
+                          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{locale === "en" ? "Internal" : locale === "vi" ? "Nội bộ" : "內部"}</p>
+                          <p className="text-base font-bold text-ink">{home.extras.action}</p>
                        </div>
                     </div>
                  </div>
                  <div className="mt-12 grid w-full grid-cols-2 gap-3 relative z-10">
-                    {["Capture", "Qualify", "Route", "Update"].map((step) => (
+                    {home.extras.operatingSteps.map((step) => (
                       <div key={step} className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3 text-center text-xs font-black uppercase tracking-widest text-slate-500">
                         {step}
                       </div>
@@ -1037,19 +1032,14 @@ export default function HomePage() {
            <div className="space-y-12 relative z-10">
               <Reveal delay={0.2}>
                  <div className="text-sm font-bold text-ocean uppercase tracking-widest mb-4 flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 rounded-full bg-ocean animate-ping" /> Practical digital infrastructure
+                    <div className="h-1.5 w-1.5 rounded-full bg-ocean animate-ping" /> {home.extras.purposeEyebrow}
                  </div>
-                 <h3 className="text-4xl font-bold text-ink tracking-tight">Build the tools your service business actually needs.</h3>
+                 <h3 className="text-4xl font-bold text-ink tracking-tight">{home.extras.purposeTitle}</h3>
                  <p className="mt-6 text-slate-500 text-lg leading-relaxed font-medium">
-                    P2C Growth focuses on the practical systems behind a UK service business: a clear website, a reliable enquiry path, useful automation, visible customer records, and partner handoff where needed.
+                    {home.extras.purposeBody}
                  </p>
                  <div className="mt-10 space-y-4">
-                    {[
-                      "Centralise enquiries that would otherwise arrive through calls, email, forms, and messaging.",
-                      "Give teams a simple status view so every request has an owner and next step.",
-                      "Automate useful customer and internal updates without hiding the human service experience.",
-                      "Prepare the platform for future CRM and partner-routing workflows without overbuilding early."
-                    ].map((item) => (
+                    {home.extras.purposeList.map((item) => (
                     <div key={item} className="flex items-center gap-4 bg-white/50 backdrop-blur-sm p-3 rounded-2xl border border-slate-100 shadow-sm">
                        <div className="h-8 w-8 rounded-full bg-ocean/10 text-ocean flex items-center justify-center shrink-0">
                           <CheckCircle2 className="h-5 w-5" />
@@ -1068,7 +1058,7 @@ export default function HomePage() {
       <section className="py-24 md:py-32 overflow-hidden bg-[#f0f7ff] relative border-y border-blue-100/50">
         <div className="text-center mb-10 px-4 sm:px-6 max-w-7xl mx-auto relative z-20">
            <Reveal>
-              <SectionBadge icon={MessageSquareQuote} size="lg">Why teams choose P2C Growth</SectionBadge>
+              <SectionBadge icon={MessageSquareQuote} size="lg">{home.extras.whyTeamsChoose}</SectionBadge>
            </Reveal>
         </div>
 
@@ -1076,18 +1066,18 @@ export default function HomePage() {
           {[
             {
               icon: Monitor,
-              title: "One clear digital front door",
-              body: "Bring service pages, enquiry capture, booking requests, and contact routes into a website customers can understand quickly.",
+              title: home.extras.whyCards[0].title,
+              body: home.extras.whyCards[0].body,
             },
             {
               icon: Workflow,
-              title: "Workflow before software",
-              body: "Start with how the team actually works, then build screens and automation around the real operating path.",
+              title: home.extras.whyCards[1].title,
+              body: home.extras.whyCards[1].body,
             },
             {
               icon: LayoutDashboard,
-              title: "Simple systems teams can run",
-              body: "Keep customer records, ownership, status, and partner context visible without forcing a heavy enterprise tool too early.",
+              title: home.extras.whyCards[2].title,
+              body: home.extras.whyCards[2].body,
             },
           ].map((item, index) => (
             <Reveal key={item.title} delay={index * 0.1}>
@@ -1118,16 +1108,16 @@ export default function HomePage() {
                     <div className="rounded-[2rem] border border-slate-200 bg-white p-4 text-left text-slate-800 shadow-xl">
                       <div className="mb-5 flex items-center justify-between">
                         <div>
-                          <p className="text-[10px] font-black uppercase tracking-[0.24em] text-slate-400">Website enquiry</p>
-                          <p className="mt-1 text-xl font-black text-ink">Request captured</p>
+                          <p className="text-[10px] font-black uppercase tracking-[0.24em] text-slate-400">{home.extras.widgets.websiteEnquiry}</p>
+                          <p className="mt-1 text-xl font-black text-ink">{home.extras.widgets.requestCaptured}</p>
                         </div>
-                        <span className="rounded-full bg-blue-50 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-ocean">Live</span>
+                        <span className="rounded-full bg-blue-50 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-ocean">{home.extras.iphone.live}</span>
                       </div>
                       <div className="space-y-3">
                         {[
-                          ["Service", "Booking workflow"],
-                          ["Source", "Website form"],
-                          ["Next step", "Discovery call"],
+                          [home.extras.widgets.service, home.extras.widgets.bookingWorkflow],
+                          [home.extras.widgets.source, home.extras.widgets.websiteForm],
+                          [home.extras.widgets.nextStep, home.extras.widgets.discoveryCall],
                         ].map(([label, value]) => (
                           <div key={label} className="rounded-2xl border border-slate-100 bg-slate-50/70 p-4">
                             <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">{label}</p>
@@ -1139,17 +1129,17 @@ export default function HomePage() {
                   </MotionDiv>
 
                   <div className="order-1 lg:order-2">
-                    <p className="mb-5 text-[11px] font-black uppercase tracking-[0.24em] text-ocean">Start the conversation</p>
+                    <p className="mb-5 text-[11px] font-black uppercase tracking-[0.24em] text-ocean">{home.extras.ctaEyebrow}</p>
                     <h2 className="section-heading text-ink">
-                      Ready to improve <br />your digital workflow?
+                      {home.extras.ctaTitle}
                     </h2>
                     <p className="mt-8 text-base md:text-lg text-slate-600 max-w-xl font-medium mx-auto">
-                      Talk to P2C Growth about your website, booking workflow, automation, CRM system, or customer-partner platform.
+                      {home.extras.ctaBody}
                     </p>
                     <div className="mt-10 flex flex-col gap-4 sm:flex-row justify-center">
                       <Magnetic>
                         <Link href="/contact" className="inline-flex h-16 items-center justify-center gap-3 rounded-full bg-ocean px-12 text-base font-extrabold text-white shadow-lg shadow-blue-500/20 transition-all hover:scale-105 hover:bg-blue-650 active:scale-95">
-                          Contact P2C Growth
+                          {home.extras.ctaBtn}
                           <ArrowRight className="h-5 w-5" />
                         </Link>
                       </Magnetic>
@@ -1160,22 +1150,22 @@ export default function HomePage() {
                     <div className="rounded-[2rem] border border-white/20 bg-white p-4 text-left shadow-2xl">
                       <div className="mb-5 flex items-center justify-between">
                         <div>
-                          <p className="text-[10px] font-black uppercase tracking-[0.24em] text-slate-400">Internal view</p>
-                          <p className="mt-1 text-xl font-black text-ink">Workflow board</p>
+                          <p className="text-[10px] font-black uppercase tracking-[0.24em] text-slate-400">{home.extras.widgets.internalView}</p>
+                          <p className="mt-1 text-xl font-black text-ink">{home.extras.widgets.workflowBoard}</p>
                         </div>
-                        <span className="rounded-full bg-emerald-50 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-emerald-600">Active</span>
+                        <span className="rounded-full bg-emerald-50 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-emerald-600">{home.extras.widgets.active}</span>
                       </div>
                       <div className="overflow-hidden rounded-2xl border border-slate-100">
                         {[
-                          ["New enquiry", "02"],
-                          ["Owner assigned", "01"],
-                          ["Customer updated", "03"],
-                          ["Completed", "04"],
+                          [home.extras.widgets.newEnquiry, "02"],
+                          [home.extras.widgets.ownerAssigned, "01"],
+                          [home.extras.widgets.customerUpdated, "03"],
+                          [home.extras.widgets.completed, "04"],
                         ].map(([status, count]) => (
                           <div key={status} className="flex items-center justify-between border-b border-slate-100 bg-slate-50/70 px-4 py-3 last:border-b-0">
                             <div>
                               <p className="text-sm font-black text-ink">{status}</p>
-                              <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-400">Service workflow</p>
+                              <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-400">{home.extras.widgets.serviceWorkflow}</p>
                             </div>
                             <span className="text-lg font-black text-ocean">{count}</span>
                           </div>
@@ -1195,8 +1185,8 @@ export default function HomePage() {
         <div className="px-4 sm:px-6 max-w-5xl mx-auto">
           <div className="text-center mb-10">
              <Reveal>
-                <SectionBadge icon={MessageSquareQuote} size="lg">FAQ</SectionBadge>
-                <p className="text-base font-semibold text-slate-500 max-w-2xl mx-auto mt-2">Clear answers to common questions about our platform, features, and support.</p>
+                <SectionBadge icon={MessageSquareQuote} size="lg">{locale === "en" ? "FAQ" : locale === "vi" ? "Câu hỏi thường gặp" : "常見問題"}</SectionBadge>
+                <p className="text-base font-semibold text-slate-500 max-w-2xl mx-auto mt-2">{home.extras.faqDescription}</p>
              </Reveal>
           </div>
 

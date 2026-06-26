@@ -417,13 +417,13 @@ export default function PhysiotherapyPage() {
       </section>
 
       {/* Footer Banner Section */}
-      <section className="relative px-4 sm:px-6 max-w-5xl mx-auto mt-28 text-center bg-slate-900 text-white rounded-[3rem] p-10 md:p-16 overflow-hidden shadow-xl">
+      <section className="relative px-4 sm:px-6 max-w-5xl mx-auto mt-28 text-center bg-[#f0f7ff] border border-blue-100 rounded-[3rem] p-10 md:p-16 overflow-hidden shadow-premium">
         <div className="absolute inset-0 tech-grid opacity-10 pointer-events-none" />
         <Reveal>
-          <h2 className="text-xl md:text-3xl font-extrabold tracking-tight mb-4">
+          <h2 className="text-xl md:text-3xl font-extrabold tracking-tight mb-4 text-ink">
             {t.footer.title}
           </h2>
-          <p className="text-xs md:text-sm text-slate-400 font-semibold leading-relaxed max-w-2xl mx-auto mb-8">
+          <p className="text-xs md:text-sm text-slate-600 font-semibold leading-relaxed max-w-2xl mx-auto mb-8">
             {t.footer.desc}
           </p>
           <Link 
@@ -433,7 +433,7 @@ export default function PhysiotherapyPage() {
             {t.footer.button}
             <ChevronRight className="h-4 w-4" />
           </Link>
-          <p className="mt-8 text-[9px] font-bold text-slate-500 max-w-2xl mx-auto uppercase tracking-wide leading-relaxed border-t border-slate-800/80 pt-6">
+          <p className="mt-8 text-[9px] font-bold text-slate-400 max-w-2xl mx-auto uppercase tracking-wide leading-relaxed border-t border-blue-200/50 pt-6">
             {t.footer.disclaimer}
           </p>
         </Reveal>
