@@ -66,6 +66,6 @@
 - **Description:** "Resolve homepage carousel layout clipping issues by introducing proper padding offset parameters (py-8 -my-8 px-10 -mx-10) and responsive nav control margins. Transition the physiotherapy bottom CTA banner completely to light-theme matching the platform's color palette."
 
 ## [SCRUM-62] [UI/PERF] Fix Services Carousel card height mismatch and optimize WebGL Globe performance
-- **Status:** In Progress
-- **Update (2026-06-26):** Initializing fixes for services card sizes and performance optimization of WebGL Canvas Globe.
+- **Status:** Done
+- **Update (2026-06-26):** Standardized carousel card heights using `h-full` and optimized WebGL rendering loads. Build and lint passes verified. Deployed to Vercel production.
 - **Description:** "Fix the height mismatch of the 5 services carousel cards by applying the h-full class, and optimize WebGL Globe rendering load by reducing mapSamples and devicePixelRatio."
