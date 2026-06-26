@@ -55,4 +55,10 @@
 - **Update (2026-06-25):** Configured consistent White <-> Pale Blue alternating background sections, redesigned notice banner using professional ShieldCheck and blue styles, light-themed final CTA card with dark slate typography, expanded booking page container width to max-w-7xl, and integrated IntersectionObserver to dynamically mount/destroy WebGL Globe on viewport exit/entrance to eliminate scroll lag.
 - **Description:** "Execute premium visual polish: alternate section backgrounds, redesign medical disclaimer notice, light-theme the intensive dark blue CTA, expand booking page width, and optimize 3D Globe loading performance by viewport lazy-loading WebGL canvases."
 
+## [SCRUM-60] [UI] notice accordion conversion and pill size consistency
+- **Status:** Done
+- **Update (2026-06-26):** Converted the static medical liability banner into a collapsible accordion-style card with a clean header toggle, bilingual support, and smooth expansion animations. Adjusted SectionBadge sizing logic so the larger pill size is applied consistently across all sections of the site.
+- **Description:** "Convert the physiotherapy page's medical liability notice banner into an accordion and make SectionBadge pill size consistent across the site."
+
+
 

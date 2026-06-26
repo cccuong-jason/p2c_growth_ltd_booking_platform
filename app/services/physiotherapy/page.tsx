@@ -16,12 +16,14 @@ import {
   Award, 
   Check, 
   ChevronRight, 
+  ChevronDown,
   HeartPulse,
   Home,
   Video,
   Info,
   X
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Reveal } from "@/components/home/motion-primitives";
 import { SectionBadge } from "@/components/ui/section-badge";
 import { FaqAccordion } from "@/components/ui/faq-accordion";
@@ -41,6 +43,7 @@ const AUDIENCE_ICONS = [
 export default function PhysiotherapyPage() {
   const { locale, setLocale } = useLocale();
   const [activeTabId, setActiveTabId] = useState<string>("elderly");
+  const [isNoticeOpen, setIsNoticeOpen] = useState(false);
 
   const d = getDictionary(locale);
   const t = d.physiotherapy;
@@ -101,24 +104,55 @@ export default function PhysiotherapyPage() {
       {/* Important Notice Callout Banner */}
       <section className="relative z-20 px-4 sm:px-6 max-w-5xl mx-auto mt-12">
         <Reveal>
-          <div className="rounded-3xl border border-blue-100 bg-[#f0f7ff]/70 p-6 md:p-8 shadow-sm flex flex-col md:flex-row items-start gap-5">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-800 border border-blue-200">
-              <ShieldCheck className="h-5 w-5" aria-hidden="true" />
-            </div>
-            <div className="space-y-3">
-              <h3 className="text-xs font-black uppercase tracking-widest text-blue-900">{t.notice.title}</h3>
-              <p className="text-xs font-bold leading-relaxed text-slate-600">
-                {t.notice.body1}
-              </p>
-              <p className="text-xs font-bold leading-relaxed text-slate-600">
-                {t.notice.body2}
-              </p>
-              <p className="text-xs font-bold leading-relaxed text-slate-600">
-                {t.notice.body3}
-              </p>
-              <div className="pt-3 border-t border-blue-200/40 text-xs font-black text-rose-800 flex items-start gap-2">
-                <AlertTriangle className="h-4 w-4 shrink-0 text-rose-800 mt-0.5" />
-                <span>{t.notice.emergency}</span>
+          <div className="rounded-3xl border border-blue-100 bg-[#f0f7ff]/70 shadow-sm overflow-hidden transition-all duration-300">
+            {/* Accordion Trigger */}
+            <button
+              onClick={() => setIsNoticeOpen(!isNoticeOpen)}
+              className="w-full flex items-center justify-between p-6 md:p-8 text-left outline-none hover:bg-[#f0f7ff]/40 transition-colors"
+            >
+              <div className="flex items-center gap-4">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-800 border border-blue-200 shadow-sm">
+                  <ShieldCheck className="h-5 w-5" aria-hidden="true" />
+                </div>
+                <div>
+                  <h3 className="text-xs font-black uppercase tracking-widest text-blue-900 flex flex-wrap items-center gap-2 leading-none">
+                    {t.notice.title} 
+                    <span className="rounded-full bg-blue-100/50 px-2 py-0.5 text-[9px] font-black uppercase text-ocean tracking-wide">
+                      {locale === "en" ? "Read Coordination Disclaimer" : "Xem Điều Khoản Hỗ Trợ"}
+                    </span>
+                  </h3>
+                  <p className="text-xs font-semibold text-slate-500 mt-1.5 leading-normal">
+                    {locale === "en" 
+                      ? "P2C Growth acts as a coordination assistant, not a clinical provider. Click to read full details."
+                      : "P2C Growth hoạt động như một đơn vị hỗ trợ điều phối, không phải cơ sở lâm sàng. Click để xem chi tiết."}
+                  </p>
+                </div>
+              </div>
+              <div className="text-slate-400 p-1.5 hover:text-slate-650 transition-colors shrink-0 ml-4">
+                <ChevronDown className={cn("h-5 w-5 transition-transform duration-300", isNoticeOpen && "rotate-180")} />
+              </div>
+            </button>
+
+            {/* Accordion Content */}
+            <div className={cn(
+              "transition-all duration-300 ease-in-out overflow-hidden",
+              isNoticeOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+            )}>
+              <div className="p-6 md:p-8 pt-0 space-y-4">
+                <div className="h-px bg-blue-100/30 mb-4" />
+                <p className="text-xs font-bold leading-relaxed text-slate-600">
+                  {t.notice.body1}
+                </p>
+                <p className="text-xs font-bold leading-relaxed text-slate-600">
+                  {t.notice.body2}
+                </p>
+                <p className="text-xs font-bold leading-relaxed text-slate-600">
+                  {t.notice.body3}
+                </p>
+                <div className="pt-4 border-t border-blue-200/40 text-xs font-black text-rose-800 flex items-start gap-2">
+                  <AlertTriangle className="h-4 w-4 shrink-0 text-rose-800 mt-0.5" />
+                  <span>{t.notice.emergency}</span>
+                </div>
               </div>
             </div>
           </div>
