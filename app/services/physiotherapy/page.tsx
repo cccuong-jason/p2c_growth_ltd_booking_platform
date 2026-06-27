@@ -26,7 +26,6 @@ import {
 import { cn } from "@/lib/utils";
 import { Reveal } from "@/components/home/motion-primitives";
 import { SectionBadge } from "@/components/ui/section-badge";
-import { FaqAccordion } from "@/components/ui/faq-accordion";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { useLocale } from "@/components/providers/locale-provider";
 
@@ -73,7 +72,7 @@ export default function PhysiotherapyPage() {
         <div className="relative z-10 w-full px-4 sm:px-6 max-w-5xl mx-auto text-center mt-8">
           <Reveal>
             <SectionBadge icon={Activity}>{t.hero.eyebrow}</SectionBadge>
-            <h1 className="page-heading text-ink mb-6 mt-4 tracking-tight leading-tight max-w-4xl mx-auto text-3xl md:text-5xl font-black">
+            <h1 className="page-heading text-gradient mb-6 mt-4 tracking-tight leading-tight max-w-4xl mx-auto text-3xl md:text-5xl font-black">
               {t.hero.title}
             </h1>
             <p className="text-base md:text-lg font-semibold leading-relaxed text-slate-600 max-w-3xl mx-auto mb-8">
@@ -400,21 +399,6 @@ export default function PhysiotherapyPage() {
 
 
 
-      {/* Frequently Asked Questions (FaqAccordion) */}
-      <section id="faq-section" className="relative px-4 sm:px-6 max-w-7xl mx-auto mt-28">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <Reveal>
-            <SectionBadge icon={ShieldCheck}>FAQ</SectionBadge>
-            <h2 className="text-2xl md:text-4xl font-extrabold tracking-tight text-ink mt-4 mb-4">
-              {t.faqs.title}
-            </h2>
-          </Reveal>
-        </div>
-
-        <div className="relative z-20">
-          <FaqAccordion items={t.faqs.items} />
-        </div>
-      </section>
 
       {/* Footer Banner Section */}
       <section className="relative px-4 sm:px-6 max-w-5xl mx-auto mt-28 text-center bg-[#f0f7ff] border border-blue-100 rounded-[3rem] p-10 md:p-16 overflow-hidden shadow-premium">

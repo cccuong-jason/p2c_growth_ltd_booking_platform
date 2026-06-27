@@ -65,7 +65,7 @@
 - **Update (2026-06-26):** Fixed homepage carousel shadow clipping by adjusting layout offsets to 32px vertical and 40px horizontal. Adjusted navigation arrow positioning (`left-4 xl:-left-8`) to prevent vertical clipping on medium viewport screen edges. Fully light-themed the physiotherapy landing page CTA banner. Build and Lint verified.
 - **Description:** "Resolve homepage carousel layout clipping issues by introducing proper padding offset parameters (py-8 -my-8 px-10 -mx-10) and responsive nav control margins. Transition the physiotherapy bottom CTA banner completely to light-theme matching the platform's color palette."
 
-## [SCRUM-62] [UI/PERF] Fix Services Carousel card height mismatch and optimize WebGL Globe performance
+## [SCRUM-62] [UI/PERF] Fix Services Carousel card height mismatch, optimize WebGL Globe performance, revamp typography, and consolidate FAQs
 - **Status:** Done
-- **Update (2026-06-26):** Standardized carousel card heights using `h-full` and optimized WebGL rendering loads. Build and lint passes verified. Deployed to Vercel production.
-- **Description:** "Fix the height mismatch of the 5 services carousel cards by applying the h-full class, and optimize WebGL Globe rendering load by reducing mapSamples and devicePixelRatio."
+- **Update (2026-06-27):** Standardized carousel card heights using `h-full` and optimized WebGL rendering loads. Added `.text-gradient` utility class and updated heading tracking across the site. Consolidated all regional Q&As into a unified tabbed `FaqAccordion` on the Homepage and removed redundant FAQ blocks from Physiotherapy and Contact pages. Verified build/lint clean.
+- **Description:** "Fix height mismatch of services carousel, optimize WebGL Globe rendering load, revamp heading styling with text gradients, and merge all subpage FAQs into a unified tabbed Accordion on the Homepage."

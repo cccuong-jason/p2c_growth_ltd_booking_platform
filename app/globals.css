@@ -22,14 +22,14 @@ body {
 
 /* Refined Premium Typography */
 .display-heading {
-  letter-spacing: -0.025em;
+  letter-spacing: -0.035em;
   line-height: 1.05;
   font-weight: 800;
 }
 
 .page-heading {
-  font-size: clamp(2.375rem, 4.5vw, 4rem);
-  letter-spacing: -0.025em;
+  font-size: clamp(2.25rem, 4vw, 3.75rem);
+  letter-spacing: -0.03em;
   line-height: 1.06;
   font-weight: 800;
 }
@@ -42,10 +42,16 @@ body {
 }
 
 .section-heading {
-  font-size: clamp(2rem, 3.5vw, 3.5rem);
-  letter-spacing: -0.02em;
-  line-height: 1.12;
+  font-size: clamp(1.875rem, 3.25vw, 3.25rem);
+  letter-spacing: -0.025em;
+  line-height: 1.1;
   font-weight: 800;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #09090b 20%, #1e293b 60%, #0b4ec7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* Base custom utilities */
