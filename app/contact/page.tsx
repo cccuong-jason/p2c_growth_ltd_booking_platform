@@ -9,7 +9,6 @@ import { Reveal } from "@/components/home/motion-primitives";
 import { SectionBadge } from "@/components/ui/section-badge";
 import { BentoCard } from "@/components/ui/bento-card";
 import { DottedMap, type Marker } from "@/components/ui/dotted-map";
-import { FaqAccordion } from "@/components/ui/faq-accordion";
 import { useLocale } from "@/components/providers/locale-provider";
 import { getDictionary } from "@/lib/i18n/dictionary";
 
@@ -55,7 +54,7 @@ export default function ContactPage() {
       <section className="relative pt-32 pb-10 md:pt-40 md:pb-12 text-center px-4 sm:px-6 max-w-4xl mx-auto z-20">
         <Reveal>
           <SectionBadge className="bg-white">{t.eyebrow}</SectionBadge>
-          <h1 className="page-heading text-ink mb-6">
+          <h1 className="page-heading text-gradient mb-6">
             {t.title}
           </h1>
           <p className="text-lg font-medium leading-relaxed text-slate-500 mb-10">
@@ -175,40 +174,6 @@ export default function ContactPage() {
         </Reveal>
       </section>
 
-      {/* FAQ Section */}
-      <section className="px-4 sm:px-6 max-w-5xl mx-auto mb-32">
-        <div className="text-center mb-16">
-          <Reveal>
-            <SectionBadge>FAQ</SectionBadge>
-            <h2 className="section-heading text-ink mb-4">{t.faqTitle}</h2>
-            <p className="text-lg font-medium text-slate-500 mb-10 max-w-2xl mx-auto">{t.faqSubtitle}</p>
-          </Reveal>
-        </div>
-        
-        <FaqAccordion items={t.faqs} />
-
-        <Reveal delay={0.3}>
-          <div className="mt-16 bg-slate-50 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 border border-slate-100">
-            <div className="flex items-center gap-4">
-               <div className="flex -space-x-2">
-                 <Image className="w-12 h-12 rounded-full border-2 border-white object-cover shadow-sm" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80" alt="Support" width={48} height={48} />
-               </div>
-               <div>
-                  <h4 className="text-base font-bold text-ink">{t.faqCtaTitle}</h4>
-                  <p className="text-sm font-medium text-slate-500 mt-1">{t.faqCtaSubtitle}</p>
-               </div>
-            </div>
-            <div className="flex items-center gap-3 shrink-0 w-full md:w-auto">
-               <button className="flex-1 md:flex-none h-11 px-5 rounded-xl border border-slate-200 bg-white text-sm font-bold text-slate-700 hover:bg-slate-50 transition shadow-sm">
-                 {t.faqDocBtn}
-               </button>
-               <button className="flex-1 md:flex-none h-11 px-5 rounded-xl bg-ocean text-sm font-bold text-white hover:bg-blue-600 transition shadow-sm">
-                 {t.faqContactBtn}
-               </button>
-            </div>
-          </div>
-        </Reveal>
-      </section>
 
       {/* CTA Footer Block */}
       <section className="bg-ocean py-24 md:py-32 px-4 sm:px-6 text-center relative overflow-hidden">

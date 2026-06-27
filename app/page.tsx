@@ -85,7 +85,8 @@ const HERO_GLOBE_CONFIG: COBEOptions = {
 
 export default function HomePage() {
   const { locale } = useLocale();
-  const { home } = getDictionary(locale);
+  const dict = getDictionary(locale);
+  const { home } = dict;
 
   const HOME_SERVICE_BOXES = [
     {
@@ -217,32 +218,6 @@ export default function HomePage() {
     },
   ], [locale]);
 
-  const FAQ_ITEMS = [
-    {
-      question: locale === "en" ? "What does P2C Growth build?" : locale === "vi" ? "P2C Growth xây dựng những gì?" : "P2C Growth 構建什麼？",
-      answer: locale === "en" 
-        ? "Websites, booking workflows, email automation, lightweight CRM tools, and customer-partner platforms for UK service businesses." 
-        : locale === "vi" 
-        ? "Website, quy trình đặt lịch, tự động hóa email, công cụ CRM gọn nhẹ và nền tảng kết nối khách hàng - đối tác cho các doanh nghiệp dịch vụ tại UK." 
-        : "為英國服務型公司提供網站建設、預約工作流、自動化流程、微型 CRM 工具及客戶與合作夥伴協調平台。",
-    },
-    {
-      question: locale === "en" ? "Can you improve an existing workflow?" : locale === "vi" ? "Bạn có thể cải thiện quy trình hiện có không?" : "你們能改進現有的工作流嗎？",
-      answer: locale === "en" 
-        ? "Yes. We can map the current enquiry, booking, follow-up, and handoff process, then rebuild the parts that create the most manual work." 
-        : locale === "vi" 
-        ? "Có. Chúng tôi có thể lập bản đồ quy trình yêu cầu, đặt lịch, theo dõi và bàn giao hiện tại, sau đó xây dựng lại các phần tạo ra nhiều công việc thủ công nhất." 
-        : "可以。我們可以規劃當前的諮詢、預約、跟進和交接流程，然後重建產生最多人工工作的環節。",
-    },
-    {
-      question: locale === "en" ? "Is P2C Health the whole business?" : locale === "vi" ? "P2C Health có phải là toàn bộ hoạt động kinh doanh không?" : "P2C Health 是全部業務嗎？",
-      answer: locale === "en" 
-        ? "No. It is one service offering. The homepage represents P2C Growth LTD as a broader technology and software company." 
-        : locale === "vi" 
-        ? "Không. Đó là một dịch vụ được cung cấp. Trang chủ đại diện cho P2C Growth LTD như một công ty phần mềm và công nghệ rộng lớn hơn." 
-        : "不是。它只是其中一項服務。首頁代表 P2C Growth LTD 作為一家更廣泛的技術與軟件公司。",
-    },
-  ];
   const servicesScrollRef = useRef<HTMLDivElement>(null);
 
   const scrollServices = (direction: "left" | "right") => {
@@ -302,7 +277,7 @@ export default function HomePage() {
  
           <div className="max-w-5xl mx-auto min-h-[140px] flex items-center justify-center">
              <TypingAnimation
-                className="text-5xl md:text-[5.5rem] font-extrabold text-ink tracking-tight leading-[1.1] justify-center display-heading"
+                className="text-5xl md:text-[5.5rem] font-extrabold text-gradient tracking-tight leading-[1.1] justify-center display-heading"
                 duration={50}
              >
                 {home.heroTitle}
@@ -1130,7 +1105,7 @@ export default function HomePage() {
 
                   <div className="order-1 lg:order-2">
                     <p className="mb-5 text-[11px] font-black uppercase tracking-[0.24em] text-ocean">{home.extras.ctaEyebrow}</p>
-                    <h2 className="section-heading text-ink">
+                    <h2 className="section-heading text-gradient">
                       {home.extras.ctaTitle}
                     </h2>
                     <p className="mt-8 text-base md:text-lg text-slate-600 max-w-xl font-medium mx-auto">
@@ -1190,7 +1165,25 @@ export default function HomePage() {
              </Reveal>
           </div>
 
-          <FaqAccordion items={FAQ_ITEMS} />
+          <FaqAccordion 
+            categories={[
+              {
+                id: "general",
+                label: locale === "en" ? "General Platform" : locale === "vi" ? "Nền tảng chung" : "通用平台",
+                items: home.faq,
+              },
+              {
+                id: "physio",
+                label: locale === "en" ? "P2C Health (Physiotherapy)" : locale === "vi" ? "P2C Health (Vật lý trị liệu)" : "P2C Health (物理治療)",
+                items: dict.physiotherapy.faqs.items,
+              },
+              {
+                id: "billing",
+                label: locale === "en" ? "Accounts & Billing" : locale === "vi" ? "Tài khoản & Thanh toán" : "帳戶與帳單",
+                items: dict.contact.faqs,
+              },
+            ]} 
+          />
         </div>
       </section>
 
