@@ -33,6 +33,7 @@ import { SectionBadge } from "@/components/ui/section-badge";
 import { BentoCard } from "@/components/ui/bento-card";
 import { GlassOverlay } from "@/components/ui/glass-overlay";
 import { FaqAccordion } from "@/components/ui/faq-accordion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   Reveal,
   SpringReveal,
@@ -58,12 +59,12 @@ const HERO_GLOBE_CONFIG: COBEOptions = {
   width: 1000,
   height: 1000,
   onRender: () => {},
-  devicePixelRatio: 1.5,
+  devicePixelRatio: 2.0,
   phi: 6.28,
   theta: 0.5,
-  dark: 0.15,
-  diffuse: 3,
-  mapSamples: 12000,
+  dark: 0.05,
+  diffuse: 3.5,
+  mapSamples: 22000,
   mapBrightness: 3.5,
   mapBaseBrightness: 0,
   scale: 1.2,
@@ -83,6 +84,46 @@ const HERO_GLOBE_CONFIG: COBEOptions = {
   ],
 };
 
+
+function HealthImageSlider() {
+  const images = [
+    "/assets/homepage/our-services/p2c-health/p2c-health-1.webp",
+    "/assets/homepage/our-services/p2c-health/p2c-health-2.webp",
+    "/assets/homepage/our-services/p2c-health/p2c-health-3.webp",
+    "/assets/homepage/our-services/p2c-health/p2c-health-4.webp",
+    "/assets/homepage/our-services/p2c-health/p2c-health-5.webp",
+    "/assets/homepage/our-services/p2c-health/p2c-health-6.webp",
+    "/assets/homepage/our-services/p2c-health/p2c-health-7.webp",
+    "/assets/homepage/our-services/p2c-health/p2c-health-8.webp",
+    "/assets/homepage/our-services/p2c-health/p2c-health-9.webp",
+    "/assets/homepage/our-services/p2c-health/p2c-health-10.webp"
+  ];
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % images.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [images.length]);
+
+  return (
+    <div className="absolute inset-0 w-full h-full bg-slate-100">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={index}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.0, ease: "easeInOut" }}
+          className="absolute inset-0 w-full h-full bg-cover bg-center"
+          style={{ backgroundImage: `url(${images[index]})` }}
+        />
+      </AnimatePresence>
+    </div>
+  );
+}
+
 export default function HomePage() {
   const { locale } = useLocale();
   const dict = getDictionary(locale);
@@ -99,7 +140,7 @@ export default function HomePage() {
         : "為患者、法律案例、保險公司和專家跟進提供引導式預約和轉介工作流。",
       href: "/services/physiotherapy",
       icon: Activity,
-      image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=85",
+      image: "/assets/homepage/our-services/p2c-health/p2c-health-1.webp",
     },
     {
       eyebrow: locale === "en" ? "Design" : locale === "vi" ? "Thiết kế" : "設計",
@@ -111,7 +152,7 @@ export default function HomePage() {
         : "為英國服務型企業提供以轉化為中心的高端網站。",
       href: "/coming-soon",
       icon: Monitor,
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=85",
+      image: "/assets/homepage/our-services/carousel/website-development-elementor-io-optimized.webp",
     },
     {
       eyebrow: locale === "en" ? "Automation" : locale === "vi" ? "Tự động hóa" : "自動化",
@@ -123,7 +164,7 @@ export default function HomePage() {
         : "表單、工作流、確認、通知和運營交接，無需人工催促。",
       href: "/coming-soon",
       icon: Workflow,
-      image: "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1200&q=85",
+      image: "/assets/homepage/our-services/carousel/booking-system-and-email-automation-elementor-io-optimized.webp",
     },
     {
       eyebrow: locale === "en" ? "CRM" : locale === "vi" ? "CRM" : "CRM",
@@ -147,7 +188,7 @@ export default function HomePage() {
         : "客戶、內部團隊和專業合作夥伴之間的可重用協調層。",
       href: "/coming-soon",
       icon: UserCheck,
-      image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=85",
+      image: "/assets/homepage/our-services/carousel/customer-partner-platform-elementor-io-optimized.webp",
     },
     {
       eyebrow: locale === "en" ? "Custom" : locale === "vi" ? "Tùy chỉnh" : "自訂",
@@ -258,9 +299,9 @@ export default function HomePage() {
 
       {/* --- HERO SECTION WITH GLOBE --- */}
       <section className="relative min-h-[95vh] flex flex-col items-center justify-center pt-32 pb-20 md:pt-48 md:pb-40 bg-white overflow-hidden">
-        <div className="pointer-events-none absolute left-1/2 top-[47%] z-0 w-[760px] max-w-[132vw] -translate-x-1/2 -translate-y-1/2 opacity-55 md:w-[980px]">
+        <div className="pointer-events-none absolute left-1/2 top-[47%] z-0 w-[760px] max-w-[132vw] -translate-x-1/2 -translate-y-1/2 opacity-95 md:w-[980px]">
           <Globe config={HERO_GLOBE_CONFIG} className="mx-auto" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_33%,rgba(247,251,255,0.92)_0%,rgba(247,251,255,0.72)_30%,rgba(247,251,255,0.22)_56%),radial-gradient(circle_at_50%_74%,rgba(247,251,255,0.18)_20%,rgba(247,251,255,0.94)_68%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_33%,rgba(247,251,255,0.40)_0%,rgba(247,251,255,0.25)_30%,rgba(247,251,255,0.05)_56%),radial-gradient(circle_at_50%_74%,rgba(247,251,255,0.05)_20%,rgba(247,251,255,0.60)_68%)]" />
         </div>
 
         {/* Hero Content */}
@@ -308,10 +349,29 @@ export default function HomePage() {
       {/* --- SERVICES CAROUSEL --- */}
       <section className="bg-[#f0f7ff] px-4 py-24 sm:px-6 md:py-32 overflow-hidden relative border-y border-blue-100/50">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-6">
+          <div className="mb-6 flex items-center justify-between">
             <Reveal>
               <SectionBadge icon={LayoutDashboard} size="lg">{locale === "en" ? "Our services" : locale === "vi" ? "Dịch vụ của chúng tôi" : "我們的服務"}</SectionBadge>
             </Reveal>
+            {/* Desktop Navigation Controls */}
+            <div className="hidden md:flex gap-3">
+              <button
+                type="button"
+                onClick={() => scrollServices("left")}
+                aria-label="Scroll left"
+                className="h-10 w-10 rounded-xl border border-slate-200 bg-white text-slate-800 shadow-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95 flex items-center justify-center"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollServices("right")}
+                aria-label="Scroll right"
+                className="h-10 w-10 rounded-xl border border-slate-200 bg-white text-slate-800 shadow-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95 flex items-center justify-center"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </div>
           </div>
 
           {/* Desktop Layout (Hidden on mobile) */}
@@ -342,17 +402,14 @@ export default function HomePage() {
                 </div>
               </div>
               <div className="relative w-full md:w-[48%] h-[200px] md:h-[280px] rounded-2xl overflow-hidden border border-slate-100 shadow-sm z-10 flex-shrink-0">
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                  style={{ backgroundImage: `url(https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=85)` }}
-                />
+                <HealthImageSlider />
               </div>
             </article>
 
             <div className="relative mt-6">
               <div
                 ref={servicesScrollRef}
-                className="flex gap-8 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar py-8 -my-8 px-10 -mx-10"
+                className="flex gap-8 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar py-6 -my-6 px-1 -mx-1"
               >
                 <div className="w-full flex-none snap-start">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -384,7 +441,7 @@ export default function HomePage() {
                     <div className="relative w-full sm:w-[40%] h-[140px] sm:h-[180px] rounded-xl overflow-hidden border border-slate-100 shadow-sm z-10 flex-shrink-0 self-center">
                       <div
                         className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                        style={{ backgroundImage: `url(https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=85)` }}
+                        style={{ backgroundImage: `url(${HOME_SERVICE_BOXES[1].image})` }}
                       />
                     </div>
                   </article>
@@ -417,7 +474,7 @@ export default function HomePage() {
                     <div className="relative w-full sm:w-[40%] h-[140px] sm:h-[180px] rounded-xl overflow-hidden border border-slate-100 shadow-sm z-10 flex-shrink-0 self-center">
                       <div
                         className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                        style={{ backgroundImage: `url(https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1200&q=85)` }}
+                        style={{ backgroundImage: `url(${HOME_SERVICE_BOXES[2].image})` }}
                       />
                     </div>
                   </article>
@@ -487,7 +544,7 @@ export default function HomePage() {
                     <div className="relative w-full sm:w-[40%] h-[140px] sm:h-[180px] rounded-xl overflow-hidden border border-slate-100 shadow-sm z-10 flex-shrink-0 self-center">
                       <div
                         className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                        style={{ backgroundImage: `url(https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=85)` }}
+                        style={{ backgroundImage: `url(${HOME_SERVICE_BOXES[4].image})` }}
                       />
                     </div>
                   </article>
@@ -531,24 +588,6 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-
-              {/* Absolute side navigation controls */}
-              <button
-                type="button"
-                onClick={() => scrollServices("left")}
-                aria-label="Scroll left"
-                className="absolute left-4 xl:-left-8 top-1/2 -translate-y-1/2 h-14 w-14 rounded-full border border-slate-200 bg-white/95 text-slate-800 shadow-xl backdrop-blur-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95 flex items-center justify-center z-40"
-              >
-                <ChevronLeft className="h-6 w-6" />
-              </button>
-              <button
-                type="button"
-                onClick={() => scrollServices("right")}
-                aria-label="Scroll right"
-                className="absolute right-4 xl:-right-8 top-1/2 -translate-y-1/2 h-14 w-14 rounded-full border border-slate-200 bg-white/95 text-slate-800 shadow-xl backdrop-blur-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95 flex items-center justify-center z-40"
-              >
-                <ChevronRight className="h-6 w-6" />
-              </button>
             </div>
           </div>
 
@@ -654,32 +693,23 @@ export default function HomePage() {
 
                 {/* Mockup Graphic */}
                 <div className="md:col-span-5 flex justify-center md:justify-end h-full items-center">
-                  <div className="relative w-full max-w-[210px] aspect-[4/5] bg-white border border-slate-200/80 rounded-2xl shadow-xl p-3 flex flex-col gap-2 transition-transform duration-500 group-hover:scale-105">
-                    {/* Browser Dots */}
-                    <div className="flex gap-1 mb-1.5">
-                      <span className="h-1.5 w-1.5 rounded-full bg-slate-200" />
-                      <span className="h-1.5 w-1.5 rounded-full bg-slate-200" />
-                      <span className="h-1.5 w-1.5 rounded-full bg-slate-200" />
-                    </div>
-                    {/* Header bar */}
-                    <div className="h-4 w-full bg-blue-50/50 rounded flex items-center px-1.5">
-                      <div className="h-1 w-8 bg-ocean/20 rounded" />
-                    </div>
-                    {/* Hero title lines */}
-                    <div className="h-2 w-3/4 bg-slate-100 rounded mt-2" />
-                    <div className="h-2 w-1/2 bg-slate-100 rounded" />
-                    {/* Body content lines */}
-                    <div className="h-1 w-full bg-slate-50 rounded mt-3" />
-                    <div className="h-1 w-full bg-slate-50 rounded" />
-                    <div className="h-1 w-5/6 bg-slate-50 rounded" />
-                    {/* Placeholder image grid */}
-                    <div className="grid grid-cols-2 gap-2 mt-4 flex-grow">
-                      <div className="bg-slate-50/80 rounded-lg p-1.5 flex flex-col justify-end">
-                        <div className="h-1.5 w-6 bg-slate-200 rounded" />
+                  <div className="relative w-full max-w-[210px] aspect-[4/5] bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl flex flex-col transition-transform duration-500 group-hover:scale-105 overflow-hidden">
+                    {/* Browser Header Mockup */}
+                    <div className="flex items-center gap-1.5 px-4 py-2.5 border-b border-slate-800 bg-slate-950/80">
+                      <span className="h-1.5 w-1.5 rounded-full bg-rose-500/80" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-amber-500/80" />
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500/80" />
+                      <div className="flex-1 max-w-[120px] h-3 bg-slate-800/60 rounded-md ml-2 flex items-center justify-center">
+                        <span className="text-[6px] text-slate-500 font-bold font-sans tracking-wide">p2cgrowth.com</span>
                       </div>
-                      <div className="bg-slate-50/80 rounded-lg p-1.5 flex flex-col justify-end">
-                        <div className="h-1.5 w-6 bg-slate-200 rounded" />
-                      </div>
+                    </div>
+                    {/* Illustrative Placeholder Image */}
+                    <div className="flex-1 relative w-full bg-slate-950">
+                      <img 
+                        src="/assets/homepage/what-we-build/website-development.webp" 
+                        alt="Website Development Mockup"
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                   </div>
                 </div>

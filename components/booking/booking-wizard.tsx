@@ -36,6 +36,8 @@ import {
 } from "lucide-react";
 
 import { submitBooking, type ActionState } from "@/lib/actions";
+import { useLocale } from "@/components/providers/locale-provider";
+import { getDictionary } from "@/lib/i18n/dictionary";
 import { medicalLegalReferralTypes, serviceCategories, type ServiceCategory } from "@/lib/booking";
 import { cn } from "@/lib/utils";
 import { BentoCard } from "@/components/ui/bento-card";
@@ -274,6 +276,9 @@ function SchedulePicker({ value, onChange, error }: { value: string; onChange: (
 // --- Form Components ---
 function SubmitButton() {
   const { pending } = useFormStatus();
+  const { locale } = useLocale();
+  const d = getDictionary(locale);
+  const wizardCopy = d.physiotherapy.bookingWizard;
 
   return (
     <button 
@@ -281,7 +286,7 @@ function SubmitButton() {
       disabled={Boolean(pending)}
     >
       {pending ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : <Check className="h-4 w-4" aria-hidden />}
-      Confirm & Submit
+      {pending ? wizardCopy.submittingBtn : wizardCopy.submitBtn}
     </button>
   );
 }
@@ -316,6 +321,10 @@ function InputWithIcon({ icon: Icon, label, error, ...props }: any) {
 
 // --- Main Wizard Component ---
 export function BookingWizard() {
+  const { locale } = useLocale();
+  const d = getDictionary(locale);
+  const wizardCopy = d.physiotherapy.bookingWizard;
+
   const containerRef = useRef<HTMLDivElement>(null);
   const [step, setStep] = useState(0);
   const [service, setService] = useState<ServiceCategory>(serviceCategories[0].id);
@@ -355,10 +364,10 @@ export function BookingWizard() {
   }, [step]);
 
   const steps = [
-    { label: "SERVICE", icon: Activity, desc: "Area of support" },
-    { label: "DETAILS", icon: UserCheck, desc: "Patient info" },
-    { label: "SCHEDULE", icon: Clock, desc: "Select date" },
-    { label: "CONFIRM", icon: ShieldCheck, desc: "Review consent" }
+    { label: wizardCopy.steps.service.label, icon: Activity, desc: wizardCopy.steps.service.desc },
+    { label: wizardCopy.steps.details.label, icon: UserCheck, desc: wizardCopy.steps.details.desc },
+    { label: wizardCopy.steps.schedule.label, icon: Clock, desc: wizardCopy.steps.schedule.desc },
+    { label: wizardCopy.steps.confirm.label, icon: ShieldCheck, desc: wizardCopy.steps.confirm.desc }
   ];
 
   const progress = ((step + 1) / steps.length) * 100;
@@ -369,43 +378,43 @@ export function BookingWizard() {
     
     if (currentStep === 0) {
       if (service === "medico_legal" && !medicalLegalReferralType) {
-        newErrors.medicalLegalReferralType = "Please select a referral reason.";
+        newErrors.medicalLegalReferralType = wizardCopy.errors.referralReason;
       }
     }
     
     if (currentStep === 1) {
-      if (!patientData.patientName.trim()) newErrors.patientName = "Patient name is required.";
+      if (!patientData.patientName.trim()) newErrors.patientName = wizardCopy.errors.patientName;
       
       if (!isBookingForSelf) {
-        if (!patientData.customerName.trim()) newErrors.customerName = "Your name is required.";
-        if (!patientData.relationshipToPatient.trim()) newErrors.relationshipToPatient = "Relationship is required.";
+        if (!patientData.customerName.trim()) newErrors.customerName = wizardCopy.errors.yourName;
+        if (!patientData.relationshipToPatient.trim()) newErrors.relationshipToPatient = wizardCopy.errors.relationship;
       }
 
       if (!patientData.patientEmail.trim()) {
-        newErrors.patientEmail = "Email address is required.";
+        newErrors.patientEmail = wizardCopy.errors.email;
       } else if (!validateEmail(patientData.patientEmail)) {
-        newErrors.patientEmail = "Please enter a valid email address.";
+        newErrors.patientEmail = wizardCopy.errors.invalidEmail;
       }
       if (!patientData.patientPhone.trim()) {
-        newErrors.patientPhone = "Phone number is required.";
+        newErrors.patientPhone = wizardCopy.errors.phone;
       } else if (!validatePhone(patientData.patientPhone)) {
-        newErrors.patientPhone = "Enter 7-15 digits only.";
+        newErrors.patientPhone = wizardCopy.errors.invalidPhone;
       }
       if (!patientData.dob) {
-        newErrors.dob = "Date of birth is required.";
+        newErrors.dob = wizardCopy.errors.dob;
       } else if (!validateAge(patientData.dob)) {
-        newErrors.dob = "Max age is 150 years.";
+        newErrors.dob = wizardCopy.errors.invalidAge;
       }
 
       if (visitType === "home") {
-        if (!addressData.ukPostcode.trim()) newErrors.ukPostcode = "Postcode is required.";
-        if (!addressData.addressDetails.trim()) newErrors.addressDetails = "Address is required.";
+        if (!addressData.ukPostcode.trim()) newErrors.ukPostcode = wizardCopy.errors.postcode;
+        if (!addressData.addressDetails.trim()) newErrors.addressDetails = wizardCopy.errors.address;
       }
     }
 
     if (currentStep === 2) {
       if (!bookingDate || !bookingDate.includes('T')) {
-        newErrors.bookingDate = "Please select a date and time slot.";
+        newErrors.bookingDate = wizardCopy.errors.date;
       }
     }
 
@@ -477,9 +486,9 @@ export function BookingWizard() {
           <div className="lg:hidden flex flex-col gap-4">
              <div className="flex items-center justify-between">
                 <span className="text-[10px] font-black tracking-widest text-slate-400 uppercase">
-                  {isSuccess ? "Complete" : `Step ${step + 1} of ${steps.length}`}
+                  {isSuccess ? wizardCopy.complete : wizardCopy.stepIndicator.replace('{current}', String(step + 1)).replace('{total}', String(steps.length))}
                 </span>
-                <span className="text-sm font-black text-ink">{isSuccess ? 100 : Math.round(progress)}% Complete</span>
+                <span className="text-sm font-black text-ink">{isSuccess ? 100 : Math.round(progress)}% {wizardCopy.complete}</span>
              </div>
              <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
                 <motion.div 
@@ -494,10 +503,10 @@ export function BookingWizard() {
         <BentoCard className="hidden lg:block p-6 bg-white border-slate-200 shadow-sm">
            <div className="flex items-center gap-3 text-ocean mb-3">
               <Info className="h-4 w-4" />
-              <span className="text-[10px] font-black tracking-widest uppercase">Need help?</span>
+              <span className="text-[10px] font-black tracking-widest uppercase">{wizardCopy.needHelp}</span>
            </div>
            <p className="text-xs font-medium text-slate-500 leading-relaxed">
-             Our team is available Mon-Fri, 9am - 5pm to assist with your booking request.
+             {wizardCopy.helpDesc}
            </p>
            <a href="tel:+442012345678" className="inline-block mt-4 text-xs font-bold text-ink hover:text-ocean transition-colors">+44 (0) 20 1234 5678</a>
         </BentoCard>
@@ -542,13 +551,13 @@ export function BookingWizard() {
                   initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
                   className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-4 display-heading"
                 >
-                  Request Received!
+                  {wizardCopy.successTitle}
                 </motion.h2>
                 <motion.p 
                   initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
                   className="text-lg font-medium text-slate-500 max-w-md mx-auto leading-relaxed"
                 >
-                  Your request has been successfully recorded and a confirmation email has been sent. Our team will review the details and coordinate your booking arrangement shortly.
+                  {wizardCopy.successDesc}
                 </motion.p>
               </motion.div>
             ) : (
@@ -557,26 +566,26 @@ export function BookingWizard() {
                   <AnimatePresence mode="wait">
                       {step === 0 && (
                         <motion.div key="t0" initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }}>
-                          <h2 className="text-2xl md:text-3xl font-extrabold text-ink tracking-tight">Choose support area</h2>
-                          <p className="mt-2 text-sm md:text-base font-medium text-slate-500">Select the closest category for your coordination request.</p>
+                          <h2 className="text-2xl md:text-3xl font-extrabold text-ink tracking-tight">{wizardCopy.chooseSupport}</h2>
+                          <p className="mt-2 text-sm md:text-base font-medium text-slate-500">{wizardCopy.chooseSupportDesc}</p>
                         </motion.div>
                       )}
                       {step === 1 && (
                         <motion.div key="t1" initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }}>
-                          <h2 className="text-2xl md:text-3xl font-extrabold text-ink tracking-tight">Patient details</h2>
-                          <p className="mt-2 text-sm md:text-base font-medium text-slate-500">Tell us a bit about who you are and what you need.</p>
+                          <h2 className="text-2xl md:text-3xl font-extrabold text-ink tracking-tight">{wizardCopy.patientDetails}</h2>
+                          <p className="mt-2 text-sm md:text-base font-medium text-slate-500">{wizardCopy.patientDetailsDesc}</p>
                         </motion.div>
                       )}
                       {step === 2 && (
                         <motion.div key="t2" initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }}>
-                          <h2 className="text-2xl md:text-3xl font-extrabold text-ink tracking-tight">Schedule Visit</h2>
-                          <p className="mt-2 text-sm md:text-base font-medium text-slate-500">Pick a preferred date and time for your coordination.</p>
+                          <h2 className="text-2xl md:text-3xl font-extrabold text-ink tracking-tight">{wizardCopy.scheduleVisitTitle}</h2>
+                          <p className="mt-2 text-sm md:text-base font-medium text-slate-500">{wizardCopy.scheduleVisitDesc}</p>
                         </motion.div>
                       )}
                       {step === 3 && (
                         <motion.div key="t3" initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }}>
-                          <h2 className="text-2xl md:text-3xl font-extrabold text-ink tracking-tight">Review & Confirm</h2>
-                          <p className="mt-2 text-sm md:text-base font-medium text-slate-500">Make sure everything looks correct before submitting.</p>
+                          <h2 className="text-2xl md:text-3xl font-extrabold text-ink tracking-tight">{wizardCopy.confirmTitle}</h2>
+                          <p className="mt-2 text-sm md:text-base font-medium text-slate-500">{wizardCopy.confirmDesc}</p>
                         </motion.div>
                       )}
                   </AnimatePresence>
@@ -641,7 +650,7 @@ export function BookingWizard() {
                               <span className={cn(
                                 "mt-4 block text-xs font-bold leading-tight",
                                 isSelected ? "text-ocean" : "text-ink"
-                              )}>{item.title}</span>
+                              )}>{(wizardCopy.categories as any)[item.id] || item.title}</span>
                             </div>
                             {isSelected && (
                               <div className="absolute top-2 right-2 text-ocean">
@@ -659,7 +668,7 @@ export function BookingWizard() {
                         className="space-y-2 mt-4"
                       >
                         <label className="block">
-                          <span className="block text-xs font-bold uppercase tracking-widest text-ocean mb-2">Referral reason</span>
+                          <span className="block text-xs font-bold uppercase tracking-widest text-ocean mb-2">{wizardCopy.referralReason}</span>
                           <div className="relative group">
                             <select
                               className={cn(
@@ -673,9 +682,9 @@ export function BookingWizard() {
                                 setErrors({});
                               }}
                             >
-                              <option value="" disabled>Select referral reason...</option>
+                              <option value="" disabled>{wizardCopy.selectReferralReason}</option>
                               {medicalLegalReferralTypes.map((type) => (
-                                <option key={type.id} value={type.id}>{type.label}</option>
+                                <option key={type.id} value={type.id}>{(wizardCopy.referralReasons as any)[type.id] || type.label}</option>
                               ))}
                             </select>
                             <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
@@ -740,7 +749,7 @@ export function BookingWizard() {
                               <div className="grid gap-4 md:grid-cols-2 mt-6 pt-6 border-t border-slate-200/60">
                                 <InputWithIcon 
                                   icon={User} 
-                                  label="Your Full Name" 
+                                  label={wizardCopy.yourNameLabel} 
                                   placeholder="Contact person" 
                                   error={errors.customerName}
                                   value={patientData.customerName} 
@@ -751,7 +760,7 @@ export function BookingWizard() {
                                 />
                                 <InputWithIcon 
                                   icon={Users} 
-                                  label="Relationship to patient" 
+                                  label={wizardCopy.relationshipLabel} 
                                   placeholder="e.g. Parent, Carer, Case Manager" 
                                   error={errors.relationshipToPatient}
                                   value={patientData.relationshipToPatient} 
@@ -769,8 +778,8 @@ export function BookingWizard() {
                     <div className="grid gap-5 md:grid-cols-2">
                       <InputWithIcon 
                         icon={User} 
-                        label={isBookingForSelf ? "Full Name" : "Patient Full Name"}
-                        placeholder={isBookingForSelf ? "Enter your full name" : "Enter patient's full name"} 
+                        label={wizardCopy.nameLabel}
+                        placeholder="" 
                         required 
                         error={errors.patientName}
                         value={patientData.patientName} 
@@ -781,7 +790,7 @@ export function BookingWizard() {
                       />
                       <InputWithIcon 
                         icon={Calendar} 
-                        label="Date of birth" 
+                        label={wizardCopy.dobLabel} 
                         type="date" 
                         required 
                         error={errors.dob}
@@ -794,7 +803,7 @@ export function BookingWizard() {
                       
                       {/* Phone Input with Combined Country Code */}
                       <label className="block">
-                        <span className="block text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-2">Phone number</span>
+                        <span className="block text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-2">{wizardCopy.phoneLabel}</span>
                         <div className={cn(
                           "flex h-11 w-full rounded-xl border bg-white transition-all shadow-sm overflow-hidden group",
                           errors.patientPhone 
@@ -844,7 +853,7 @@ export function BookingWizard() {
 
                       <InputWithIcon 
                         icon={Mail} 
-                        label="Email address" 
+                        label={wizardCopy.emailLabel} 
                         type="email" 
                         placeholder="name@example.com" 
                         required 
@@ -879,7 +888,7 @@ export function BookingWizard() {
                     </div>
 
                     <div className="pt-6 border-t border-slate-100">
-                      <h4 className="text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-4">Visit preference</h4>
+                      <h4 className="text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-4">{wizardCopy.visitLabel}</h4>
                       <div className="grid gap-3 md:grid-cols-2">
                         <button
                           type="button"
@@ -899,8 +908,8 @@ export function BookingWizard() {
                             <MapPin className="h-5 w-5" aria-hidden />
                           </span>
                           <div>
-                            <span className={cn("block text-sm font-bold", visitType === "clinic" ? "text-ocean" : "text-ink")}>Clinic Visit</span>
-                            <span className="block text-xs font-medium text-slate-500">In-person facilities</span>
+                            <span className={cn("block text-sm font-bold", visitType === "clinic" ? "text-ocean" : "text-ink")}>{locale === 'en' ? 'Clinic Visit' : locale === 'vi' ? 'Khám tại phòng khám' : '門診物理治療'}</span>
+                            <span className="block text-xs font-medium text-slate-500">{locale === 'en' ? 'In-person facilities' : locale === 'vi' ? 'Cơ sở vật chất tại chỗ' : '門診服務設施'}</span>
                           </div>
                         </button>
                         <button
@@ -921,8 +930,8 @@ export function BookingWizard() {
                             <Home className="h-5 w-5" aria-hidden />
                           </span>
                           <div>
-                            <span className={cn("block text-sm font-bold", visitType === "home" ? "text-ocean" : "text-ink")}>Home Visit</span>
-                            <span className="block text-xs font-medium text-slate-500">At your location</span>
+                            <span className={cn("block text-sm font-bold", visitType === "home" ? "text-ocean" : "text-ink")}>{wizardCopy.homeVisit}</span>
+                            <span className="block text-xs font-medium text-slate-500">{wizardCopy.homeVisitDesc}</span>
                           </div>
                         </button>
                       </div>
@@ -1052,10 +1061,11 @@ export function BookingWizard() {
                      </div>
 
                     <div className="space-y-3">
+                      <div className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">{wizardCopy.consentIntro}</div>
                       {[
-                        ["acknowledgeCoordinatorOnly", "I acknowledge P2C Growth is a booking and coordination platform."],
-                        ["consentContact", "I consent to be contacted about this request."],
-                        ["acknowledgeEmergencyAdvice", "I acknowledge emergencies require 999 or NHS care."]
+                        ["acknowledgeCoordinatorOnly", wizardCopy.agreeCoordinator],
+                        ["consentContact", wizardCopy.agreeContact],
+                        ["acknowledgeEmergencyAdvice", wizardCopy.agreeEmergency]
                       ].map(([name, label]) => (
                         <label key={name} className="flex gap-4 rounded-xl border border-slate-200 bg-white p-4 text-sm font-semibold text-slate-600 transition hover:border-ocean/20 cursor-pointer shadow-sm">
                           <div className="pt-0.5">
@@ -1091,7 +1101,7 @@ export function BookingWizard() {
                 disabled={Boolean(step === 0)}
               >
                 <ArrowLeft className="h-4 w-4" aria-hidden />
-                Back
+                {wizardCopy.backBtn}
               </button>
               {step < 3 ? (
                 <button
@@ -1099,7 +1109,7 @@ export function BookingWizard() {
                   onClick={handleContinue}
                   className="inline-flex h-12 w-full md:w-auto items-center justify-center gap-2 rounded-xl bg-ocean px-8 text-sm font-black text-white shadow-lg shadow-blue-500/20 transition-all hover:bg-blue-600 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
                 >
-                  Continue <ArrowRight className="h-4 w-4" aria-hidden />
+                  {wizardCopy.continueBtn} <ArrowRight className="h-4 w-4" aria-hidden />
                 </button>
               ) : (
                 <SubmitButton />

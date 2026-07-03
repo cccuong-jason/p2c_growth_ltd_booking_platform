@@ -10,7 +10,12 @@ const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakart
 
 export const metadata: Metadata = {
   title: "P2C Growth LTD",
-  description: "Modern booking, CRM, and professional partner coordination systems."
+  description: "Modern booking, CRM, and professional partner coordination systems.",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon-32x32.png",
+    apple: "/apple-touch-icon.png",
+  }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

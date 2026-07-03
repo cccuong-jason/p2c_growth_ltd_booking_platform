@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { 
   AlertTriangle, 
@@ -39,10 +40,24 @@ const AUDIENCE_ICONS = [
   Heart        // Busy Families
 ];
 
+const backgrounds = [
+  "/assets/services-page/physio/hero/hero-1.webp",
+  "/assets/services-page/physio/hero/hero-2.webp"
+];
+
 export default function PhysiotherapyPage() {
   const { locale, setLocale } = useLocale();
   const [activeTabId, setActiveTabId] = useState<string>("elderly");
   const [isNoticeOpen, setIsNoticeOpen] = useState(false);
+
+  const [bgIndex, setBgIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBgIndex((prev) => (prev + 1) % backgrounds.length);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, []);
 
   const d = getDictionary(locale);
   const t = d.physiotherapy;
@@ -62,10 +77,19 @@ export default function PhysiotherapyPage() {
 
       {/* Hero Header Section */}
       <section className="relative pt-24 pb-16 md:pt-36 bg-porcelain overflow-hidden flex items-center justify-center min-h-[420px]">
-        <div 
-          className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 scale-100"
-          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=2000&q=80')` }}
-        />
+        <div className="absolute inset-0 w-full h-full">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={bgIndex}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.2, ease: "easeInOut" }}
+              className="absolute inset-0 w-full h-full bg-cover bg-center"
+              style={{ backgroundImage: `url(${backgrounds[bgIndex]})` }}
+            />
+          </AnimatePresence>
+        </div>
         <div className="absolute inset-0 bg-porcelain/90 backdrop-blur-[1px] z-0" />
         <div className="absolute inset-0 tech-grid opacity-30 z-0" />
 
@@ -175,18 +199,38 @@ export default function PhysiotherapyPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {t.audience.items.map((item, idx) => {
             const Icon = AUDIENCE_ICONS[idx] || HeartPulse;
+            const audienceImages = [
+              "/assets/services-page/physio/target-patients/elderly.webp",
+              "/assets/services-page/physio/target-patients/stroke-neurological-support.webp",
+              "/assets/services-page/physio/target-patients/post-surgery-recovery.webp",
+              "/assets/services-page/physio/target-patients/asian-community.webp",
+              "/assets/services-page/physio/target-patients/homevisit.webp",
+              "/assets/services-page/physio/target-patients/busy-families.webp",
+            ];
             return (
               <Reveal key={idx} delay={0.05 * idx}>
-                <div className="rounded-3xl border border-slate-200 bg-white p-6 md:p-8 shadow-premium hover:border-ocean/30 transition-all group duration-300 h-full flex flex-col">
-                  <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-ocean/5 text-ocean transition-colors group-hover:bg-ocean group-hover:text-white shadow-sm border border-ocean/10">
-                    <Icon className="h-5 w-5" aria-hidden="true" />
+                <div className="rounded-3xl border border-slate-200 bg-white shadow-premium hover:border-ocean/30 group duration-300 h-full min-h-[380px] flex flex-col justify-between overflow-hidden relative">
+                  <div className="w-full h-44 relative bg-slate-100">
+                    <div className="w-full h-full overflow-hidden rounded-t-[22px]">
+                      <img 
+                        src={audienceImages[idx]} 
+                        alt={item.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                    <div className="absolute bottom-0 left-6 translate-y-1/2 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white border border-slate-200 text-ocean shadow-md transition-colors group-hover:bg-ocean group-hover:text-white">
+                      <Icon className="h-5 w-5" aria-hidden="true" />
+                    </div>
                   </div>
-                  <h3 className="text-base font-extrabold tracking-tight text-ink mb-3 uppercase tracking-wide">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs font-bold leading-relaxed text-slate-600 flex-grow">
-                    {item.body}
-                  </p>
+                  
+                  <div className="p-6 md:p-8 pt-8 flex-grow flex flex-col justify-between">
+                    <h3 className="text-base font-extrabold tracking-tight text-ink mb-3 uppercase tracking-wide">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs font-bold leading-relaxed text-slate-600 flex-grow">
+                      {item.body}
+                    </p>
+                  </div>
                 </div>
               </Reveal>
             );
@@ -220,7 +264,7 @@ export default function PhysiotherapyPage() {
             </p>
           </Reveal>
 
-          <Reveal delay={0.2}>
+          <Reveal delay={0.2} className="w-full h-full flex flex-col gap-6">
             <div className="relative rounded-3xl border border-slate-200 bg-white p-8 md:p-10 shadow-premium">
               <div className="absolute top-6 left-6 text-7xl font-serif text-ocean/10 leading-none pointer-events-none select-none">“</div>
               <blockquote className="relative z-10 text-base md:text-lg font-bold italic leading-relaxed text-ink/80 pt-6">
@@ -231,6 +275,66 @@ export default function PhysiotherapyPage() {
                 <div>
                   <h4 className="text-xs font-bold text-ink uppercase tracking-wider">P2C Growth Health Support</h4>
                   <p className="text-[10px] font-bold text-slate-500">UK Booking & Referral Network</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Gallery Care Bridging Display */}
+            <div className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden border border-slate-200 shadow-premium bg-slate-100 grid grid-cols-2 grid-rows-2 gap-2 p-2">
+              <div className="relative overflow-hidden rounded-2xl border border-slate-100/50 shadow-sm">
+                <img 
+                  src="/assets/services-page/physio/care-bridging/care-bridging-1.webp" 
+                  alt="Care Bridging 1" 
+                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                />
+              </div>
+              <div className="relative overflow-hidden rounded-2xl border border-slate-100/50 shadow-sm">
+                <img 
+                  src="/assets/services-page/physio/care-bridging/care-bridging-2.webp" 
+                  alt="Care Bridging 2" 
+                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                />
+              </div>
+              <div className="relative overflow-hidden rounded-2xl border border-slate-100/50 shadow-sm">
+                <img 
+                  src="/assets/services-page/physio/care-bridging/care-bridging-3.webp" 
+                  alt="Care Bridging 3" 
+                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                />
+              </div>
+              <div className="relative overflow-hidden rounded-2xl border border-slate-100/50 shadow-sm">
+                <img 
+                  src="/assets/services-page/physio/care-bridging/care-bridging-4.webp" 
+                  alt="Care Bridging 4" 
+                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                />
+              </div>
+              
+              {/* Layered Glassmorphic Callouts */}
+              <div className="absolute inset-0 w-full h-full pointer-events-none p-4">
+                {/* Callout 1 */}
+                <div className="absolute top-6 left-6 backdrop-blur-md bg-white/70 border border-white/40 p-3 rounded-2xl shadow-lg max-w-[200px] text-[10px] font-black text-slate-800 leading-normal pointer-events-auto">
+                  {locale === "en" 
+                    ? "Highly recommend. Extremely fast matching." 
+                    : locale === "vi" 
+                    ? "Rất đề xuất. Tìm kiếm kết quả siêu nhanh." 
+                    : "強烈推薦。配對速度極快。"}
+                </div>
+                {/* Callout 2 */}
+                <div className="absolute top-1/3 right-6 backdrop-blur-md bg-white/70 border border-white/40 p-3 rounded-2xl shadow-lg max-w-[200px] text-[10px] font-black text-slate-800 leading-normal pointer-events-auto">
+                  {locale === "en" 
+                    ? "The home visit saved me hours of travel." 
+                    : locale === "vi" 
+                    ? "Dịch vụ tại nhà giúp tiết kiệm hàng giờ di chuyển." 
+                    : "上門物理治療節省了數小時路程。"}
+                </div>
+                {/* Callout 3 */}
+                <div className="absolute bottom-6 left-8 backdrop-blur-md bg-white/70 border border-white/40 p-3 rounded-2xl shadow-lg max-w-[200px] text-[10px] font-black text-slate-800 leading-normal pointer-events-auto">
+                  {locale === "en" 
+                    ? "Professional partners and seamless updates." 
+                    : locale === "vi" 
+                    ? "Đối tác chuyên nghiệp, cập nhật liên tục." 
+                    : "合作夥伴專業，更新無縫對接。"}
                 </div>
               </div>
             </div>

@@ -163,9 +163,11 @@ export function SiteFooter() {
       <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 text-sm md:grid-cols-[2fr_1fr_1fr]">
         <div className="space-y-6">
           <Link href="/" className="flex items-center gap-3 font-extrabold text-white tracking-tight text-lg relative z-20">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-white text-ocean">
-              <Activity className="h-5 w-5" aria-hidden />
-            </span>
+            <img 
+              src="/footer-logo.png" 
+              alt="P2C Growth Logo" 
+              className="h-8 w-8 object-contain rounded-lg"
+            />
             P2C Growth
           </Link>
           <p className="max-w-xs leading-relaxed font-semibold text-blue-50">
@@ -173,7 +175,9 @@ export function SiteFooter() {
           </p>
         </div>
         <div>
-          <h4 className="font-black text-white mb-6 uppercase tracking-widest text-[10px]">Legal</h4>
+          <h4 className="font-black text-white mb-6 uppercase tracking-widest text-[10px]">
+            {copy.layout.legal}
+          </h4>
           <div className="flex flex-col gap-4 font-bold">
             <Link href="/privacy" className="hover:text-white transition-colors text-blue-100">
               {copy.layout.privacy}
@@ -184,7 +188,9 @@ export function SiteFooter() {
           </div>
         </div>
         <div>
-          <h4 className="font-black text-white mb-6 uppercase tracking-widest text-[10px]">Action</h4>
+          <h4 className="font-black text-white mb-6 uppercase tracking-widest text-[10px]">
+            {copy.layout.action}
+          </h4>
           <Link
             href="/services/physiotherapy"
             className="inline-flex items-center gap-2 font-bold text-white hover:gap-3 transition-all underline underline-offset-4 decoration-blue-200/50 hover:decoration-white"

@@ -69,3 +69,8 @@
 - **Status:** Done
 - **Update (2026-06-27):** Standardized carousel card heights using `h-full` and optimized WebGL rendering loads. Added `.text-gradient` utility class and updated heading tracking across the site. Consolidated all regional Q&As into a unified tabbed `FaqAccordion` on the Homepage and removed redundant FAQ blocks from Physiotherapy and Contact pages. Verified build/lint clean.
 - **Description:** "Fix height mismatch of services carousel, optimize WebGL Globe rendering load, revamp heading styling with text gradients, and merge all subpage FAQs into a unified tabbed Accordion on the Homepage."
+
+## [SCRUM-63] [UI/LOCALIZATION] Implement feedback changes: Globe resolution, single-column services, P2C auto-slider, and full localization check
+- **Status:** Done
+- **Update (2026-07-04):** Completed all feedback updates and mapped new webp assets. Integrated auto-playing cross-fade image sliders for P2C Health (10 images) on Homepage/Services page, and P2C Health Hero (2 images) on Physiotherapy page. Replaced the care-bridging composite card with a balanced 2x2 grid gallery of 4 images. Mapped target patient cards (6 images) and other services elementor-io carousel assets. Verified build/lint clean and all 50 unit tests passing.
+- **Description:** "Implement feedback updates: Globe performance/clarity, single-column Explore Services stack on Services Page, P2C Health auto-play slider, Website Dev mockup image, Physio Hero background switcher, Target Patients cards with top images, Care Bridging composite block with comment overlays, and centralized localization support."
