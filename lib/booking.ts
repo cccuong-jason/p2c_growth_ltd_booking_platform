@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { bookingStatuses, type BookingStatus } from "@/lib/admin";
+import { type BookingStatus } from "@/lib/admin";
 
 export const serviceCategories = [
   {
@@ -52,9 +52,87 @@ export const medicalLegalReferralTypes = [
 
 export const languages = ["en", "zh-Hant", "zh-Hans", "vi"] as const;
 
+export const websiteRequestTypes = [
+  "new_business_website",
+  "service_showcase_website",
+  "landing_page",
+  "website_with_booking",
+  "lead_generation_website",
+  "multilingual_website",
+  "website_with_contact_form",
+  "consultation_needed"
+] as const;
+
+export const automationSystemTypes = [
+  "booking_form",
+  "consultation_form",
+  "automatic_confirmation_email",
+  "internal_notification_email",
+  "customer_dashboard",
+  "mini_crm",
+  "partner_handoff_system",
+  "booking_status_tracking",
+  "full_system",
+  "consultation_needed"
+] as const;
+
+export const automationContactChannels = [
+  "phone",
+  "email",
+  "whatsapp",
+  "facebook_instagram",
+  "website_form",
+  "google_form",
+  "google_sheets_excel",
+  "walk_in",
+  "other"
+] as const;
+
+export const automationEmailOptions = [
+  "customer_confirmation",
+  "internal_notification",
+  "appointment_reminder",
+  "follow_up_after_request",
+  "cancellation_email",
+  "status_update",
+  "partner_or_staff_handoff",
+  "payment_reminder",
+  "not_sure"
+] as const;
+
+export const automationDashboardNeeds = ["yes", "no", "later"] as const;
+
+export const automationBookingVolumes = [
+  "under_20",
+  "20_50",
+  "50_100",
+  "100_300",
+  "over_300",
+  "not_sure"
+] as const;
+
+export const automationCurrentTools = [
+  "gmail",
+  "outlook",
+  "google_calendar",
+  "google_sheets",
+  "excel",
+  "whatsapp",
+  "existing_crm",
+  "no_system_yet",
+  "other"
+] as const;
+
 export type ServiceCategory = (typeof serviceCategories)[number]["id"];
 export type PreferredLanguage = (typeof languages)[number];
 export type MedicalLegalReferralType = (typeof medicalLegalReferralTypes)[number]["id"];
+export type WebsiteRequestType = (typeof websiteRequestTypes)[number];
+export type AutomationSystemType = (typeof automationSystemTypes)[number];
+export type AutomationContactChannel = (typeof automationContactChannels)[number];
+export type AutomationEmailOption = (typeof automationEmailOptions)[number];
+export type AutomationDashboardNeed = (typeof automationDashboardNeeds)[number];
+export type AutomationBookingVolume = (typeof automationBookingVolumes)[number];
+export type AutomationCurrentTool = (typeof automationCurrentTools)[number];
 
 const serviceCategoryIds = serviceCategories.map((service) => service.id) as [
   ServiceCategory,
@@ -65,6 +143,12 @@ const medicalLegalReferralTypeIds = medicalLegalReferralTypes.map((type) => type
   MedicalLegalReferralType,
   ...MedicalLegalReferralType[]
 ];
+
+const phoneSchema = z
+  .string()
+  .trim()
+  .min(7, "Phone number is required")
+  .regex(/^[0-9+()\-\s]{7,20}$/, "Enter a valid phone number");
 
 const bookingSchema = z
   .object({
@@ -97,7 +181,6 @@ const bookingSchema = z
     acknowledgeCoordinatorOnly: z.boolean().refine((value) => value, "required"),
     consentContact: z.boolean().refine((value) => value, "required"),
     acknowledgeEmergencyAdvice: z.boolean().refine((value) => value, "required"),
-    // Admin fields (optional during public submission)
     missingInformation: z.string().trim().optional().nullable(),
     priorityLevel: z.string().trim().optional().default("medium"),
     providerReason: z.string().trim().optional().nullable()
@@ -132,10 +215,50 @@ const bookingSchema = z
     }
   });
 
+const websiteRequestSchema = z.object({
+  name: z.string().trim().min(2, "Name is required"),
+  phone: phoneSchema,
+  email: z.string().trim().email("Valid email is required"),
+  businessName: z.string().trim().min(2, "Business name is required"),
+  websiteType: z.enum(websiteRequestTypes, {
+    errorMap: () => ({ message: "Website type is required" })
+  })
+});
+
+const automationRequestSchema = z.object({
+  name: z.string().trim().min(2, "Name is required"),
+  phone: phoneSchema,
+  email: z.string().trim().email("Valid email is required"),
+  systemType: z.enum(automationSystemTypes, {
+    errorMap: () => ({ message: "System type is required" })
+  }),
+  contactChannels: z
+    .array(z.enum(automationContactChannels))
+    .min(1, "Select at least one customer contact channel"),
+  automatedEmails: z
+    .array(z.enum(automationEmailOptions))
+    .min(1, "Select at least one email automation need"),
+  dashboardNeed: z.enum(automationDashboardNeeds, {
+    errorMap: () => ({ message: "Dashboard requirement is required" })
+  }),
+  bookingVolume: z.enum(automationBookingVolumes, {
+    errorMap: () => ({ message: "Booking volume is required" })
+  }),
+  currentTools: z.array(z.enum(automationCurrentTools)).default([]),
+  notes: z.string().trim().optional().nullable()
+});
+
 export type BookingInput = z.input<typeof bookingSchema>;
 export type BookingPayload = z.output<typeof bookingSchema> & {
   status: BookingStatus;
   consentedAt: string;
+};
+
+export type WebsiteRequestInput = z.input<typeof websiteRequestSchema>;
+export type WebsiteRequestPayload = z.output<typeof websiteRequestSchema>;
+export type AutomationRequestInput = z.input<typeof automationRequestSchema>;
+export type AutomationRequestPayload = z.output<typeof automationRequestSchema> & {
+  notes: string | null;
 };
 
 export type ValidationResult<T> =
@@ -183,6 +306,39 @@ export function validateEnquiryInput(input: EnquiryInput): ValidationResult<Enqu
     data: {
       ...result.data,
       company: result.data.company || null
+    }
+  };
+}
+
+export function validateWebsiteRequestInput(
+  input: WebsiteRequestInput
+): ValidationResult<WebsiteRequestPayload> {
+  const result = websiteRequestSchema.safeParse(input);
+
+  if (!result.success) {
+    return { success: false, errors: result.error.flatten().fieldErrors };
+  }
+
+  return {
+    success: true,
+    data: result.data
+  };
+}
+
+export function validateAutomationRequestInput(
+  input: AutomationRequestInput
+): ValidationResult<AutomationRequestPayload> {
+  const result = automationRequestSchema.safeParse(input);
+
+  if (!result.success) {
+    return { success: false, errors: result.error.flatten().fieldErrors };
+  }
+
+  return {
+    success: true,
+    data: {
+      ...result.data,
+      notes: result.data.notes || null
     }
   };
 }

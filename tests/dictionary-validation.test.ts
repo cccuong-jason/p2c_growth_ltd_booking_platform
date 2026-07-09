@@ -26,6 +26,14 @@ describe("dictionary validation", () => {
       expect(d.layout.legal).toBeDefined();
       // @ts-ignore
       expect(d.layout.action).toBeDefined();
+      // -ignore
+      expect(d.serviceFunnels.website.hero.title).toBeDefined();
+      // -ignore
+      expect(d.serviceFunnels.website.request.websiteTypeOptions).toBeDefined();
+      // -ignore
+      expect(d.serviceFunnels.automation.hero.title).toBeDefined();
+      // -ignore
+      expect(d.serviceFunnels.automation.request.systemTypeOptions).toBeDefined();
     });
   });
 });

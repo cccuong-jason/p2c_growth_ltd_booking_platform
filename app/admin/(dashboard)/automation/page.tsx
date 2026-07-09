@@ -25,7 +25,7 @@ export default async function AutomationDashboard() {
         </div>
       </header>
 
-      <B2BClient initialProjects={projects} title="Automation" icon={Zap} />
+      <B2BClient initialProjects={projects} title="Automation" icon={Zap} variant="automation" />
     </div>
   );
 }

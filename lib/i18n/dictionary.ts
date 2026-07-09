@@ -1,3 +1,5 @@
+import { serviceFunnels } from "@/lib/i18n/service-funnels";
+
 // English home page translation strings
 const homeEn = {
   eyebrow: "UK technology and software company",
@@ -797,6 +799,7 @@ export const dictionary = {
         cta: "View details"
       }
     },
+    serviceFunnels: serviceFunnels.en,
     contact: {
       eyebrow: "Contact us",
       title: "Get in touch with our team",
@@ -1153,6 +1156,7 @@ export const dictionary = {
         cta: "Xem chi tiết"
       }
     },
+    serviceFunnels: serviceFunnels.vi,
     contact: {
       eyebrow: "Liên hệ với chúng tôi",
       title: "Liên hệ với đội ngũ của chúng tôi",
@@ -1509,6 +1513,7 @@ export const dictionary = {
         cta: "查看詳情"
       }
     },
+    serviceFunnels: serviceFunnels.hk,
     contact: {
       eyebrow: "聯絡我們",
       title: "與我們的團隊取得聯絡",
