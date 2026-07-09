@@ -150,7 +150,7 @@ export default function HomePage() {
         : locale === "vi" 
         ? "Các trang web cao cấp tập trung vào chuyển đổi cho các doanh nghiệp dịch vụ tại UK." 
         : "為英國服務型企業提供以轉化為中心的高端網站。",
-      href: "/coming-soon",
+      href: "/services/website-development",
       icon: Monitor,
       image: "/assets/homepage/our-services/carousel/website-development-elementor-io-optimized.webp",
     },
@@ -162,7 +162,7 @@ export default function HomePage() {
         : locale === "vi" 
         ? "Biểu mẫu, bàn giao trạng thái, email xác nhận và vận hành nội bộ không cần xử lý thủ công." 
         : "表單、工作流、確認、通知和運營交接，無需人工催促。",
-      href: "/coming-soon",
+      href: "/services/booking-automation",
       icon: Workflow,
       image: "/assets/homepage/our-services/carousel/booking-system-and-email-automation-elementor-io-optimized.webp",
     },
@@ -431,7 +431,7 @@ export default function HomePage() {
                           <Monitor className="h-5 w-5" />
                         </div>
                         <Link
-                          href="/coming-soon"
+                          href="/services/website-development"
                           className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-4 text-xs font-bold text-slate-600 shadow-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95"
                         >
                           {locale === "en" ? "View More" : locale === "vi" ? "Xem thêm" : "查看更多"} <ArrowRight className="h-3.5 w-3.5" aria-hidden />
@@ -464,7 +464,7 @@ export default function HomePage() {
                           <Workflow className="h-5 w-5" />
                         </div>
                         <Link
-                          href="/coming-soon"
+                          href="/services/booking-automation"
                           className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-4 text-xs font-bold text-slate-600 shadow-sm transition-all hover:bg-slate-50 hover:text-ink active:scale-95"
                         >
                           {locale === "en" ? "View More" : locale === "vi" ? "Xem thêm" : "查看更多"} <ArrowRight className="h-3.5 w-3.5" aria-hidden />
@@ -684,7 +684,7 @@ export default function HomePage() {
                     </p>
                   </div>
                   <Link
-                    href="/services"
+                    href="/services/website-development"
                     className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-ocean px-6 text-sm font-black text-white shadow-lg shadow-blue-500/20 transition-all hover:scale-105 hover:bg-blue-600 active:scale-95 w-max mt-auto"
                   >
                     {home.extras.webDevBtn} <ArrowRight className="h-4 w-4" />
@@ -736,7 +736,7 @@ export default function HomePage() {
                 </div>
                 <div className="relative z-10 mt-auto flex justify-between items-center">
                   <Link
-                    href="/coming-soon"
+                    href="/services/booking-automation"
                     className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-ocean active:scale-95"
                   >
                     {locale === "en" ? "Get started" : locale === "vi" ? "Bắt đầu ngay" : "立即開始"} <ChevronRight className="h-3.5 w-3.5 text-slate-500" />

@@ -1,20 +1,24 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Search, Filter, MoreHorizontal, Building2, X, Activity, Save, Loader2, Plus, Calendar } from "lucide-react";
+import { Search, MoreHorizontal, Building2, X, Activity, Save, Loader2, Plus, Calendar } from "lucide-react";
 import { updateB2BProject } from "@/lib/admin-actions";
 import { Button } from "@/components/ui/button";
 import { type B2BProjectRow } from "@/lib/supabase/schema";
 import { cn } from "@/lib/utils";
 
+type B2BVariant = "web-dev" | "automation";
+
 export function B2BClient({ 
   initialProjects, 
   title, 
-  icon: Icon 
+  icon: Icon,
+  variant
 }: { 
   initialProjects: B2BProjectRow[],
   title: string,
-  icon: any
+  icon: any,
+  variant: B2BVariant
 }) {
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -30,10 +34,22 @@ export function B2BClient({
     return initialProjects
       .filter((p) => statusFilter === "all" || p.status.toLowerCase() === statusFilter.toLowerCase())
       .filter((p) => {
-        const haystack = `${p.client_name} ${p.core_objective} ${p.id}`.toLowerCase();
+        const haystack = [
+          p.client_name,
+          p.contact_email,
+          p.core_objective,
+          p.estimated_budget,
+          p.status,
+          p.id
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
         return haystack.includes(query.toLowerCase());
       });
   }, [initialProjects, query, statusFilter]);
+
+  const columns = variant === "automation" ? automationColumns : webDevColumns;
 
   const openPanel = (project: B2BProjectRow) => {
     setSelectedProject(project);
@@ -73,7 +89,7 @@ export function B2BClient({
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
           <input 
             type="text" 
-            placeholder="Search by client or objective..." 
+            placeholder={variant === "automation" ? "Search by client, contact, or system type..." : "Search by client, contact, or website type..."} 
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all"
@@ -99,12 +115,11 @@ export function B2BClient({
         <table className="w-full text-left text-sm whitespace-nowrap">
           <thead className="bg-white border-b border-slate-100 text-[10px] font-black uppercase tracking-widest text-slate-400">
             <tr>
-              <th className="px-6 py-4">ID</th>
-              <th className="px-6 py-4">Client</th>
-              <th className="px-6 py-4">Core Objective</th>
-              <th className="px-6 py-4">Budget</th>
-              <th className="px-6 py-4">Status</th>
-              <th className="px-6 py-4 text-right">Actions</th>
+              {columns.map((column) => (
+                <th key={column.key} className={cn("px-6 py-4", column.align === "right" && "text-right")}>
+                  {column.label}
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -114,38 +129,16 @@ export function B2BClient({
                 onClick={() => openPanel(item)}
                 className="transition-colors hover:bg-slate-50/50 group cursor-pointer"
               >
-                <td className="px-6 py-4 font-bold text-slate-500 text-xs">#{item.id.slice(0, 8).toUpperCase()}</td>
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-2">
-                     <Icon className="h-4 w-4 text-slate-400" />
-                     <span className="font-bold text-slate-900">{item.client_name}</span>
-                  </div>
-                </td>
-                <td className="px-6 py-4 font-medium text-slate-600">{item.core_objective}</td>
-                <td className="px-6 py-4">
-                  <span className={cn(
-                    "px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-widest border",
-                    item.estimated_budget?.includes('0') ? "bg-blue-50 text-blue-600 border-blue-100" : "bg-purple-50 text-purple-600 border-purple-100"
-                  )}>
-                    {item.estimated_budget || 'Standard'}
-                  </span>
-                </td>
-                <td className="px-6 py-4">
-                   <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-black uppercase tracking-widest border border-slate-200">
-                      <span className="h-1.5 w-1.5 rounded-full bg-slate-400" />
-                      {item.status}
-                   </span>
-                </td>
-                <td className="px-6 py-4 text-right">
-                  <button className="p-2 text-slate-400 hover:text-slate-900 transition-colors rounded-lg hover:bg-slate-100">
-                    <MoreHorizontal className="h-5 w-5" />
-                  </button>
-                </td>
+                {columns.map((column) => (
+                  <td key={column.key} className={cn("px-6 py-4", column.align === "right" && "text-right")}>
+                    {column.render(item, Icon)}
+                  </td>
+                ))}
               </tr>
             ))}
             {filteredProjects.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-6 py-12 text-center text-slate-400 font-medium italic">
+                <td colSpan={columns.length} className="px-6 py-12 text-center text-slate-400 font-medium italic">
                   No projects found.
                 </td>
               </tr>
@@ -248,3 +241,208 @@ export function B2BClient({
     </div>
   );
 }
+
+type TableColumn = {
+  key: string;
+  label: string;
+  align?: "left" | "right";
+  render: (item: B2BProjectRow, Icon: any) => React.ReactNode;
+};
+
+function getStringValue(item: B2BProjectRow, keys: string[], fallback = "—") {
+  const record = item as B2BProjectRow & Record<string, unknown>;
+  for (const key of keys) {
+    const value = record[key];
+    if (typeof value === "string" && value.trim()) {
+      return value;
+    }
+  }
+  return fallback;
+}
+
+function getContactValue(item: B2BProjectRow) {
+  return item.contact_email?.trim() || "—";
+}
+
+function getDateValue(value?: string | null) {
+  if (!value) return "—";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+  });
+}
+
+function getStatusPill(item: B2BProjectRow) {
+  return (
+    <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-black uppercase tracking-widest border border-slate-200">
+      <span className="h-1.5 w-1.5 rounded-full bg-slate-400" />
+      {item.status}
+    </span>
+  );
+}
+
+function getActionButton() {
+  return (
+    <button className="p-2 text-slate-400 hover:text-slate-900 transition-colors rounded-lg hover:bg-slate-100">
+      <MoreHorizontal className="h-5 w-5" />
+    </button>
+  );
+}
+
+function getAssignedStaff(item: B2BProjectRow) {
+  return getStringValue(item, ["assigned_staff", "assigned_staff_name", "assignedTo", "assigned_to"], "—");
+}
+
+function getTimelineValue(item: B2BProjectRow) {
+  const record = item as B2BProjectRow & Record<string, unknown>;
+  const raw = record.timeline ?? record.target_timeline ?? record.deadline ?? record.target_date ?? record.booking_date;
+  if (typeof raw === "string" && raw.trim()) {
+    return getDateValue(raw);
+  }
+  return "—";
+}
+
+function getWebsiteTypeValue(item: B2BProjectRow) {
+  return getStringValue(item, ["website_type", "websiteType", "core_objective"], "—");
+}
+
+function getSystemTypeValue(item: B2BProjectRow) {
+  return getStringValue(item, ["system_type", "systemType", "core_objective"], "—");
+}
+
+function getCurrentToolsValue(item: B2BProjectRow) {
+  const record = item as B2BProjectRow & Record<string, unknown>;
+  const raw = record.current_tools ?? record.currentTools;
+  if (Array.isArray(raw)) {
+    return raw.filter((entry): entry is string => typeof entry === "string" && entry.trim().length > 0).join(", ") || "—";
+  }
+  if (typeof raw === "string" && raw.trim()) {
+    return raw;
+  }
+  return "—";
+}
+
+const webDevColumns: TableColumn[] = [
+  {
+    key: "request-id",
+    label: "Request ID",
+    render: (item) => <span className="font-bold text-slate-500 text-xs">#{item.id.slice(0, 8).toUpperCase()}</span>
+  },
+  {
+    key: "client",
+    label: "Client / Business",
+    render: (item, Icon) => (
+      <div className="flex items-center gap-2">
+        <Icon className="h-4 w-4 text-slate-400" />
+        <span className="font-bold text-slate-900">{item.client_name}</span>
+      </div>
+    )
+  },
+  {
+    key: "contact",
+    label: "Contact",
+    render: (item) => <span className="font-medium text-slate-600">{getContactValue(item)}</span>
+  },
+  {
+    key: "website-type",
+    label: "Website Type",
+    render: (item) => <span className="font-medium text-slate-600">{getWebsiteTypeValue(item)}</span>
+  },
+  {
+    key: "budget",
+    label: "Budget",
+    render: (item) => (
+      <span
+        className={cn(
+          "px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-widest border",
+          item.estimated_budget?.includes("0") ? "bg-blue-50 text-blue-600 border-blue-100" : "bg-purple-50 text-purple-600 border-purple-100"
+        )}
+      >
+        {item.estimated_budget || "Standard"}
+      </span>
+    )
+  },
+  {
+    key: "timeline",
+    label: "Timeline",
+    render: (item) => <span className="font-medium text-slate-600">{getTimelineValue(item)}</span>
+  },
+  {
+    key: "status",
+    label: "Status",
+    render: (item) => getStatusPill(item)
+  },
+  {
+    key: "assigned-staff",
+    label: "Assigned Staff",
+    render: (item) => <span className="font-medium text-slate-600">{getAssignedStaff(item)}</span>
+  },
+  {
+    key: "created-date",
+    label: "Created Date",
+    render: (item) => <span className="font-medium text-slate-500">{getDateValue(item.created_at)}</span>
+  },
+  {
+    key: "action",
+    label: "Action",
+    align: "right",
+    render: () => getActionButton()
+  }
+];
+
+const automationColumns: TableColumn[] = [
+  {
+    key: "request-id",
+    label: "Request ID",
+    render: (item) => <span className="font-bold text-slate-500 text-xs">#{item.id.slice(0, 8).toUpperCase()}</span>
+  },
+  {
+    key: "client",
+    label: "Client / Business",
+    render: (item, Icon) => (
+      <div className="flex items-center gap-2">
+        <Icon className="h-4 w-4 text-slate-400" />
+        <span className="font-bold text-slate-900">{item.client_name}</span>
+      </div>
+    )
+  },
+  {
+    key: "contact",
+    label: "Contact",
+    render: (item) => <span className="font-medium text-slate-600">{getContactValue(item)}</span>
+  },
+  {
+    key: "system-type",
+    label: "System Type",
+    render: (item) => <span className="font-medium text-slate-600">{getSystemTypeValue(item)}</span>
+  },
+  {
+    key: "current-tools",
+    label: "Current Tools",
+    render: (item) => <span className="font-medium text-slate-600">{getCurrentToolsValue(item)}</span>
+  },
+  {
+    key: "status",
+    label: "Status",
+    render: (item) => getStatusPill(item)
+  },
+  {
+    key: "assigned-staff",
+    label: "Assigned Staff",
+    render: (item) => <span className="font-medium text-slate-600">{getAssignedStaff(item)}</span>
+  },
+  {
+    key: "created-date",
+    label: "Created Date",
+    render: (item) => <span className="font-medium text-slate-500">{getDateValue(item.created_at)}</span>
+  },
+  {
+    key: "action",
+    label: "Action",
+    align: "right",
+    render: () => getActionButton()
+  }
+];

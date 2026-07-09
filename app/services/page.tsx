@@ -77,7 +77,7 @@ export default function ServicesPage() {
         : locale === "vi" 
         ? "Các trang web cao cấp tập trung vào chuyển đổi cho các doanh nghiệp dịch vụ tại UK." 
         : "為英國服務型企業提供以轉化為中心的高端網站。",
-      href: "/coming-soon",
+      href: "/services/website-development",
       image: "/assets/homepage/our-services/carousel/website-development-elementor-io-optimized.webp",
     },
     {
@@ -89,7 +89,7 @@ export default function ServicesPage() {
         : locale === "vi" 
         ? "Biểu mẫu, bàn giao trạng thái, email xác nhận và vận hành nội bộ không cần xử lý thủ công." 
         : "表單、工作流、確認、通知和運營交接，無需人工催促。",
-      href: "/coming-soon",
+      href: "/services/booking-automation",
       image: "/assets/homepage/our-services/carousel/booking-system-and-email-automation-elementor-io-optimized.webp",
     },
     {

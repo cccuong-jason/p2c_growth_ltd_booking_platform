@@ -5,10 +5,14 @@ import { revalidatePath } from "next/cache";
 import { normalizeStatus } from "@/lib/admin";
 import { updateBookingOperationalData } from "@/lib/admin-server";
 import {
+  validateAutomationRequestInput,
   validateBookingInput,
   validateEnquiryInput,
+  validateWebsiteRequestInput,
+  type AutomationRequestInput,
   type BookingInput,
-  type EnquiryInput
+  type EnquiryInput,
+  type WebsiteRequestInput
 } from "@/lib/booking";
 import { sendBookingConfirmation } from "@/lib/email";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
@@ -21,6 +25,80 @@ export type ActionState = {
 
 function checkboxValue(formData: FormData, name: string): boolean {
   return formData.get(name) === "on" || formData.get(name) === "true";
+}
+
+function appendSection(lines: string[], label: string, value: string | string[] | null | undefined) {
+  if (Array.isArray(value)) {
+    if (value.length > 0) {
+      lines.push(`${label}: ${value.join(", ")}`);
+    }
+    return;
+  }
+
+  if (value) {
+    lines.push(`${label}: ${value}`);
+  }
+}
+
+function buildWebsiteRequestMessage(input: {
+  phone: string;
+  email: string;
+  websiteType: string;
+}) {
+  const lines = ["Service: website-development"];
+  appendSection(lines, "Phone", input.phone);
+  appendSection(lines, "Email", input.email);
+  appendSection(lines, "Type", input.websiteType);
+  return lines.join("\n");
+}
+
+function buildAutomationRequestMessage(input: {
+  phone: string;
+  email: string;
+  systemType: string;
+  contactChannels: string[];
+  automatedEmails: string[];
+  dashboardNeed: string;
+  bookingVolume: string;
+  currentTools: string[];
+  notes: string | null;
+}) {
+  const lines = ["Service: booking-automation"];
+  appendSection(lines, "Phone", input.phone);
+  appendSection(lines, "Email", input.email);
+  appendSection(lines, "System type", input.systemType);
+  appendSection(lines, "Contact channels", input.contactChannels);
+  appendSection(lines, "Automated emails", input.automatedEmails);
+  appendSection(lines, "Dashboard", input.dashboardNeed);
+  appendSection(lines, "Monthly volume", input.bookingVolume);
+  appendSection(lines, "Current tools", input.currentTools);
+  appendSection(lines, "Notes", input.notes);
+  return lines.join("\n");
+}
+
+async function persistEnquiry(payload: EnquiryInput): Promise<ActionState> {
+  const validation = validateEnquiryInput(payload);
+
+  if (!validation.success) {
+    return { ok: false, message: "Please review the enquiry details.", errors: validation.errors };
+  }
+
+  const supabase = createSupabaseAdminClient();
+
+  if (!supabase) {
+    return {
+      ok: true,
+      message: "Enquiry validated locally. Add Supabase credentials to persist contact requests."
+    };
+  }
+
+  const { error } = await supabase.from("enquiries").insert(validation.data);
+
+  if (error) {
+    return { ok: false, message: `Unable to save enquiry: ${error.message}` };
+  }
+
+  return { ok: true, message: "Thanks. P2C Growth will follow up with you shortly." };
 }
 
 export async function submitBooking(_: ActionState, formData: FormData): Promise<ActionState> {
@@ -94,41 +172,77 @@ export async function submitBooking(_: ActionState, formData: FormData): Promise
 }
 
 export async function submitEnquiry(_: ActionState, formData: FormData): Promise<ActionState> {
-  const input: EnquiryInput = {
+  return persistEnquiry({
     name: String(formData.get("name") || ""),
     email: String(formData.get("email") || ""),
     company: String(formData.get("company") || ""),
     message: String(formData.get("message") || "")
+  });
+}
+
+export async function submitWebsiteRequest(_: ActionState, formData: FormData): Promise<ActionState> {
+  const input: WebsiteRequestInput = {
+    name: String(formData.get("name") || ""),
+    phone: String(formData.get("phone") || ""),
+    email: String(formData.get("email") || ""),
+    businessName: String(formData.get("businessName") || ""),
+    websiteType: String(formData.get("websiteType") || "") as WebsiteRequestInput["websiteType"]
   };
 
-  const validation = validateEnquiryInput(input);
+  const validation = validateWebsiteRequestInput(input);
 
   if (!validation.success) {
-    return { ok: false, message: "Please review the enquiry details.", errors: validation.errors };
-  }
-
-  const supabase = createSupabaseAdminClient();
-
-  if (!supabase) {
     return {
-      ok: true,
-      message: "Enquiry validated locally. Add Supabase credentials to persist contact requests."
+      ok: false,
+      message: "Please review the website request details.",
+      errors: validation.errors
     };
   }
 
-  const { error } = await supabase.from("enquiries").insert(validation.data);
+  return persistEnquiry({
+    name: validation.data.name,
+    email: validation.data.email,
+    company: validation.data.businessName,
+    message: buildWebsiteRequestMessage(validation.data)
+  });
+}
 
-  if (error) {
-    return { ok: false, message: `Unable to save enquiry: ${error.message}` };
+export async function submitAutomationRequest(_: ActionState, formData: FormData): Promise<ActionState> {
+  const input: AutomationRequestInput = {
+    name: String(formData.get("name") || ""),
+    phone: String(formData.get("phone") || ""),
+    email: String(formData.get("email") || ""),
+    systemType: String(formData.get("systemType") || "") as AutomationRequestInput["systemType"],
+    contactChannels: formData.getAll("contactChannels").map(String) as AutomationRequestInput["contactChannels"],
+    automatedEmails: formData.getAll("automatedEmails").map(String) as AutomationRequestInput["automatedEmails"],
+    dashboardNeed: String(formData.get("dashboardNeed") || "") as AutomationRequestInput["dashboardNeed"],
+    bookingVolume: String(formData.get("bookingVolume") || "") as AutomationRequestInput["bookingVolume"],
+    currentTools: formData.getAll("currentTools").map(String) as AutomationRequestInput["currentTools"],
+    notes: String(formData.get("notes") || "")
+  };
+
+  const validation = validateAutomationRequestInput(input);
+
+  if (!validation.success) {
+    return {
+      ok: false,
+      message: "Please review the system request details.",
+      errors: validation.errors
+    };
   }
 
-  return { ok: true, message: "Thanks. P2C Growth will follow up with you shortly." };
+  return persistEnquiry({
+    name: validation.data.name,
+    email: validation.data.email,
+    company: null,
+    message: buildAutomationRequestMessage(validation.data)
+  });
 }
 
 export async function updateBookingStatusAction(formData: FormData): Promise<void> {
   const bookingId = String(formData.get("bookingId") || "");
   const status = normalizeStatus(String(formData.get("status") || ""));
-  
+
   await updateBookingOperationalData(bookingId, { status });
   revalidatePath("/admin");
 }

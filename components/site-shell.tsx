@@ -36,12 +36,12 @@ export function SiteHeader() {
       body: copy.servicesPage.primaryCard.body
     },
     {
-      href: "/services",
+      href: "/services/website-development",
       label: copy.servicesPage.webDevCard.title,
       body: copy.servicesPage.webDevCard.body
     },
     {
-      href: "/services",
+      href: "/services/booking-automation",
       label: copy.servicesPage.suite.items[0].title,
       body: copy.servicesPage.suite.items[0].body
     },

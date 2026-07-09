@@ -25,7 +25,7 @@ export default async function WebDevDashboard() {
         </div>
       </header>
 
-      <B2BClient initialProjects={projects} title="Website Development" icon={Monitor} />
+      <B2BClient initialProjects={projects} title="Website Development" icon={Monitor} variant="web-dev" />
     </div>
   );
 }
