@@ -1,8 +1,9 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { revalidatePath } from "next/cache";
 
-import { updateBookingStatusAction, updateBookingDetailsAction } from "@/lib/actions";
-import { updateBookingOperationalData } from "@/lib/admin-server";
+import { acceptBookingAction, updateBookingStatusAction, updateBookingDetailsAction } from "@/lib/actions";
+import { getBookingById, updateBookingOperationalData } from "@/lib/admin-server";
+import { sendBookingAcceptedNotification } from "@/lib/email";
 
 // Mock dependencies
 vi.mock("next/cache", () => ({
@@ -10,12 +11,37 @@ vi.mock("next/cache", () => ({
 }));
 
 vi.mock("@/lib/admin-server", () => ({
+  getBookingById: vi.fn().mockResolvedValue({ success: true, data: { id: "b-1", patient_email: "customer@example.com" } }),
   updateBookingOperationalData: vi.fn().mockResolvedValue({ success: true }),
+}));
+
+vi.mock("@/lib/email", () => ({
+  sendBookingAcceptedNotification: vi.fn().mockResolvedValue({ skipped: false }),
 }));
 
 describe("administrative server actions", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+  });
+
+
+  describe("acceptBookingAction", () => {
+    it("confirms a booking and sends the accepted email", async () => {
+      const formData = new FormData();
+      formData.append("bookingId", "b-1");
+
+      const result = await acceptBookingAction(formData);
+
+      expect(result.ok).toBe(true);
+      expect(getBookingById).toHaveBeenCalledWith("b-1");
+      expect(updateBookingOperationalData).toHaveBeenCalledWith("b-1", { status: "appointment_confirmed" });
+      expect(sendBookingAcceptedNotification).toHaveBeenCalledWith(expect.objectContaining({
+        id: "b-1",
+        status: "appointment_confirmed"
+      }));
+      expect(revalidatePath).toHaveBeenCalledWith("/admin");
+      expect(revalidatePath).toHaveBeenCalledWith("/admin/physio");
+    });
   });
 
   describe("updateBookingStatusAction", () => {

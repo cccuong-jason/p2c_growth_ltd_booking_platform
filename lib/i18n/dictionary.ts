@@ -817,10 +817,10 @@ export const dictionary = {
       bannerContactBtn: "Contact Sales",
       bannerDemoBtn: "View demo",
       cards: {
-        sales: { title: "Chat to sales", desc: "Speak to our friendly team.", btn: "sales@p2cgrowth.com" },
-        support: { title: "Chat to support", desc: "We're here to help.", btn: "support@p2cgrowth.com" },
-        visit: { title: "Visit us", desc: "Visit our office HQ.", btn: "View on Google Maps" },
-        call: { title: "Call us", desc: "Mon-Fri from 8am to 5pm.", btn: "+44 (0) 20 1234 5678" }
+        sales: { title: "General enquiries", desc: "Speak to our team about websites, systems, and platform work.", btn: "partnertocustomer@p2cgrowths.co.uk" },
+        support: { title: "Physiotherapy bookings", desc: "Use this address for P2C Health and medical expert coordination.", btn: "medicoexpert@p2cgrowths.co.uk" },
+        visit: { title: "WhatsApp", desc: "Message us directly for quick follow-up.", btn: "07541428585" },
+        call: { title: "Call us", desc: "Call P2C Growth directly.", btn: "07541428585" }
       },
       form: {
         name: "Full Name",
@@ -1174,10 +1174,10 @@ export const dictionary = {
       bannerContactBtn: "Liên hệ Sales",
       bannerDemoBtn: "Xem demo",
       cards: {
-        sales: { title: "Trò chuyện với Sales", desc: "Trao đổi với đội ngũ thân thiện của chúng tôi.", btn: "sales@p2cgrowth.com" },
-        support: { title: "Trò chuyện với hỗ trợ", desc: "Chúng tôi ở đây để giúp đỡ bạn.", btn: "support@p2cgrowth.com" },
-        visit: { title: "Gặp gỡ chúng tôi", desc: "Ghé thăm văn phòng trụ sở chính.", btn: "Xem trên Google Maps" },
-        call: { title: "Gọi cho chúng tôi", desc: "Thứ Hai - Thứ Sáu, từ 8 giờ sáng đến 5 giờ chiều.", btn: "+44 (0) 20 1234 5678" }
+        sales: { title: "Yêu cầu chung", desc: "Trao đổi với chúng tôi về website, hệ thống và nền tảng vận hành.", btn: "partnertocustomer@p2cgrowths.co.uk" },
+        support: { title: "Đặt lịch vật lý trị liệu", desc: "Dùng email này cho P2C Health và điều phối chuyên gia y tế.", btn: "medicoexpert@p2cgrowths.co.uk" },
+        visit: { title: "WhatsApp", desc: "Nhắn tin trực tiếp để được phản hồi nhanh.", btn: "07541428585" },
+        call: { title: "Gọi cho chúng tôi", desc: "Gọi trực tiếp cho P2C Growth.", btn: "07541428585" }
       },
       form: {
         name: "Họ và tên",
@@ -1531,10 +1531,10 @@ export const dictionary = {
       bannerContactBtn: "聯絡銷售",
       bannerDemoBtn: "查看演示",
       cards: {
-        sales: { title: "聯絡銷售", desc: "與我們親切的團隊交流。", btn: "sales@p2cgrowth.com" },
-        support: { title: "聯絡支持", desc: "我們隨時為您提供幫助。", btn: "support@p2cgrowth.com" },
-        visit: { title: "拜訪我們", desc: "參觀我們的總部辦公室。", btn: "在 Google 地圖上查看" },
-        call: { title: "致電我們", desc: "週一至週五，上午8點至下午5點。", btn: "+44 (0) 20 1234 5678" }
+        sales: { title: "一般查詢", desc: "與我們討論網站、系統及平台工作。", btn: "partnertocustomer@p2cgrowths.co.uk" },
+        support: { title: "物理治療預約", desc: "P2C Health 及醫療專家協調請使用此電郵。", btn: "medicoexpert@p2cgrowths.co.uk" },
+        visit: { title: "WhatsApp", desc: "直接傳訊給我們以便快速跟進。", btn: "07541428585" },
+        call: { title: "致電我們", desc: "直接致電 P2C Growth。", btn: "07541428585" }
       },
       form: {
         name: "全名",

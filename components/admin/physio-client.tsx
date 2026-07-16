@@ -1,19 +1,22 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Search, Filter, Mail, Phone, Calendar, MoreHorizontal, Clock, MapPin, X, Activity, User, ClipboardList, Save, AlertCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Search, Mail, Phone, Calendar, MoreHorizontal, Clock, MapPin, X, Activity, User, ClipboardList, Save, AlertCircle, Eye, CheckCircle2 } from "lucide-react";
 import { getStatusLabel, getStatusColor, bookingStatuses } from "@/lib/admin";
-import { updateBookingDetailsAction } from "@/lib/actions";
+import { acceptBookingAction, updateBookingDetailsAction } from "@/lib/actions";
 import { Button } from "@/components/ui/button";
 import { type BookingRow } from "@/lib/supabase/schema";
 import { cn } from "@/lib/utils";
 import { ComposeEmailModal } from "@/components/admin/compose-email";
 
 export function PhysioClient({ initialBookings }: { initialBookings: BookingRow[] }) {
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [selectedBooking, setSelectedBooking] = useState<BookingRow | null>(null);
   const [emailModalBooking, setEmailModalBooking] = useState<BookingRow | null>(null);
+  const [actionMessage, setActionMessage] = useState<string | null>(null);
 
   const filteredBookings = useMemo(() => {
     return initialBookings
@@ -73,7 +76,10 @@ export function PhysioClient({ initialBookings }: { initialBookings: BookingRow[
               <tr 
                 key={booking.id} 
                 className="transition-colors hover:bg-slate-50/50 group cursor-pointer"
-                onClick={() => setSelectedBooking(booking)}
+                onClick={() => {
+                  setActionMessage(null);
+                  setSelectedBooking(booking);
+                }}
               >
                 <td className="px-6 py-4 font-bold text-slate-500 text-xs">
                   #{booking.id.slice(0, 8).toUpperCase()}
@@ -138,6 +144,19 @@ export function PhysioClient({ initialBookings }: { initialBookings: BookingRow[
                 </td>
                 <td className="px-6 py-4 text-right">
                   <div className="flex items-center justify-end gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActionMessage(null);
+                        setSelectedBooking(booking);
+                      }}
+                      className="h-8 rounded-lg border-slate-200 text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 hover:text-slate-900 transition-all"
+                    >
+                      <Eye className="mr-1.5 h-3.5 w-3.5" />
+                      Preview
+                    </Button>
                     <Button 
                       variant="outline" 
                       size="sm" 
@@ -184,17 +203,50 @@ export function PhysioClient({ initialBookings }: { initialBookings: BookingRow[
                   <h2 className="text-xl font-bold text-slate-900">Booking Dispatch</h2>
                   <p className="text-xs text-slate-500 mt-0.5 font-medium">ID: {selectedBooking.id}</p>
                 </div>
-                <button onClick={() => setSelectedBooking(null)} className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-400 transition-colors">
+                <button onClick={() => { setActionMessage(null); setSelectedBooking(null); }} className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-400 transition-colors">
                   <X className="h-5 w-5" />
                 </button>
               </div>
 
               <form action={async (formData) => {
                 await updateBookingDetailsAction(formData);
+                setActionMessage(null);
                 setSelectedBooking(null);
+                router.refresh();
               }} className="flex-1 overflow-y-auto p-6 space-y-8 bg-white">
                 <input type="hidden" name="bookingId" value={selectedBooking.id} />
                 
+                <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="text-[10px] font-black uppercase tracking-widest text-emerald-700">Accept booking</p>
+                      <p className="mt-1 text-sm font-medium leading-6 text-emerald-950">
+                        Mark this request as confirmed and send the customer an acceptance email from medicoexpert@p2cgrowths.co.uk.
+                      </p>
+                    </div>
+                    <Button
+                      type="button"
+                      disabled={selectedBooking.status === "appointment_confirmed"}
+                      onClick={async () => {
+                        const formData = new FormData();
+                        formData.append("bookingId", selectedBooking.id);
+                        const result = await acceptBookingAction(formData);
+                        setActionMessage(result.message);
+                        router.refresh();
+                      }}
+                      className="shrink-0 rounded-xl bg-emerald-600 px-4 font-bold text-white shadow-lg shadow-emerald-100 hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none"
+                    >
+                      <CheckCircle2 className="mr-2 h-4 w-4" />
+                      Accept
+                    </Button>
+                  </div>
+                  {actionMessage && (
+                    <p className="mt-3 rounded-xl bg-white/80 px-3 py-2 text-xs font-bold text-emerald-900">
+                      {actionMessage}
+                    </p>
+                  )}
+                </div>
+
                 {/* Status Selection */}
                 <div className="space-y-3">
                   <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 flex items-center gap-2">
@@ -324,7 +376,7 @@ export function PhysioClient({ initialBookings }: { initialBookings: BookingRow[
                 </div>
 
                 <div className="sticky bottom-0 pt-6 pb-2 bg-white flex gap-3 border-t border-slate-100">
-                  <Button type="button" variant="outline" onClick={() => setSelectedBooking(null)} className="flex-1 rounded-xl font-bold border-slate-200 text-slate-600 hover:bg-slate-50">
+                  <Button type="button" variant="outline" onClick={() => { setActionMessage(null); setSelectedBooking(null); }} className="flex-1 rounded-xl font-bold border-slate-200 text-slate-600 hover:bg-slate-50">
                     Cancel
                   </Button>
                   <Button type="submit" className="flex-1 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold shadow-lg shadow-blue-200">

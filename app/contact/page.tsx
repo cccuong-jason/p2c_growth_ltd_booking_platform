@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { MessageSquare, MapPin, Phone, ArrowRight, MessageCircle } from "lucide-react";
+import { MessageSquare, Phone, ArrowRight, MessageCircle } from "lucide-react";
 import { ContactForm } from "@/components/contact-form";
 import { Reveal } from "@/components/home/motion-primitives";
 import { SectionBadge } from "@/components/ui/section-badge";
@@ -136,11 +136,11 @@ export default function ContactPage() {
           <Reveal delay={0.25}>
             <div className="bg-white rounded-2xl border border-slate-100 p-6 md:p-8 shadow-premium transition-all hover:-translate-y-1 hover:shadow-xl flex flex-col h-full">
               <div className="h-10 w-10 rounded-xl border border-slate-100 flex items-center justify-center mb-8 bg-slate-50">
-                <MapPin className="h-5 w-5 text-slate-600" />
+                <MessageCircle className="h-5 w-5 text-slate-600" />
               </div>
               <h3 className="text-lg font-bold text-ink mb-2">{t.cards.visit.title}</h3>
               <p className="text-sm font-medium text-slate-500 mb-8">{t.cards.visit.desc}</p>
-              <a href="#" className="mt-auto w-full inline-flex items-center justify-center h-11 gap-2 rounded-xl bg-white border border-slate-200 text-slate-700 text-sm font-bold shadow-sm transition hover:bg-slate-50 hover:text-ink active:scale-[0.98]">
+              <a href={`https://wa.me/44${t.cards.visit.btn.replace(/^0/, "")}`} className="mt-auto w-full inline-flex items-center justify-center h-11 gap-2 rounded-xl bg-white border border-slate-200 text-slate-700 text-sm font-bold shadow-sm transition hover:bg-slate-50 hover:text-ink active:scale-[0.98]">
                 {t.cards.visit.btn}
               </a>
             </div>

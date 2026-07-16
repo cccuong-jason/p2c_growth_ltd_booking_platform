@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 
 import { normalizeStatus } from "@/lib/admin";
-import { updateBookingOperationalData } from "@/lib/admin-server";
+import { getBookingById, updateBookingOperationalData } from "@/lib/admin-server";
 import {
   validateAutomationRequestInput,
   validateBookingInput,
@@ -14,7 +14,7 @@ import {
   type EnquiryInput,
   type WebsiteRequestInput
 } from "@/lib/booking";
-import { sendBookingConfirmation } from "@/lib/email";
+import { sendBookingAcceptedNotification, sendBookingNotifications, sendEnquiryNotifications } from "@/lib/email";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 
 export type ActionState = {
@@ -98,6 +98,8 @@ async function persistEnquiry(payload: EnquiryInput): Promise<ActionState> {
     return { ok: false, message: `Unable to save enquiry: ${error.message}` };
   }
 
+  await sendEnquiryNotifications(validation.data);
+
   return { ok: true, message: "Thanks. P2C Growth will follow up with you shortly." };
 }
 
@@ -166,7 +168,7 @@ export async function submitBooking(_: ActionState, formData: FormData): Promise
     return { ok: false, message: `Unable to save booking: ${error.message}` };
   }
 
-  await sendBookingConfirmation(validation.data);
+  await sendBookingNotifications(validation.data);
 
   return { ok: true, message: "Booking request received. P2C Growth will contact you shortly." };
 }
@@ -237,6 +239,53 @@ export async function submitAutomationRequest(_: ActionState, formData: FormData
     company: null,
     message: buildAutomationRequestMessage(validation.data)
   });
+}
+
+
+export async function acceptBookingAction(formData: FormData): Promise<ActionState> {
+  const bookingId = String(formData.get("bookingId") || "");
+
+  if (!bookingId) {
+    return { ok: false, message: "Missing booking id." };
+  }
+
+  const bookingResult = await getBookingById(bookingId);
+  if (!bookingResult.success || !bookingResult.data) {
+    return { ok: false, message: bookingResult.error ?? "Unable to load booking." };
+  }
+
+  const updateResult = await updateBookingOperationalData(bookingId, {
+    status: "appointment_confirmed"
+  });
+
+  if (!updateResult.success) {
+    return { ok: false, message: updateResult.error ?? "Unable to accept booking." };
+  }
+
+  const emailResult = await sendBookingAcceptedNotification({
+    ...bookingResult.data,
+    status: "appointment_confirmed",
+    updated_at: new Date().toISOString()
+  });
+
+  revalidatePath("/admin");
+  revalidatePath("/admin/physio");
+
+  if (emailResult.skipped) {
+    return {
+      ok: true,
+      message: `Booking accepted. Confirmation email was not sent: ${emailResult.reason}.`
+    };
+  }
+
+  if (emailResult.errors?.length) {
+    return {
+      ok: true,
+      message: "Booking accepted. Confirmation email is queued for retry."
+    };
+  }
+
+  return { ok: true, message: "Booking accepted and customer confirmation sent." };
 }
 
 export async function updateBookingStatusAction(formData: FormData): Promise<void> {

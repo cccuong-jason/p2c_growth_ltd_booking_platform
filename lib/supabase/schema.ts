@@ -62,6 +62,24 @@ export interface B2BProjectRow {
   updated_at: string;
 }
 
+export interface EmailDeliveryRow {
+  id: string;
+  notification_type: string;
+  source_type: string | null;
+  source_id: string | null;
+  recipient_email: string;
+  subject: string;
+  payload: Record<string, unknown>;
+  status: "pending" | "sent" | "failed" | "abandoned";
+  attempts: number;
+  next_attempt_at: string | null;
+  last_error: string | null;
+  resend_email_id: string | null;
+  sent_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export type Database = {
   public: {
     Tables: {
@@ -84,6 +102,11 @@ export type Database = {
         Row: B2BProjectRow;
         Insert: Omit<B2BProjectRow, "id" | "created_at" | "updated_at">;
         Update: Partial<Omit<B2BProjectRow, "id" | "created_at">>;
+      };
+      email_deliveries: {
+        Row: EmailDeliveryRow;
+        Insert: Omit<EmailDeliveryRow, "id" | "created_at" | "updated_at">;
+        Update: Partial<Omit<EmailDeliveryRow, "id" | "created_at">>;
       };
     };
   };

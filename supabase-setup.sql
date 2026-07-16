@@ -43,15 +43,40 @@ CREATE TABLE IF NOT EXISTS public.admin_profiles (
   created_at timestamptz not null default now()
 );
 
--- 4. Setup Row Level Security (RLS)
+-- 4. Create the Email Deliveries table (durable email send/retry outbox)
+CREATE TABLE IF NOT EXISTS public.email_deliveries (
+  id uuid primary key default gen_random_uuid(),
+  notification_type text not null,
+  source_type text,
+  source_id uuid,
+  recipient_email text not null,
+  subject text not null,
+  payload jsonb not null,
+  status text not null default 'pending',
+  attempts integer not null default 0,
+  next_attempt_at timestamptz,
+  last_error text,
+  resend_email_id text,
+  sent_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  constraint email_deliveries_status_check check (status in ('pending', 'sent', 'failed', 'abandoned'))
+);
+
+CREATE INDEX IF NOT EXISTS email_deliveries_retry_idx
+  ON public.email_deliveries (status, next_attempt_at)
+  WHERE status in ('pending', 'failed');
+
+-- 5. Setup Row Level Security (RLS)
 -- Since we are using Server Actions with the Service Role Key for writes, 
 -- and fetching data in the admin dashboard via the Service Role Key,
 -- we can safely disable public access to these tables.
 ALTER TABLE public.bookings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.enquiries ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.admin_profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.email_deliveries ENABLE ROW LEVEL SECURITY;
 
--- 5. Create an Admin User (Optional step, you can also do this in the Auth UI)
+-- 6. Create an Admin User (Optional step, you can also do this in the Auth UI)
 -- To log into the /admin dashboard, you must create a user in the Supabase 
 -- Authentication > Users menu using one of the emails you added to the 
 -- ADMIN_EMAIL_ALLOWLIST in your .env.local (e.g., admin@example.com)

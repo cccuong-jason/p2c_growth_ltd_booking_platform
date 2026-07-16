@@ -8,7 +8,7 @@ import {
   submitWebsiteRequest
 } from "@/lib/actions";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
-import { sendBookingConfirmation } from "@/lib/email";
+import { sendBookingNotifications, sendEnquiryNotifications } from "@/lib/email";
 
 // Mock dependencies
 vi.mock("next/cache", () => ({
@@ -20,7 +20,8 @@ vi.mock("@/lib/supabase/server", () => ({
 }));
 
 vi.mock("@/lib/email", () => ({
-  sendBookingConfirmation: vi.fn().mockResolvedValue({ skipped: false }),
+  sendBookingNotifications: vi.fn().mockResolvedValue({ skipped: false }),
+  sendEnquiryNotifications: vi.fn().mockResolvedValue({ skipped: false }),
 }));
 
 describe("public server actions", () => {
@@ -48,6 +49,7 @@ describe("public server actions", () => {
       const result = await submitBooking({ ok: false, message: "" }, invalidData);
       expect(result.ok).toBe(false);
       expect(result.message).toContain("review the highlighted booking details");
+      expect(sendBookingNotifications).not.toHaveBeenCalled();
     });
 
     it("handles local validation success when Supabase is missing", async () => {
@@ -55,6 +57,7 @@ describe("public server actions", () => {
       const result = await submitBooking({ ok: false, message: "" }, validFormData);
       expect(result.ok).toBe(true);
       expect(result.message).toContain("validated locally");
+      expect(sendBookingNotifications).not.toHaveBeenCalled();
     });
 
     it("inserts record and sends confirmation when Supabase is available", async () => {
@@ -67,7 +70,7 @@ describe("public server actions", () => {
       expect(result.ok).toBe(true);
       expect(mockSupabase.from).toHaveBeenCalledWith("bookings");
       expect(mockInsert).toHaveBeenCalled();
-      expect(sendBookingConfirmation).toHaveBeenCalled();
+      expect(sendBookingNotifications).toHaveBeenCalled();
     });
   });
 
@@ -82,6 +85,7 @@ describe("public server actions", () => {
       const result = await submitEnquiry({ ok: false, message: "" }, invalidData);
       expect(result.ok).toBe(false);
       expect(result.message).toContain("review the enquiry details");
+      expect(sendEnquiryNotifications).not.toHaveBeenCalled();
     });
 
     it("inserts record when Supabase is available", async () => {
@@ -93,6 +97,10 @@ describe("public server actions", () => {
       
       expect(result.ok).toBe(true);
       expect(mockInsert).toHaveBeenCalledWith(expect.objectContaining({ name: "John Corp" }));
+      expect(sendEnquiryNotifications).toHaveBeenCalledWith(expect.objectContaining({
+        name: "John Corp",
+        email: "john@corp.com"
+      }));
     });
   });
 
@@ -123,6 +131,12 @@ describe("public server actions", () => {
         name: "John Corp",
         company: "John Corp Ltd",
         message: expect.stringContaining("Type: new_business_website")
+      }));
+      expect(sendEnquiryNotifications).toHaveBeenCalledWith(expect.objectContaining({
+        name: "John Corp",
+        email: "john@corp.com",
+        company: "John Corp Ltd",
+        message: expect.stringContaining("Service: website-development")
       }));
     });
   });
@@ -162,6 +176,12 @@ describe("public server actions", () => {
         name: "Jane Ops",
         company: null,
         message: expect.stringContaining("Contact channels: phone, whatsapp")
+      }));
+      expect(sendEnquiryNotifications).toHaveBeenCalledWith(expect.objectContaining({
+        name: "Jane Ops",
+        email: "jane@ops.com",
+        company: null,
+        message: expect.stringContaining("Service: booking-automation")
       }));
     });
   });

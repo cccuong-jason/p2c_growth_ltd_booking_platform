@@ -29,6 +29,29 @@ export async function updateBookingOperationalData(
   return { success: true };
 }
 
+
+export async function getBookingById(bookingId: string) {
+  const supabase = createSupabaseAdminClient();
+
+  if (!supabase) {
+    console.warn("Supabase credentials missing. Unable to fetch booking:", bookingId);
+    return { success: false, error: "Supabase is not configured" };
+  }
+
+  const { data, error } = await supabase
+    .from("bookings")
+    .select("*")
+    .eq("id", bookingId)
+    .single();
+
+  if (error) {
+    console.error("Error fetching booking:", error);
+    return { success: false, error: error.message };
+  }
+
+  return { success: true, data };
+}
+
 export async function getAdminProfile(userId: string) {
   const supabase = createSupabaseAdminClient();
 

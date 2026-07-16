@@ -1,6 +1,6 @@
 # Supabase Schema
 
-Phase 1 expects three tables to support the dispatch workflow and internal hierarchy. Exact RLS policy can be tightened during production rollout; local MVP writes use the service role through server actions only.
+Phase 1 expects four tables to support the dispatch workflow, internal hierarchy, and durable email recovery. Exact RLS policy can be tightened during production rollout; local MVP writes use the service role through server actions only.
 
 ## `bookings`
 
@@ -41,3 +41,21 @@ Phase 1 expects three tables to support the dispatch workflow and internal hiera
 - `full_name` text not null
 - `role` text not null default `dispatcher` (e.g., `super_admin`, `dispatcher`)
 - `created_at` timestamptz not null default `now()`
+
+## `email_deliveries`
+
+- `id` uuid primary key default `gen_random_uuid()`
+- `notification_type` text not null
+- `source_type` text nullable
+- `source_id` uuid nullable
+- `recipient_email` text not null
+- `subject` text not null
+- `payload` jsonb not null
+- `status` text not null default `pending` (`pending`, `sent`, `failed`, `abandoned`)
+- `attempts` integer not null default `0`
+- `next_attempt_at` timestamptz nullable
+- `last_error` text nullable
+- `resend_email_id` text nullable
+- `sent_at` timestamptz nullable
+- `created_at` timestamptz not null default `now()`
+- `updated_at` timestamptz not null default `now()`

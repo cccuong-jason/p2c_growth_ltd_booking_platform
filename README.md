@@ -47,6 +47,13 @@ Copy `.env.example` to `.env.local` and provide:
 - `SUPABASE_SERVICE_ROLE_KEY`
 - `RESEND_API_KEY`
 - `RESEND_FROM_EMAIL`
+- `P2C_GENERAL_INBOX`
+- `P2C_PHYSIO_INBOX`
+- `P2C_GENERAL_FROM_EMAIL` optional override for general request sender
+- `P2C_PHYSIO_FROM_EMAIL` optional override for physio booking sender
+- `CRON_SECRET`
 - `ADMIN_EMAIL_ALLOWLIST`
 
-Without credentials, the app still builds and shows configuration-aware local states. Supabase inserts, Supabase Auth, and Resend email delivery require real credentials.
+Without credentials, the app still builds and shows configuration-aware local states. Supabase inserts, Supabase Auth, and Resend email delivery require real credentials. Physio booking notifications and accepted-booking confirmations send from the physio sender, while general enquiries and other website requests send from the general sender.
+
+Email delivery failures are recorded in `email_deliveries` and retried by the protected `/api/email/retry` cron endpoint. Run `supabase-setup.sql` after deployment updates so the retry table exists before relying on automatic recovery.
